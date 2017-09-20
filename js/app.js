@@ -97,11 +97,18 @@ function controller($scope, $el, a, env) {
 	}
 
 	function writeStorage() {
-		localStorage.data = JSON.stringify(editor.toJSON())
+		localStorage.allmatter = JSON.stringify(editor.toJSON())
 	}
 
 	function readStorage() {
-		editor.fromJSON(JSON.parse(localStorage.data));
+		if (localStorage.allmatter) {
+			try {
+				editor.fromJSON(JSON.parse(localStorage.allmatter));
+			} catch (e) {
+				console.error(e);
+				alert(e.message);
+			}
+		}
 	}
 
 	var menu = new D3NE.ContextMenu('./templates/menu.html', {
