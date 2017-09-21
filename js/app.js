@@ -59,6 +59,7 @@ function controller($scope, $el, a, env) {
 				editor.fromJSON(data);
 				processReady = true;
 				editor.eventListener.trigger('change');
+				editor.view.zoomAt(editor.nodes);
 			};
 			reader.onabort = (e) => {
 				alert(e.message);
@@ -185,4 +186,6 @@ function controller($scope, $el, a, env) {
 		editor.view.zoomAt(editor.nodes);
 		editor.eventListener.trigger('change');
 	});
+
+	resize();
 }
