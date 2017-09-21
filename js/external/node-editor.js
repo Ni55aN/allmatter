@@ -111,31 +111,19 @@ var toConsumableArray = function (arr) {
   }
 };
 
-var Connection = function () {
-    function Connection(output, input) {
-        classCallCheck(this, Connection);
-
-        this.output = output;
-        this.input = input;
-
-        this.input.addConnection(this);
-    }
-
-    createClass(Connection, [{
-        key: "remove",
-        value: function remove() {
-            this.input.removeConnection(this);
-            this.output.removeConnection(this, false);
-        }
-    }]);
-    return Connection;
-}();
-
 var ContextMenu = function () {
     function ContextMenu(template, items) {
         var _this = this;
 
         classCallCheck(this, ContextMenu);
+
+        if (!(typeof template === 'string')) {
+            throw new TypeError('Value of argument "template" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect(template));
+        }
+
+        if (!(items instanceof Object)) {
+            throw new TypeError('Value of argument "items" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect(items));
+        }
 
         this.visible = false;
         this.x = 0;
@@ -157,6 +145,10 @@ var ContextMenu = function () {
     createClass(ContextMenu, [{
         key: 'searchItems',
         value: function searchItems(filter) {
+            if (!(filter == null || typeof filter === 'string')) {
+                throw new TypeError('Value of argument "filter" violates contract.\n\nExpected:\n?string\n\nGot:\n' + _inspect(filter));
+            }
+
             var regex = new RegExp(filter, 'i');
 
             var items = Object.assign({}, this.items);
@@ -190,6 +182,14 @@ var ContextMenu = function () {
     }, {
         key: 'show',
         value: function show(x, y) {
+            if (!(typeof x === 'number')) {
+                throw new TypeError('Value of argument "x" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect(x));
+            }
+
+            if (!(typeof y === 'number')) {
+                throw new TypeError('Value of argument "y" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect(y));
+            }
+
             this.visible = true;
             this.x = x;
             this.y = y;
@@ -205,6 +205,69 @@ var ContextMenu = function () {
     return ContextMenu;
 }();
 
+function _inspect(input, depth) {
+    var maxDepth = 4;
+    var maxKeys = 15;
+
+    if (depth === undefined) {
+        depth = 0;
+    }
+
+    depth += 1;
+
+    if (input === null) {
+        return 'null';
+    } else if (input === undefined) {
+        return 'void';
+    } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
+        return typeof input === 'undefined' ? 'undefined' : _typeof(input);
+    } else if (Array.isArray(input)) {
+        if (input.length > 0) {
+            if (depth > maxDepth) return '[...]';
+
+            var first = _inspect(input[0], depth);
+
+            if (input.every(function (item) {
+                return _inspect(item, depth) === first;
+            })) {
+                return first.trim() + '[]';
+            } else {
+                return '[' + input.slice(0, maxKeys).map(function (item) {
+                    return _inspect(item, depth);
+                }).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']';
+            }
+        } else {
+            return 'Array';
+        }
+    } else {
+        var keys = Object.keys(input);
+
+        if (!keys.length) {
+            if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+                return input.constructor.name;
+            } else {
+                return 'Object';
+            }
+        }
+
+        if (depth > maxDepth) return '{...}';
+        var indent = '  '.repeat(depth - 1);
+        var entries = keys.slice(0, maxKeys).map(function (key) {
+            return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect(input[key], depth) + ';';
+        }).join('\n  ' + indent);
+
+        if (keys.length >= maxKeys) {
+            entries += '\n  ' + indent + '...';
+        }
+
+        if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+            return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
+        } else {
+            return '{\n  ' + indent + entries + '\n' + indent + '}';
+        }
+    }
+}
+
 var Block = function Block() {
     classCallCheck(this, Block);
 
@@ -213,12 +276,152 @@ var Block = function Block() {
     this.position = [0.0, 0.0];
 };
 
+var Connection = function () {
+    function Connection(output, input) {
+        classCallCheck(this, Connection);
+
+        this.output = output;
+        this.input = input;
+
+        this.input.addConnection(this);
+    }
+
+    createClass(Connection, [{
+        key: "remove",
+        value: function remove() {
+            this.input.removeConnection(this);
+            this.output.removeConnection(this, false);
+        }
+    }]);
+    return Connection;
+}();
+
+var Socket = function () {
+    function Socket(id, name, hint) {
+        classCallCheck(this, Socket);
+
+        if (!(typeof id === 'string')) {
+            throw new TypeError("Value of argument \"id\" violates contract.\n\nExpected:\nstring\n\nGot:\n" + _inspect$4(id));
+        }
+
+        if (!(typeof name === 'string')) {
+            throw new TypeError("Value of argument \"name\" violates contract.\n\nExpected:\nstring\n\nGot:\n" + _inspect$4(name));
+        }
+
+        if (!(typeof hint === 'string')) {
+            throw new TypeError("Value of argument \"hint\" violates contract.\n\nExpected:\nstring\n\nGot:\n" + _inspect$4(hint));
+        }
+
+        this.id = id;
+        this.name = name;
+        this.hint = hint;
+        this.compatible = [];
+    }
+
+    createClass(Socket, [{
+        key: "combineWith",
+        value: function combineWith(socket) {
+            if (!(socket instanceof Socket)) {
+                throw new TypeError("Value of argument \"socket\" violates contract.\n\nExpected:\nSocket\n\nGot:\n" + _inspect$4(socket));
+            }
+
+            this.compatible.push(socket);
+        }
+    }, {
+        key: "compatibleWith",
+        value: function compatibleWith(socket) {
+            if (!(socket instanceof Socket)) {
+                throw new TypeError("Value of argument \"socket\" violates contract.\n\nExpected:\nSocket\n\nGot:\n" + _inspect$4(socket));
+            }
+
+            return this.id === socket.id || this.compatible.indexOf(socket) !== -1;
+        }
+    }]);
+    return Socket;
+}();
+
+function _inspect$4(input, depth) {
+    var maxDepth = 4;
+    var maxKeys = 15;
+
+    if (depth === undefined) {
+        depth = 0;
+    }
+
+    depth += 1;
+
+    if (input === null) {
+        return 'null';
+    } else if (input === undefined) {
+        return 'void';
+    } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
+        return typeof input === "undefined" ? "undefined" : _typeof(input);
+    } else if (Array.isArray(input)) {
+        if (input.length > 0) {
+            if (depth > maxDepth) return '[...]';
+
+            var first = _inspect$4(input[0], depth);
+
+            if (input.every(function (item) {
+                return _inspect$4(item, depth) === first;
+            })) {
+                return first.trim() + '[]';
+            } else {
+                return '[' + input.slice(0, maxKeys).map(function (item) {
+                    return _inspect$4(item, depth);
+                }).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']';
+            }
+        } else {
+            return 'Array';
+        }
+    } else {
+        var keys = Object.keys(input);
+
+        if (!keys.length) {
+            if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+                return input.constructor.name;
+            } else {
+                return 'Object';
+            }
+        }
+
+        if (depth > maxDepth) return '{...}';
+        var indent = '  '.repeat(depth - 1);
+        var entries = keys.slice(0, maxKeys).map(function (key) {
+            return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect$4(input[key], depth) + ';';
+        }).join('\n  ' + indent);
+
+        if (keys.length >= maxKeys) {
+            entries += '\n  ' + indent + '...';
+        }
+
+        if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+            return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
+        } else {
+            return '{\n  ' + indent + entries + '\n' + indent + '}';
+        }
+    }
+}
+
 var Input = function () {
-    function Input(title, socket, multipleConnections) {
+    function Input(title, socket) {
+        var multipleConnections = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
         classCallCheck(this, Input);
 
+        if (!(typeof title === 'string')) {
+            throw new TypeError('Value of argument "title" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect$3(title));
+        }
+
+        if (!(socket instanceof Socket)) {
+            throw new TypeError('Value of argument "socket" violates contract.\n\nExpected:\nSocket\n\nGot:\n' + _inspect$3(socket));
+        }
+
+        if (!(typeof multipleConnections === 'boolean')) {
+            throw new TypeError('Value of argument "multipleConnections" violates contract.\n\nExpected:\nboolean\n\nGot:\n' + _inspect$3(multipleConnections));
+        }
+
         this.node = null;
-        this.multipleConnections = multipleConnections || false;
+        this.multipleConnections = multipleConnections;
         this.connections = [];
         this.title = title;
         this.socket = socket;
@@ -232,13 +435,21 @@ var Input = function () {
         }
     }, {
         key: 'addConnection',
-        value: function addConnection(c) {
+        value: function addConnection(connection) {
+            if (!(connection instanceof Connection)) {
+                throw new TypeError('Value of argument "connection" violates contract.\n\nExpected:\nConnection\n\nGot:\n' + _inspect$3(connection));
+            }
+
             if (!this.multipleConnections && this.hasConnection()) throw new Error('Multiple connections not allowed');
-            this.connections.push(c);
+            this.connections.push(connection);
         }
     }, {
         key: 'removeConnection',
         value: function removeConnection(connection) {
+            if (!(connection instanceof Connection)) {
+                throw new TypeError('Value of argument "connection" violates contract.\n\nExpected:\nConnection\n\nGot:\n' + _inspect$3(connection));
+            }
+
             this.connections.splice(this.connections.indexOf(connection), 1);
         }
     }, {
@@ -251,6 +462,10 @@ var Input = function () {
     }, {
         key: 'addControl',
         value: function addControl(control) {
+            if (!(control instanceof Control)) {
+                throw new TypeError('Value of argument "control" violates contract.\n\nExpected:\nControl\n\nGot:\n' + _inspect$3(control));
+            }
+
             this.control = control;
             control.parent = this;
         }
@@ -275,9 +490,80 @@ var Input = function () {
     return Input;
 }();
 
+function _inspect$3(input, depth) {
+    var maxDepth = 4;
+    var maxKeys = 15;
+
+    if (depth === undefined) {
+        depth = 0;
+    }
+
+    depth += 1;
+
+    if (input === null) {
+        return 'null';
+    } else if (input === undefined) {
+        return 'void';
+    } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
+        return typeof input === 'undefined' ? 'undefined' : _typeof(input);
+    } else if (Array.isArray(input)) {
+        if (input.length > 0) {
+            if (depth > maxDepth) return '[...]';
+
+            var first = _inspect$3(input[0], depth);
+
+            if (input.every(function (item) {
+                return _inspect$3(item, depth) === first;
+            })) {
+                return first.trim() + '[]';
+            } else {
+                return '[' + input.slice(0, maxKeys).map(function (item) {
+                    return _inspect$3(item, depth);
+                }).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']';
+            }
+        } else {
+            return 'Array';
+        }
+    } else {
+        var keys = Object.keys(input);
+
+        if (!keys.length) {
+            if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+                return input.constructor.name;
+            } else {
+                return 'Object';
+            }
+        }
+
+        if (depth > maxDepth) return '{...}';
+        var indent = '  '.repeat(depth - 1);
+        var entries = keys.slice(0, maxKeys).map(function (key) {
+            return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect$3(input[key], depth) + ';';
+        }).join('\n  ' + indent);
+
+        if (keys.length >= maxKeys) {
+            entries += '\n  ' + indent + '...';
+        }
+
+        if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+            return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
+        } else {
+            return '{\n  ' + indent + entries + '\n' + indent + '}';
+        }
+    }
+}
+
 var Output = function () {
     function Output(title, socket) {
         classCallCheck(this, Output);
+
+        if (!(typeof title === 'string')) {
+            throw new TypeError('Value of argument "title" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect$5(title));
+        }
+
+        if (!(socket instanceof Socket)) {
+            throw new TypeError('Value of argument "socket" violates contract.\n\nExpected:\nSocket\n\nGot:\n' + _inspect$5(socket));
+        }
 
         this.node = null;
         this.connections = [];
@@ -289,7 +575,10 @@ var Output = function () {
     createClass(Output, [{
         key: 'connectTo',
         value: function connectTo(input) {
-            if (!(input instanceof Input)) throw new Error('Invalid input');
+            if (!(input instanceof Input)) {
+                throw new TypeError('Value of argument "input" violates contract.\n\nExpected:\nInput\n\nGot:\n' + _inspect$5(input));
+            }
+
             if (!this.socket.compatibleWith(input.socket)) throw new Error('Sockets not compatible');
             if (!input.multipleConnections && input.hasConnection()) throw new Error('Input already has one connection');
 
@@ -301,6 +590,10 @@ var Output = function () {
     }, {
         key: 'connectedTo',
         value: function connectedTo(input) {
+            if (!(input instanceof Input)) {
+                throw new TypeError('Value of argument "input" violates contract.\n\nExpected:\nInput\n\nGot:\n' + _inspect$5(input));
+            }
+
             return this.connections.some(function (item) {
                 return item.input === input;
             });
@@ -309,6 +602,14 @@ var Output = function () {
         key: 'removeConnection',
         value: function removeConnection(connection) {
             var propagate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+            if (!(connection instanceof Connection)) {
+                throw new TypeError('Value of argument "connection" violates contract.\n\nExpected:\nConnection\n\nGot:\n' + _inspect$5(connection));
+            }
+
+            if (!(typeof propagate === 'boolean')) {
+                throw new TypeError('Value of argument "propagate" violates contract.\n\nExpected:\nboolean\n\nGot:\n' + _inspect$5(propagate));
+            }
 
             this.connections.splice(this.connections.indexOf(connection), 1);
             if (propagate) connection.remove();
@@ -336,11 +637,78 @@ var Output = function () {
     return Output;
 }();
 
+function _inspect$5(input, depth) {
+    var maxDepth = 4;
+    var maxKeys = 15;
+
+    if (depth === undefined) {
+        depth = 0;
+    }
+
+    depth += 1;
+
+    if (input === null) {
+        return 'null';
+    } else if (input === undefined) {
+        return 'void';
+    } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
+        return typeof input === 'undefined' ? 'undefined' : _typeof(input);
+    } else if (Array.isArray(input)) {
+        if (input.length > 0) {
+            if (depth > maxDepth) return '[...]';
+
+            var first = _inspect$5(input[0], depth);
+
+            if (input.every(function (item) {
+                return _inspect$5(item, depth) === first;
+            })) {
+                return first.trim() + '[]';
+            } else {
+                return '[' + input.slice(0, maxKeys).map(function (item) {
+                    return _inspect$5(item, depth);
+                }).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']';
+            }
+        } else {
+            return 'Array';
+        }
+    } else {
+        var keys = Object.keys(input);
+
+        if (!keys.length) {
+            if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+                return input.constructor.name;
+            } else {
+                return 'Object';
+            }
+        }
+
+        if (depth > maxDepth) return '{...}';
+        var indent = '  '.repeat(depth - 1);
+        var entries = keys.slice(0, maxKeys).map(function (key) {
+            return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect$5(input[key], depth) + ';';
+        }).join('\n  ' + indent);
+
+        if (keys.length >= maxKeys) {
+            entries += '\n  ' + indent + '...';
+        }
+
+        if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+            return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
+        } else {
+            return '{\n  ' + indent + entries + '\n' + indent + '}';
+        }
+    }
+}
+
 var Node = function (_Block) {
     inherits(Node, _Block);
 
     function Node(title) {
         classCallCheck(this, Node);
+
+        if (!(typeof title === 'string')) {
+            throw new TypeError('Value of argument "title" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect$2(title));
+        }
 
         var _this = possibleConstructorReturn(this, (Node.__proto__ || Object.getPrototypeOf(Node)).call(this));
 
@@ -360,41 +728,61 @@ var Node = function (_Block) {
     createClass(Node, [{
         key: 'addControl',
         value: function addControl(control) {
-            var index = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
+            var index = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
-            if (!(control instanceof Control)) throw new Error('Invalid instance');
+            if (!(control instanceof Control)) {
+                throw new TypeError('Value of argument "control" violates contract.\n\nExpected:\nControl\n\nGot:\n' + _inspect$2(control));
+            }
+
+            if (!(index == null || typeof index === 'number' && !isNaN(index) && index >= 0 && index <= 255 && index === Math.floor(index))) {
+                throw new TypeError('Value of argument "index" violates contract.\n\nExpected:\n?uint8\n\nGot:\n' + _inspect$2(index));
+            }
 
             control.parent = this;
 
-            if (index >= 0) this.controls.splice(index, 0, control);else this.controls.push(control);
+            if (index) this.controls.splice(index, 0, control);else this.controls.push(control);
 
             return this;
         }
     }, {
         key: 'addInput',
         value: function addInput(input) {
-            var index = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
+            var index = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
-            if (!(input instanceof Input)) throw new Error('Invalid instance');
+            if (!(input instanceof Input)) {
+                throw new TypeError('Value of argument "input" violates contract.\n\nExpected:\nInput\n\nGot:\n' + _inspect$2(input));
+            }
+
+            if (!(index == null || typeof index === 'number' && !isNaN(index) && index >= 0 && index <= 255 && index === Math.floor(index))) {
+                throw new TypeError('Value of argument "index" violates contract.\n\nExpected:\n?uint8\n\nGot:\n' + _inspect$2(index));
+            }
+
             if (input.node !== null) throw new Error('Input has already been added to the node');
 
             input.node = this;
 
-            if (index >= 0) this.inputs.splice(index, 0, input);else this.inputs.push(input);
+            if (index) this.inputs.splice(index, 0, input);else this.inputs.push(input);
 
             return this;
         }
     }, {
         key: 'addOutput',
         value: function addOutput(output) {
-            var index = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
+            var index = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
-            if (!(output instanceof Output)) throw new Error('Invalid instance');
+            if (!(output instanceof Output)) {
+                throw new TypeError('Value of argument "output" violates contract.\n\nExpected:\nOutput\n\nGot:\n' + _inspect$2(output));
+            }
+
+            if (!(index == null || typeof index === 'number' && !isNaN(index) && index >= 0 && index <= 255 && index === Math.floor(index))) {
+                throw new TypeError('Value of argument "index" violates contract.\n\nExpected:\n?uint8\n\nGot:\n' + _inspect$2(index));
+            }
+
             if (output.node !== null) throw new Error('Output has already been added to the node');
 
             output.node = this;
 
-            if (index >= 0) this.outputs.splice(index, 0, output);else this.outputs.push(output);
+            if (index) this.outputs.splice(index, 0, output);else this.outputs.push(output);
 
             return this;
         }
@@ -441,6 +829,14 @@ var Node = function (_Block) {
     }, {
         key: 'fromJSON',
         value: function fromJSON(builder, json) {
+            if (!(builder instanceof Object)) {
+                throw new TypeError('Value of argument "builder" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect$2(builder));
+            }
+
+            if (!(json instanceof Object)) {
+                throw new TypeError('Value of argument "json" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect$2(json));
+            }
+
             var node = builder();
 
             node.id = json.id;
@@ -455,10 +851,77 @@ var Node = function (_Block) {
     return Node;
 }(Block);
 
+function _inspect$2(input, depth) {
+    var maxDepth = 4;
+    var maxKeys = 15;
+
+    if (depth === undefined) {
+        depth = 0;
+    }
+
+    depth += 1;
+
+    if (input === null) {
+        return 'null';
+    } else if (input === undefined) {
+        return 'void';
+    } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
+        return typeof input === 'undefined' ? 'undefined' : _typeof(input);
+    } else if (Array.isArray(input)) {
+        if (input.length > 0) {
+            if (depth > maxDepth) return '[...]';
+
+            var first = _inspect$2(input[0], depth);
+
+            if (input.every(function (item) {
+                return _inspect$2(item, depth) === first;
+            })) {
+                return first.trim() + '[]';
+            } else {
+                return '[' + input.slice(0, maxKeys).map(function (item) {
+                    return _inspect$2(item, depth);
+                }).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']';
+            }
+        } else {
+            return 'Array';
+        }
+    } else {
+        var keys = Object.keys(input);
+
+        if (!keys.length) {
+            if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+                return input.constructor.name;
+            } else {
+                return 'Object';
+            }
+        }
+
+        if (depth > maxDepth) return '{...}';
+        var indent = '  '.repeat(depth - 1);
+        var entries = keys.slice(0, maxKeys).map(function (key) {
+            return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect$2(input[key], depth) + ';';
+        }).join('\n  ' + indent);
+
+        if (keys.length >= maxKeys) {
+            entries += '\n  ' + indent + '...';
+        }
+
+        if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+            return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
+        } else {
+            return '{\n  ' + indent + entries + '\n' + indent + '}';
+        }
+    }
+}
+
 var Control = function () {
     function Control(html) {
         var handler = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
         classCallCheck(this, Control);
+
+        if (!(typeof html === 'string')) {
+            throw new TypeError("Value of argument \"html\" violates contract.\n\nExpected:\nstring\n\nGot:\n" + _inspect$1(html));
+        }
 
         this.html = html;
         this.parent = null;
@@ -486,6 +949,69 @@ var Control = function () {
     return Control;
 }();
 
+function _inspect$1(input, depth) {
+    var maxDepth = 4;
+    var maxKeys = 15;
+
+    if (depth === undefined) {
+        depth = 0;
+    }
+
+    depth += 1;
+
+    if (input === null) {
+        return 'null';
+    } else if (input === undefined) {
+        return 'void';
+    } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
+        return typeof input === "undefined" ? "undefined" : _typeof(input);
+    } else if (Array.isArray(input)) {
+        if (input.length > 0) {
+            if (depth > maxDepth) return '[...]';
+
+            var first = _inspect$1(input[0], depth);
+
+            if (input.every(function (item) {
+                return _inspect$1(item, depth) === first;
+            })) {
+                return first.trim() + '[]';
+            } else {
+                return '[' + input.slice(0, maxKeys).map(function (item) {
+                    return _inspect$1(item, depth);
+                }).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']';
+            }
+        } else {
+            return 'Array';
+        }
+    } else {
+        var keys = Object.keys(input);
+
+        if (!keys.length) {
+            if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+                return input.constructor.name;
+            } else {
+                return 'Object';
+            }
+        }
+
+        if (depth > maxDepth) return '{...}';
+        var indent = '  '.repeat(depth - 1);
+        var entries = keys.slice(0, maxKeys).map(function (key) {
+            return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect$1(input[key], depth) + ';';
+        }).join('\n  ' + indent);
+
+        if (keys.length >= maxKeys) {
+            entries += '\n  ' + indent + '...';
+        }
+
+        if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+            return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
+        } else {
+            return '{\n  ' + indent + entries + '\n' + indent + '}';
+        }
+    }
+}
+
 var Utils = function () {
     function Utils() {
         classCallCheck(this, Utils);
@@ -511,8 +1037,47 @@ var Utils = function () {
                 left: left,
                 right: right,
                 top: top,
-                bottom: bottom
+                bottom: bottom,
+                getCenter: function getCenter() {
+                    return [(left + right) / 2, (top + bottom) / 2];
+                }
             };
+        }
+    }, {
+        key: 'getConnectionPath',
+        value: function getConnectionPath(x1, y1, x2, y2) {
+            var offsetX = 0.3 * Math.abs(x1 - x2);
+            var offsetY = 0.1 * (y2 - y1);
+
+            var p1 = [x1, y1];
+            var p2 = [x1 + offsetX, y1 + offsetY];
+            var p3 = [x2 - offsetX, y2 - offsetY];
+            var p4 = [x2, y2];
+
+            var points = [p1, p2, p3, p4];
+            var curve = d3.curveBasis(d3.path());
+
+            curve.lineStart();
+            for (var i = 0; i < points.length; i++) {
+                curve.point.apply(curve, toConsumableArray(points[i]));
+            }curve.lineEnd();
+            return curve._context.toString();
+        }
+    }, {
+        key: 'getOutputPosition',
+        value: function getOutputPosition(output) {
+            var node = output.node;
+            var el = output.el;
+
+            return [node.position[0] + el.offsetLeft + el.offsetWidth / 2, node.position[1] + el.offsetTop + el.offsetHeight / 2];
+        }
+    }, {
+        key: 'geInputPosition',
+        value: function geInputPosition(input) {
+            var node = input.node;
+            var el = input.el;
+
+            return [node.position[0] + el.offsetLeft + el.offsetWidth / 2, node.position[1] + el.offsetTop + el.offsetHeight / 2];
         }
     }, {
         key: 'isValidJSON',
@@ -551,6 +1116,13 @@ var Engine = function () {
     function Engine(id, worker) {
         classCallCheck(this, Engine);
 
+        if (!(typeof id === 'string')) {
+            throw new TypeError('Value of argument "id" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect$6(id));
+        }
+
+        if (!(worker instanceof Object)) {
+            throw new TypeError('Value of argument "worker" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect$6(worker));
+        }
 
         if (!Utils.isValidId(id)) throw new Error('ID should be valid to name@0.1.0 format');
 
@@ -844,77 +1416,85 @@ var Engine = function () {
                 while (1) {
                     switch (_context10.prev = _context10.next) {
                         case 0:
-                            if (this.processStart()) {
+                            if (data instanceof Object) {
                                 _context10.next = 2;
+                                break;
+                            }
+
+                            throw new TypeError('Value of argument "data" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect$6(data));
+
+                        case 2:
+                            if (this.processStart()) {
+                                _context10.next = 4;
                                 break;
                             }
 
                             return _context10.abrupt('return', 'not started');
 
-                        case 2:
+                        case 4:
                             if (Utils.isValidJSON(data)) {
-                                _context10.next = 4;
+                                _context10.next = 6;
                                 break;
                             }
 
                             throw new Error('Data are damaged');
 
-                        case 4:
+                        case 6:
                             if (Utils.isCompatibleIDs(data.id, this.id)) {
-                                _context10.next = 6;
+                                _context10.next = 8;
                                 break;
                             }
 
                             throw new Error('IDs not compatible');
 
-                        case 6:
+                        case 8:
 
                             this.data = Object.assign({}, data);
 
                             if (!startNode) {
-                                _context10.next = 12;
+                                _context10.next = 14;
                                 break;
                             }
 
-                            _context10.next = 10;
+                            _context10.next = 12;
                             return regeneratorRuntime.awrap(this.processNode(startNode));
 
-                        case 10:
-                            _context10.next = 12;
+                        case 12:
+                            _context10.next = 14;
                             return regeneratorRuntime.awrap(this.forwardProcess(startNode));
 
-                        case 12:
+                        case 14:
                             _context10.t0 = regeneratorRuntime.keys(this.data.nodes);
 
-                        case 13:
+                        case 15:
                             if ((_context10.t1 = _context10.t0()).done) {
-                                _context10.next = 23;
+                                _context10.next = 25;
                                 break;
                             }
 
                             i = _context10.t1.value;
 
                             if (!(typeof this.data.nodes[i].outputData === 'undefined')) {
-                                _context10.next = 21;
+                                _context10.next = 23;
                                 break;
                             }
 
                             node = this.data.nodes[i];
-                            _context10.next = 19;
+                            _context10.next = 21;
                             return regeneratorRuntime.awrap(this.processNode(node));
 
-                        case 19:
-                            _context10.next = 21;
+                        case 21:
+                            _context10.next = 23;
                             return regeneratorRuntime.awrap(this.forwardProcess(node));
 
-                        case 21:
-                            _context10.next = 13;
+                        case 23:
+                            _context10.next = 15;
                             break;
 
-                        case 23:
+                        case 25:
                             return _context10.abrupt('return', this.processDone() ? 'success' : 'aborted');
 
-                        case 24:
+                        case 26:
                         case 'end':
                             return _context10.stop();
                     }
@@ -925,11 +1505,82 @@ var Engine = function () {
     return Engine;
 }();
 
+function _inspect$6(input, depth) {
+    var maxDepth = 4;
+    var maxKeys = 15;
+
+    if (depth === undefined) {
+        depth = 0;
+    }
+
+    depth += 1;
+
+    if (input === null) {
+        return 'null';
+    } else if (input === undefined) {
+        return 'void';
+    } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
+        return typeof input === 'undefined' ? 'undefined' : _typeof(input);
+    } else if (Array.isArray(input)) {
+        if (input.length > 0) {
+            if (depth > maxDepth) return '[...]';
+
+            var first = _inspect$6(input[0], depth);
+
+            if (input.every(function (item) {
+                return _inspect$6(item, depth) === first;
+            })) {
+                return first.trim() + '[]';
+            } else {
+                return '[' + input.slice(0, maxKeys).map(function (item) {
+                    return _inspect$6(item, depth);
+                }).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']';
+            }
+        } else {
+            return 'Array';
+        }
+    } else {
+        var keys = Object.keys(input);
+
+        if (!keys.length) {
+            if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+                return input.constructor.name;
+            } else {
+                return 'Object';
+            }
+        }
+
+        if (depth > maxDepth) return '{...}';
+        var indent = '  '.repeat(depth - 1);
+        var entries = keys.slice(0, maxKeys).map(function (key) {
+            return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect$6(input[key], depth) + ';';
+        }).join('\n  ' + indent);
+
+        if (keys.length >= maxKeys) {
+            entries += '\n  ' + indent + '...';
+        }
+
+        if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+            return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
+        } else {
+            return '{\n  ' + indent + entries + '\n' + indent + '}';
+        }
+    }
+}
+
 var Group = function (_Block) {
     inherits(Group, _Block);
 
     function Group(title, params) {
         classCallCheck(this, Group);
+
+        if (!(typeof title === 'string')) {
+            throw new TypeError('Value of argument "title" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect$7(title));
+        }
+
+        if (!(params instanceof Object)) {
+            throw new TypeError('Value of argument "params" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect$7(params));
+        }
 
         var _this = possibleConstructorReturn(this, (Group.__proto__ || Object.getPrototypeOf(Group)).call(this));
 
@@ -952,16 +1603,28 @@ var Group = function (_Block) {
     createClass(Group, [{
         key: 'setWidth',
         value: function setWidth(w) {
+            if (!(typeof w === 'number')) {
+                throw new TypeError('Value of argument "w" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect$7(w));
+            }
+
             return this.width = Math.max(this.minWidth, w);
         }
     }, {
         key: 'setHeight',
         value: function setHeight(h) {
+            if (!(typeof h === 'number')) {
+                throw new TypeError('Value of argument "h" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect$7(h));
+            }
+
             return this.height = Math.max(this.minHeight, h);
         }
     }, {
         key: 'isCoverNode',
         value: function isCoverNode(node) {
+            if (!(node instanceof Node)) {
+                throw new TypeError('Value of argument "node" violates contract.\n\nExpected:\nNode\n\nGot:\n' + _inspect$7(node));
+            }
+
             var gp = this.position;
             var np = node.position;
 
@@ -970,6 +1633,12 @@ var Group = function (_Block) {
     }, {
         key: 'coverNodes',
         value: function coverNodes(nodes) {
+            if (!(Array.isArray(nodes) && nodes.every(function (item) {
+                return item instanceof Node;
+            }))) {
+                throw new TypeError('Value of argument "nodes" violates contract.\n\nExpected:\nNode[]\n\nGot:\n' + _inspect$7(nodes));
+            }
+
             var self = this;
             var margin = 30;
             var bbox = Utils.nodesBBox(nodes);
@@ -985,11 +1654,19 @@ var Group = function (_Block) {
     }, {
         key: 'containNode',
         value: function containNode(node) {
+            if (!(node instanceof Node)) {
+                throw new TypeError('Value of argument "node" violates contract.\n\nExpected:\nNode\n\nGot:\n' + _inspect$7(node));
+            }
+
             return this.nodes.indexOf(node) !== -1;
         }
     }, {
         key: 'addNode',
         value: function addNode(node) {
+            if (!(node instanceof Node)) {
+                throw new TypeError('Value of argument "node" violates contract.\n\nExpected:\nNode\n\nGot:\n' + _inspect$7(node));
+            }
+
             if (this.containNode(node)) return false;
             if (node.group !== null) node.group.removeNode(node);
             node.group = this;
@@ -999,6 +1676,10 @@ var Group = function (_Block) {
     }, {
         key: 'removeNode',
         value: function removeNode(node) {
+            if (!(node instanceof Node)) {
+                throw new TypeError('Value of argument "node" violates contract.\n\nExpected:\nNode\n\nGot:\n' + _inspect$7(node));
+            }
+
             if (!this.containNode(node)) return;
             this.nodes.splice(this.nodes.indexOf(node), 1);
             node.group = null;
@@ -1035,6 +1716,10 @@ var Group = function (_Block) {
     }, {
         key: 'fromJSON',
         value: function fromJSON(json) {
+            if (!(json instanceof Object)) {
+                throw new TypeError('Value of argument "json" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect$7(json));
+            }
+
             var group = new Group(null, {
                 position: json.position,
                 width: json.width,
@@ -1052,12 +1737,92 @@ var Group = function (_Block) {
     return Group;
 }(Block);
 
+function _inspect$7(input, depth) {
+    var maxDepth = 4;
+    var maxKeys = 15;
+
+    if (depth === undefined) {
+        depth = 0;
+    }
+
+    depth += 1;
+
+    if (input === null) {
+        return 'null';
+    } else if (input === undefined) {
+        return 'void';
+    } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
+        return typeof input === 'undefined' ? 'undefined' : _typeof(input);
+    } else if (Array.isArray(input)) {
+        if (input.length > 0) {
+            if (depth > maxDepth) return '[...]';
+
+            var first = _inspect$7(input[0], depth);
+
+            if (input.every(function (item) {
+                return _inspect$7(item, depth) === first;
+            })) {
+                return first.trim() + '[]';
+            } else {
+                return '[' + input.slice(0, maxKeys).map(function (item) {
+                    return _inspect$7(item, depth);
+                }).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']';
+            }
+        } else {
+            return 'Array';
+        }
+    } else {
+        var keys = Object.keys(input);
+
+        if (!keys.length) {
+            if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+                return input.constructor.name;
+            } else {
+                return 'Object';
+            }
+        }
+
+        if (depth > maxDepth) return '{...}';
+        var indent = '  '.repeat(depth - 1);
+        var entries = keys.slice(0, maxKeys).map(function (key) {
+            return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect$7(input[key], depth) + ';';
+        }).join('\n  ' + indent);
+
+        if (keys.length >= maxKeys) {
+            entries += '\n  ' + indent + '...';
+        }
+
+        if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+            return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
+        } else {
+            return '{\n  ' + indent + entries + '\n' + indent + '}';
+        }
+    }
+}
+
+var zoomMargin = 0.9;
+
 var EditorView = function () {
     function EditorView(editor, container, template, menu) {
         var _this = this;
 
         classCallCheck(this, EditorView);
 
+        if (!(editor instanceof NodeEditor)) {
+            throw new TypeError('Value of argument "editor" violates contract.\n\nExpected:\nNodeEditor\n\nGot:\n' + _inspect$9(editor));
+        }
+
+        if (!(container instanceof Element)) {
+            throw new TypeError('Value of argument "container" violates contract.\n\nExpected:\nElement\n\nGot:\n' + _inspect$9(container));
+        }
+
+        if (!(typeof template === 'string')) {
+            throw new TypeError('Value of argument "template" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect$9(template));
+        }
+
+        if (!(menu instanceof ContextMenu)) {
+            throw new TypeError('Value of argument "menu" violates contract.\n\nExpected:\nContextMenu\n\nGot:\n' + _inspect$9(menu));
+        }
 
         this.editor = editor;
         this.pickedOutput = null;
@@ -1276,33 +2041,6 @@ var EditorView = function () {
             };
         }
     }, {
-        key: 'getConnectionPathData',
-        value: function getConnectionPathData(connection, x1, y1, x2, y2) {
-            var distanceX = Math.abs(x1 - x2);
-            var distanceY = y2 - y1;
-
-            var p1 = [x1, y1];
-            var p4 = [x2, y2];
-
-            var p2 = [x1 + 0.3 * distanceX, y1 + 0.1 * distanceY];
-            var p3 = [x2 - 0.3 * distanceX, y2 - 0.1 * distanceY];
-
-            var points = [p1, p2, p3, p4];
-
-            var curve = d3.curveBasis(d3.path());
-
-            curve.lineStart();
-            for (var i = 0; i < points.length; i++) {
-                var point = points[i];
-
-                curve.point(point[0], point[1]);
-            }
-            curve.lineEnd();
-            var d = curve._context.toString();
-
-            return d;
-        }
-    }, {
         key: 'resize',
         value: function resize() {
             var width = this.dom.parentElement.clientWidth;
@@ -1319,31 +2057,26 @@ var EditorView = function () {
         value: function updateConnections() {
             var pathData = [];
 
-            for (var i in this.editor.nodes) {
-                var outputs = this.editor.nodes[i].outputs;
+            this.editor.nodes.forEach(function (node) {
+                node.outputs.forEach(function (output) {
+                    output.connections.forEach(function (connection) {
+                        var input = connection.input;
 
-                for (var j in outputs) {
-                    var cons = outputs[j].connections;
-
-                    for (var k in cons) {
-                        if (!cons[k].input.el) break;
-                        var input = cons[k].input;
-                        var output = cons[k].output;
-
-                        pathData.push({
-                            d: this.getConnectionPathData(cons[k], output.node.position[0] + output.el.offsetLeft + output.el.offsetWidth / 2, output.node.position[1] + output.el.offsetTop + output.el.offsetHeight / 2, input.node.position[0] + input.el.offsetLeft + input.el.offsetWidth / 2, input.node.position[1] + input.el.offsetTop + input.el.offsetHeight / 2)
+                        if (input.el) pathData.push({
+                            d: Utils.getConnectionPath.apply(Utils, toConsumableArray(Utils.getOutputPosition(output)).concat(toConsumableArray(Utils.geInputPosition(input))))
                         });
-                    }
-                }
-            }
+                    });
+                });
+            });
 
             if (this.pickedOutput !== null) {
                 if (!this.pickedOutput.el) return;
-                var _output = this.pickedOutput;
-                var _input = this.mouse;
+                var output = this.pickedOutput;
+                var input = this.mouse;
 
                 pathData.push({
-                    active: true, d: this.getConnectionPathData(null, _output.node.position[0] + _output.el.offsetLeft + _output.el.offsetWidth / 2, _output.node.position[1] + _output.el.offsetTop + _output.el.offsetHeight / 2, _input[0], _input[1])
+                    active: true,
+                    d: Utils.getConnectionPath.apply(Utils, toConsumableArray(Utils.getOutputPosition(output)).concat(toConsumableArray(input)))
                 });
             }
 
@@ -1364,30 +2097,124 @@ var EditorView = function () {
     }, {
         key: 'zoomAt',
         value: function zoomAt(nodes) {
+            var _zoom;
+
+            if (!(Array.isArray(nodes) && nodes.every(function (item) {
+                return item instanceof Node;
+            }))) {
+                throw new TypeError('Value of argument "nodes" violates contract.\n\nExpected:\nNode[]\n\nGot:\n' + _inspect$9(nodes));
+            }
+
+            if (nodes.length === 0) return;
+
             var bbox = Utils.nodesBBox(nodes);
-            var scalar = 0.9;
             var kh = this.dom.clientHeight / Math.abs(bbox.top - bbox.bottom);
             var kw = this.dom.clientWidth / Math.abs(bbox.left - bbox.right);
             var k = Math.min(kh, kw, 1);
-            var cx = (bbox.left + bbox.right) / 2;
-            var cy = (bbox.top + bbox.bottom) / 2;
 
-            this.zoom.translateTo(this.svg, cx, cy);
-            this.zoom.scaleTo(this.svg, scalar * k);
+            (_zoom = this.zoom).translateTo.apply(_zoom, [this.svg].concat(toConsumableArray(bbox.getCenter())));
+            this.zoom.scaleTo(this.svg, zoomMargin * k);
         }
     }, {
         key: 'setScaleExtent',
         value: function setScaleExtent(scaleMin, scaleMax) {
+            if (!(typeof scaleMin === 'number')) {
+                throw new TypeError('Value of argument "scaleMin" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect$9(scaleMin));
+            }
+
+            if (!(typeof scaleMax === 'number')) {
+                throw new TypeError('Value of argument "scaleMax" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect$9(scaleMax));
+            }
+
             this.zoom.scaleExtent([scaleMin, scaleMax]);
         }
     }, {
         key: 'setTranslateExtent',
         value: function setTranslateExtent(left, top, right, bottom) {
+            if (!(typeof left === 'number')) {
+                throw new TypeError('Value of argument "left" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect$9(left));
+            }
+
+            if (!(typeof top === 'number')) {
+                throw new TypeError('Value of argument "top" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect$9(top));
+            }
+
+            if (!(typeof right === 'number')) {
+                throw new TypeError('Value of argument "right" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect$9(right));
+            }
+
+            if (!(typeof bottom === 'number')) {
+                throw new TypeError('Value of argument "bottom" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect$9(bottom));
+            }
+
             this.zoom.translateExtent([[left, top], [right, bottom]]);
         }
     }]);
     return EditorView;
 }();
+
+function _inspect$9(input, depth) {
+    var maxDepth = 4;
+    var maxKeys = 15;
+
+    if (depth === undefined) {
+        depth = 0;
+    }
+
+    depth += 1;
+
+    if (input === null) {
+        return 'null';
+    } else if (input === undefined) {
+        return 'void';
+    } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
+        return typeof input === 'undefined' ? 'undefined' : _typeof(input);
+    } else if (Array.isArray(input)) {
+        if (input.length > 0) {
+            if (depth > maxDepth) return '[...]';
+
+            var first = _inspect$9(input[0], depth);
+
+            if (input.every(function (item) {
+                return _inspect$9(item, depth) === first;
+            })) {
+                return first.trim() + '[]';
+            } else {
+                return '[' + input.slice(0, maxKeys).map(function (item) {
+                    return _inspect$9(item, depth);
+                }).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']';
+            }
+        } else {
+            return 'Array';
+        }
+    } else {
+        var keys = Object.keys(input);
+
+        if (!keys.length) {
+            if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+                return input.constructor.name;
+            } else {
+                return 'Object';
+            }
+        }
+
+        if (depth > maxDepth) return '{...}';
+        var indent = '  '.repeat(depth - 1);
+        var entries = keys.slice(0, maxKeys).map(function (key) {
+            return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect$9(input[key], depth) + ';';
+        }).join('\n  ' + indent);
+
+        if (keys.length >= maxKeys) {
+            entries += '\n  ' + indent + '...';
+        }
+
+        if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+            return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
+        } else {
+            return '{\n  ' + indent + entries + '\n' + indent + '}';
+        }
+    }
+}
 
 var EventListener = function () {
     function EventListener() {
@@ -1401,7 +2228,13 @@ var EventListener = function () {
         value: function on(names, handler) {
             var _this = this;
 
-            if (typeof handler !== 'function') throw new Error('Second argument should be function');
+            if (!(typeof names === 'string')) {
+                throw new TypeError('Value of argument "names" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect$10(names));
+            }
+
+            if (!(typeof handler === 'function')) {
+                throw new TypeError('Value of argument "handler" violates contract.\n\nExpected:\n() => {}\n\nGot:\n' + _inspect$10(handler));
+            }
 
             names.split(' ').forEach(function (name) {
                 _this.events[name] = handler;
@@ -1412,9 +2245,11 @@ var EventListener = function () {
     }, {
         key: 'trigger',
         value: function trigger(name, args) {
-            var handler = this.events[name];
+            if (!(typeof name === 'string')) {
+                throw new TypeError('Value of argument "name" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect$10(name));
+            }
 
-            if (typeof handler === 'function') return handler(args) !== false;
+            if (name in this.events) return this.events[name](args) !== false;
 
             return true;
         }
@@ -1422,10 +2257,92 @@ var EventListener = function () {
     return EventListener;
 }();
 
+function _inspect$10(input, depth) {
+    var maxDepth = 4;
+    var maxKeys = 15;
+
+    if (depth === undefined) {
+        depth = 0;
+    }
+
+    depth += 1;
+
+    if (input === null) {
+        return 'null';
+    } else if (input === undefined) {
+        return 'void';
+    } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
+        return typeof input === 'undefined' ? 'undefined' : _typeof(input);
+    } else if (Array.isArray(input)) {
+        if (input.length > 0) {
+            if (depth > maxDepth) return '[...]';
+
+            var first = _inspect$10(input[0], depth);
+
+            if (input.every(function (item) {
+                return _inspect$10(item, depth) === first;
+            })) {
+                return first.trim() + '[]';
+            } else {
+                return '[' + input.slice(0, maxKeys).map(function (item) {
+                    return _inspect$10(item, depth);
+                }).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']';
+            }
+        } else {
+            return 'Array';
+        }
+    } else {
+        var keys = Object.keys(input);
+
+        if (!keys.length) {
+            if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+                return input.constructor.name;
+            } else {
+                return 'Object';
+            }
+        }
+
+        if (depth > maxDepth) return '{...}';
+        var indent = '  '.repeat(depth - 1);
+        var entries = keys.slice(0, maxKeys).map(function (key) {
+            return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect$10(input[key], depth) + ';';
+        }).join('\n  ' + indent);
+
+        if (keys.length >= maxKeys) {
+            entries += '\n  ' + indent + '...';
+        }
+
+        if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+            return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
+        } else {
+            return '{\n  ' + indent + entries + '\n' + indent + '}';
+        }
+    }
+}
+
 var NodeEditor = function () {
     function NodeEditor(id, container, template, builder, menu) {
         classCallCheck(this, NodeEditor);
 
+        if (!(typeof id === 'string')) {
+            throw new TypeError('Value of argument "id" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect$8(id));
+        }
+
+        if (!(container instanceof Element)) {
+            throw new TypeError('Value of argument "container" violates contract.\n\nExpected:\nElement\n\nGot:\n' + _inspect$8(container));
+        }
+
+        if (!(typeof template === 'string')) {
+            throw new TypeError('Value of argument "template" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect$8(template));
+        }
+
+        if (!(builder instanceof Object)) {
+            throw new TypeError('Value of argument "builder" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect$8(builder));
+        }
+
+        if (!(menu instanceof ContextMenu)) {
+            throw new TypeError('Value of argument "menu" violates contract.\n\nExpected:\nContextMenu\n\nGot:\n' + _inspect$8(menu));
+        }
 
         if (!Utils.isValidId(id)) throw new Error('ID should be valid to name@0.1.0 format');
 
@@ -1444,7 +2361,9 @@ var NodeEditor = function () {
         value: function addNode(node) {
             var mousePlaced = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-            if (!(node instanceof Node)) throw new Error('Wrong instance');
+            if (!(node instanceof Node)) {
+                throw new TypeError('Value of argument "node" violates contract.\n\nExpected:\nNode\n\nGot:\n' + _inspect$8(node));
+            }
 
             if (this.eventListener.trigger('nodecreate', node)) {
                 if (mousePlaced) node.position = this.view.mouse;
@@ -1456,6 +2375,10 @@ var NodeEditor = function () {
     }, {
         key: 'addGroup',
         value: function addGroup(group) {
+            if (!(group instanceof Group)) {
+                throw new TypeError('Value of argument "group" violates contract.\n\nExpected:\nGroup\n\nGot:\n' + _inspect$8(group));
+            }
+
             if (this.eventListener.trigger('groupcreate', group)) {
                 this.groups.push(group);
                 this.eventListener.trigger('change');
@@ -1466,6 +2389,10 @@ var NodeEditor = function () {
     }, {
         key: 'removeNode',
         value: function removeNode(node) {
+            if (!(node instanceof Node)) {
+                throw new TypeError('Value of argument "node" violates contract.\n\nExpected:\nNode\n\nGot:\n' + _inspect$8(node));
+            }
+
             var index = this.nodes.indexOf(node);
 
             if (this.eventListener.trigger('noderemove', node)) {
@@ -1481,6 +2408,10 @@ var NodeEditor = function () {
     }, {
         key: 'removeGroup',
         value: function removeGroup(group) {
+            if (!(group instanceof Group)) {
+                throw new TypeError('Value of argument "group" violates contract.\n\nExpected:\nGroup\n\nGot:\n' + _inspect$8(group));
+            }
+
             if (this.eventListener.trigger('groupremove', group)) {
                 group.remove();
                 this.groups.splice(this.groups.indexOf(group), 1);
@@ -1492,6 +2423,14 @@ var NodeEditor = function () {
     }, {
         key: 'connect',
         value: function connect(output, input) {
+            if (!(output instanceof Output)) {
+                throw new TypeError('Value of argument "output" violates contract.\n\nExpected:\nOutput\n\nGot:\n' + _inspect$8(output));
+            }
+
+            if (!(input instanceof Input)) {
+                throw new TypeError('Value of argument "input" violates contract.\n\nExpected:\nInput\n\nGot:\n' + _inspect$8(input));
+            }
+
             if (this.eventListener.trigger('connectioncreate', { output: output, input: input })) try {
                 output.connectTo(input);
                 this.eventListener.trigger('change');
@@ -1503,6 +2442,10 @@ var NodeEditor = function () {
     }, {
         key: 'removeConnection',
         value: function removeConnection(connection) {
+            if (!(connection instanceof Connection)) {
+                throw new TypeError('Value of argument "connection" violates contract.\n\nExpected:\nConnection\n\nGot:\n' + _inspect$8(connection));
+            }
+
             if (this.eventListener.trigger('connectionremove', connection)) {
                 connection.remove();
                 this.eventListener.trigger('change');
@@ -1511,6 +2454,10 @@ var NodeEditor = function () {
     }, {
         key: 'selectNode',
         value: function selectNode(node) {
+            if (!(node instanceof Node)) {
+                throw new TypeError('Value of argument "node" violates contract.\n\nExpected:\nNode\n\nGot:\n' + _inspect$8(node));
+            }
+
             if (this.nodes.indexOf(node) === -1) throw new Error('Node not exist in list');
 
             if (this.eventListener.trigger('nodeselect', node)) this.active = node;
@@ -1520,28 +2467,13 @@ var NodeEditor = function () {
     }, {
         key: 'selectGroup',
         value: function selectGroup(group) {
+            if (!(group instanceof Group)) {
+                throw new TypeError('Value of argument "group" violates contract.\n\nExpected:\nGroup\n\nGot:\n' + _inspect$8(group));
+            }
+
             if (this.eventListener.trigger('groupselect', group)) this.active = group;
 
             this.view.update();
-        }
-    }, {
-        key: 'toJSON',
-        value: function toJSON() {
-            var nodes = {};
-            var groups = {};
-
-            this.nodes.forEach(function (node) {
-                return nodes[node.id] = node.toJSON();
-            });
-            this.groups.forEach(function (group) {
-                return groups[group.id] = group.toJSON();
-            });
-
-            return {
-                'id': this.id,
-                'nodes': nodes,
-                'groups': groups
-            };
         }
     }, {
         key: 'keyDown',
@@ -1563,9 +2495,32 @@ var NodeEditor = function () {
             }
         }
     }, {
+        key: 'toJSON',
+        value: function toJSON() {
+            var nodes = {};
+            var groups = {};
+
+            this.nodes.forEach(function (node) {
+                return nodes[node.id] = node.toJSON();
+            });
+            this.groups.forEach(function (group) {
+                return groups[group.id] = group.toJSON();
+            });
+
+            return {
+                'id': this.id,
+                'nodes': nodes,
+                'groups': groups
+            };
+        }
+    }, {
         key: 'fromJSON',
         value: function fromJSON(json) {
             var _this = this;
+
+            if (!(json instanceof Object)) {
+                throw new TypeError('Value of argument "json" violates contract.\n\nExpected:\nObject\n\nGot:\n' + _inspect$8(json));
+            }
 
             this.nodes.splice(0, this.nodes.length);
             this.groups.splice(0, this.groups.length);
@@ -1610,31 +2565,68 @@ var NodeEditor = function () {
     return NodeEditor;
 }();
 
-var Socket = function () {
-    function Socket(id, name, hint) {
-        classCallCheck(this, Socket);
+function _inspect$8(input, depth) {
+    var maxDepth = 4;
+    var maxKeys = 15;
 
-        this.id = id;
-        this.name = name;
-        this.hint = hint;
-        this.compatible = [];
+    if (depth === undefined) {
+        depth = 0;
     }
 
-    createClass(Socket, [{
-        key: 'combineWith',
-        value: function combineWith(socket) {
-            if (!(socket instanceof Socket)) throw new Error('Invalid socket');
-            this.compatible.push(socket);
+    depth += 1;
+
+    if (input === null) {
+        return 'null';
+    } else if (input === undefined) {
+        return 'void';
+    } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
+        return typeof input === 'undefined' ? 'undefined' : _typeof(input);
+    } else if (Array.isArray(input)) {
+        if (input.length > 0) {
+            if (depth > maxDepth) return '[...]';
+
+            var first = _inspect$8(input[0], depth);
+
+            if (input.every(function (item) {
+                return _inspect$8(item, depth) === first;
+            })) {
+                return first.trim() + '[]';
+            } else {
+                return '[' + input.slice(0, maxKeys).map(function (item) {
+                    return _inspect$8(item, depth);
+                }).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']';
+            }
+        } else {
+            return 'Array';
         }
-    }, {
-        key: 'compatibleWith',
-        value: function compatibleWith(socket) {
-            if (!(socket instanceof Socket)) throw new Error('Invalid socket');
-            return this.id === socket.id || this.compatible.indexOf(socket) !== -1;
+    } else {
+        var keys = Object.keys(input);
+
+        if (!keys.length) {
+            if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+                return input.constructor.name;
+            } else {
+                return 'Object';
+            }
         }
-    }]);
-    return Socket;
-}();
+
+        if (depth > maxDepth) return '{...}';
+        var indent = '  '.repeat(depth - 1);
+        var entries = keys.slice(0, maxKeys).map(function (key) {
+            return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect$8(input[key], depth) + ';';
+        }).join('\n  ' + indent);
+
+        if (keys.length >= maxKeys) {
+            entries += '\n  ' + indent + '...';
+        }
+
+        if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+            return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
+        } else {
+            return '{\n  ' + indent + entries + '\n' + indent + '}';
+        }
+    }
+}
 
 /**
  * Copyright (c) 2014, Facebook, Inc.
@@ -2337,7 +3329,6 @@ function () {
   return this;
 }() || Function("return this")());
 
-exports.Connection = Connection;
 exports.ContextMenu = ContextMenu;
 exports.Control = Control;
 exports.NodeEditor = NodeEditor;
