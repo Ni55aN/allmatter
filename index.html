@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="https://d3-node-editor.surge.sh/node-editor.css" />
     <link rel="stylesheet" href="style/style.css" />
     <link rel="stylesheet" href="style/range.css" />
+    <link rel="stylesheet" href="style/select.css" />
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Gentium+Basic" />
 
 </head>
@@ -46,12 +47,20 @@
         <span class="item">
         Edit
         <div class="dropmenu">
-            <span class="subitem">
+        <span class="subitem">
                             <span>Texture size:</span>
         <input type="range" value="8" al-value="textureSizeStep" min="8" max="12" step="1"> {{textureSize}}
         </span>
+        <span class="subitem">
+            3D model
+            <select al-select="selected" @change="changeModel()">
+                <option al-repeat="model in models" al-option='model'>{{model}}</option>
+
+            </select>
+        </span>
         </div>
         </span>
+
 
         <a target="_blank" href="https://github.com/Ni55aN/allmatter" class="item right">Github</a>
     </header>

@@ -1,0 +1,8 @@
+select {
+    border: none;
+    background: transparent;
+    width: 100px;
+    color: #888;
+    font-size: 14px;
+    cursor: pointer;
+}

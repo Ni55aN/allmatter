@@ -59,10 +59,12 @@ var MaterialPreview = function (el) {
 	light2.position.set(-2, 2, -2.5);
 	scene.add(light2);
 
-	var size = 1;
-	var segments = 100;
-	var geom = new THREE.BoxGeometry(size, size, size, segments, segments, segments);
-	var mat = new THREE.MeshPhysicalMaterial();
+	var cube = new THREE.Mesh();
+	scene.add(cube);
+	cube.material = new THREE.MeshPhysicalMaterial();
+	cube.material.roughness = 1.0;
+	cube.material.metalness = 1.0;
+	cube.material.emissive.setRGB(1, 1, 1);
 
 	var path = "envMap/";
 	var format = '.jpg';
@@ -73,29 +75,26 @@ var MaterialPreview = function (el) {
 	];
 
 	var reflectionCube = new THREE.CubeTextureLoader().load(urls);
-	mat.envMap = reflectionCube;
+	cube.material.envMap = reflectionCube;
+
 
 	var tessellateModifier = new THREE.TessellateModifier(0.04);
+	var objLoader = new THREE.OBJLoader();
 
-	var cube = null;
-	new THREE.OBJLoader().load(
-		'models/cube.obj',
-		function (object) {
-			cube = object.children[0];
-			cube.rotation.x = Math.PI / 2;
-			var geometry = new THREE.Geometry().fromBufferGeometry(cube.geometry);
-			for (var i = 0; i < 15; i++) {
-				tessellateModifier.modify(geometry);
+	this.loadGeometry = function (name) {
+		objLoader.load(
+			'models/' + name + '.obj',
+			function (object) {
+				var geometry = new THREE.Geometry().fromBufferGeometry(object.children[0].geometry);
+				for (var i = 0; i < 15; i++) {
+					tessellateModifier.modify(geometry);
+				}
+
+				cube.geometry = new THREE.BufferGeometry().fromGeometry(geometry);
+				render();
 			}
-
-			cube.geometry = new THREE.BufferGeometry().fromGeometry(geometry);
-			cube.material = mat;
-			cube.material.roughness = 1.0;
-			cube.material.metalness = 1.0;
-			cube.material.emissive.setRGB(1, 1, 1);
-			scene.add(cube);
-		}
-	);
+		);
+	}
 
 	var textureLoader = new THREE.TextureLoader();
 	var updateMap = function (src, mapName) {

@@ -9,6 +9,12 @@ function controller($scope, $el, a, env) {
 		editor.eventListener.trigger('change');
 	});
 
+	$scope.models = ['Cube', 'Sphere'];
+	$scope.selected = $scope.models[0];
+	$scope.changeModel = () => {
+		materialPreview.loadGeometry($scope.selected.toLowerCase());
+	}
+
 	$scope.target = null;
 	alight.directives.al.region = (scope, el, name, env) => {
 
@@ -187,5 +193,7 @@ function controller($scope, $el, a, env) {
 		editor.eventListener.trigger('change');
 	});
 
+
+	$scope.changeModel();
 	resize();
 }
