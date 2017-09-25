@@ -112,7 +112,7 @@ function controller($scope, $el, a, env) {
 		}
 	}
 
-	var menu = new D3NE.ContextMenu('./templates/menu.html', {
+	var menu = new D3NE.ContextMenu('https://d3-node-editor.surge.sh/menu.html', {
 		"Input": {
 			"Texture": builder["input texture"],
 			"Number": builder["input number"],
@@ -148,7 +148,7 @@ function controller($scope, $el, a, env) {
 	});
 
 	editor = new D3NE.NodeEditor('proc-material@0.1.0', $el.querySelector('#nodeEditor'),
-		'./templates/view.html', builder,
+		'https://d3-node-editor.surge.sh/view.html', builder,
 		menu);
 	editor.view.zoom.translateExtent([
 		[-3000, -3000],
