@@ -95,7 +95,7 @@ function controller($scope, $el, a, env) {
 	var elt = document.querySelector('#texture-preview');
 	texturePreview = new TexturePreview(elt);
 
-	Texturity.initGL();
+	Texturity.initGL('webgl2');
 
 	function resize() {
 		materialPreview.resize();
