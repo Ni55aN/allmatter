@@ -170,3 +170,13 @@ header .item:active .dropmenu {
 	width: 140px;
 	height: 140px;
 }
+
+@media only screen and (orientation: portrait) {
+	.regions {
+		flex-direction: column-reverse;
+	}
+	.sidebar {
+		flex-direction: row-reverse;
+		flex: 1.5;
+	}
+}
