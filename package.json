@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "webpack",
-    "start-watch": "webpack --env.watch",
+    "start-watch": "webpack --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
