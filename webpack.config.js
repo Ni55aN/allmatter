@@ -5,6 +5,9 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = {
     entry: './app.js',
     devtool: 'source-map',
+    devServer: {
+        contentBase: './dist'
+    },
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js'

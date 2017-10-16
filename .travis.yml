@@ -6,7 +6,7 @@ before_script:
   - npm install
 
 script: 
-  - npm start
+  - npm run build
 
 cache:
   directories:
