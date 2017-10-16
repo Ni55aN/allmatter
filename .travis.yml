@@ -1,0 +1,22 @@
+language: node_js
+node_js: 
+   - "node"
+
+before_script:
+  - npm install
+
+script: 
+  - npm start
+
+cache:
+  directories:
+    - "node_modules"
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  file_glob: true
+  file: dist/**
+  github_token: $GITHUB_TOKEN
+  on:
+    branch: master
