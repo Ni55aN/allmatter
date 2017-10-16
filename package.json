@@ -4,7 +4,8 @@
   "description": "3D material authoring tool",
   "main": "app.js",
   "scripts": {
-    "start": "webpack --config webpack.config.js",
+    "start": "webpack",
+    "start-watch": "webpack --env.watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
