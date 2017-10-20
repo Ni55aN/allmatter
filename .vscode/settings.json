@@ -1,5 +1,0 @@
-{
-    "eslint.autoFixOnSave": true,
-    "html.format.enable": false,
-    "react.beautify.onSave": false
-}
