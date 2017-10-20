@@ -31,7 +31,7 @@ header
   align-items: center
   font-family: Gill Sans, sans-serif
   .logo
-    background: url(/logo.svg)
+    background: url(../../../logo.svg)
     background-size: 100%
     height: $logo-height
     width: $logo-height * 4.2

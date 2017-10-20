@@ -2,7 +2,7 @@
 vodal(:show="show",animation="door",@hide="hide",:closeOnEsc="true")
   .header About
   .body 
-    img.logo(src="/logo.svg")
+    img.logo(src="logo.svg")
     div Allmatter is a 3D material authoring tool.
     div Author: 
         a(target="_blank" href="https://github.com/Ni55aN") Vitaliy Stoliarov

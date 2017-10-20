@@ -67,7 +67,7 @@ export class MaterialPreview {
   loadGeometry(name) {
     // var tessellateModifier = new THREE.TessellateModifier(0.04);
 
-    new THREE.OBJLoader().load(`/models/${name.toLowerCase()}.obj`, object => {
+    new THREE.OBJLoader().load(`models/${name.toLowerCase()}.obj`, object => {
       var geom = object.children[0].geometry;
       var geometry = new THREE.Geometry().fromBufferGeometry(geom);
 

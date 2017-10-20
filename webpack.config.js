@@ -44,6 +44,10 @@ module.exports = (env) => {
                     query: {
                         presets: ['es2015']
                     }
+
+                }, {
+                    test: /\.svg$/,
+                    loader: 'file-loader'
                 }, {
                     test: /\.vue$/,
                     loader: 'vue-loader'
@@ -63,8 +67,6 @@ module.exports = (env) => {
 
             new CopyWebpackPlugin([
                 {
-                    from: './logo.svg'
-                }, {
                     from: './models',
                     to: 'models'
                 }, {
