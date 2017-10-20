@@ -1,4 +1,4 @@
-![](logo.svg | height=100)
+<img src="logo.svg" height="80px">
 
 ### 3D material authoring tool
 
