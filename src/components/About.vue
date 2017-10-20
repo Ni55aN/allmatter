@@ -38,13 +38,13 @@ export default {
 .vodal-dialog
   font-family: Gill Sans, sans-serif
   .header
-    font-size: 20px
+    font-size: 17px
     padding-bottom: 10px
     border-bottom: 1px solid #e9e9e9
   .body
     color: #a1a1a1
     padding-top: 15px
-    font-size: 19px
+    font-size: 16px
     .logo
       width: 60%
     div

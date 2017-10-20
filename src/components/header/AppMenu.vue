@@ -91,7 +91,7 @@ menu
   display: flex
   height: 100%
   .item
-    font-size: 20px
+    font-size: 17px
     cursor: default
     padding: 0 14px
     display: flex
@@ -132,7 +132,7 @@ menu
         border: 1px solid transparent
         background: transparent
         color: #888
-        font-size: 16px
+        font-size: 15px
         cursor: pointer
         &:hover
           border: 1px solid white

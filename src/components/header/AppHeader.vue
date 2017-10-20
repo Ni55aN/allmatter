@@ -19,7 +19,7 @@ export default {
 </script>
 
 <style lang="sass">
-$height: 60px
+$height: 50px
 $logo-height: $height*0.8
 $github-height: $height*0.7
 $patreon-height: $height*0.7
