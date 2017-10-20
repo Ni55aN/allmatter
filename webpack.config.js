@@ -3,6 +3,12 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 
+var htmlConfig = {
+    inject: 'body',
+    title: 'allmatter - 3D material authoring tool',
+    template: 'index.html'
+};
+
 module.exports = (env) => {
 
     return {
@@ -77,7 +83,7 @@ module.exports = (env) => {
                     to: 'style'
                 }
             ]),
-            new HtmlWebpackPlugin({inject: 'body', title: 'allmatter - 3D material authoring tool', template: 'index.html'})
+            new HtmlWebpackPlugin(htmlConfig)
         ]
     }
 }
