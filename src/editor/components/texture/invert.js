@@ -1,0 +1,28 @@
+import Utils from '../../utils';
+import createTextureNode, {updatePreview} from '../../common/builders/texture';
+import sockets from '../../sockets';
+
+export default new D3NE.Component('invert', {
+    builder() {
+        var node = createTextureNode();
+
+        node.title = 'Invert';
+
+        var inp = new D3NE.Input('Image', sockets.image);
+
+        return node.addInput(inp);
+    },
+    async worker(node, inputs, outputs) {
+
+        var texture = inputs[0][0]instanceof WebGLTexture
+            ? inputs[0][0]
+            : Utils.createMockTexture();
+
+        var result = Utils.createMockCanvas();
+
+        result.blend(texture, 1, 'b - a');
+
+        outputs[0] = result.toTexture();
+        updatePreview(node, result);
+    }
+});

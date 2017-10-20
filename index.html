@@ -1,67 +1,41 @@
 <html>
 
 <head>
-    <script src="https://angularlight.org/bin/alight_0.14.last.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.0/d3.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/87/three.js"></script>
-    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://threejs.org/examples/js/loaders/OBJLoader.js"></script>
-    <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/modifiers/TessellateModifier.js"></script>
-    <script src="https://rawgit.com/eligrey/FileSaver.js/master/FileSaver.min.js"></script>
-    <script src="https://d3-node-editor.surge.sh/node-editor.js"></script>
-    <script src="https://texturity-js.surge.sh/texturity.js"></script>
 
-    <link rel="stylesheet" href="https://d3-node-editor.surge.sh/node-editor.css" />
+    <link rel="stylesheet" href="https://d3ne.surge.sh/node-editor.css" />
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Gentium+Basic" />
+    <link rel="stylesheet" href="/style/common.css" />
+    <script>
+        window.onload = () => {
+            document.querySelector('.loading-screen').style.display = "none";
+            document.querySelector('#app').style.visibility = "visible";
+        }
+    </script>
+
+
 </head>
 
-<body al-app="controller">
-    <header>
-        <img class="logo" src="logo.svg"></img>
-        <span class="item">
-        Project 
-        <div class="dropmenu">
-            <span class="subitem" al-new-project>
-                New 
-            </span>
-        <span class="subitem" al-open-file-dialog>
-                Open
-            </span>
-        <span class="subitem" al-save-project>
-                Save
-            </span>
+<body>
+    <div class="loading-screen">
+        <img class="logo" src="/logo.svg" />
+        <div class="cssload-container">
+            <div class="cssload-whirlpool"></div>
         </div>
-        </span>
-
-        <span class="item">
-        Edit
-        <div class="dropmenu">
-        <span class="subitem">
-                            <span>Texture size:</span>
-        <input type="range" value="8" al-value="textureSizeStep" min="8" max="12" step="1"> {{textureSize}}
-        </span>
-        <span class="subitem">
-            3D model
-            <select al-select="selected" @change="changeModel()">
-                <option al-repeat="model in models" al-option='model'>{{model}}</option>
-
-            </select>
-        </span>
-        </div>
-        </span>
-
-
-        <a target="_blank" href="https://github.com/Ni55aN/allmatter" class="item right">Github</a>
-    </header>
-    <div class="regions">
-        <div class="sidebar" />
-        <div id="material-preview" class="region" al-region="material" title="Double click - fullscreen"></div>
-        <div id="texture-preview" class="region" al-region="texture" title="Double click - fullscreen"></div>
     </div>
-    <div class="node-editor region" al-region="editor">
-        <div id="nodeEditor"></div>
+
+    <div id="app">
+        <app-header></app-header>
+        <workspace></workspace>
+        <about></about>
     </div>
-    </div>
+
+    <script src="https://angularlight.org/bin/alight_0.14.last.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.0/d3.min.js"></script>
+
+    <script src="https://rawgit.com/eligrey/FileSaver.js/master/FileSaver.min.js"></script>
+    <script src="https://d3ne.surge.sh/node-editor.js"></script>
+    <script src="https://texturity-js.surge.sh/texturity.js"></script>
+
 </body>
 
 </html>

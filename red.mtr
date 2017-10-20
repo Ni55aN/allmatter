@@ -1,0 +1,240 @@
+{
+    "id": "proc-material@0.1.0",
+    "nodes": {
+        "1": {
+            "id": 1,
+            "data": {},
+            "group": null,
+            "inputs": [{
+                "connections": [{
+                    "node": 85,
+                    "output": 0
+                }]
+            }, {
+                "connections": [{
+                    "node": 89,
+                    "output": 0
+                }]
+            }, {
+                "connections": [{
+                    "node": 82,
+                    "output": 0
+                }]
+            }, {
+                "connections": [{
+                    "node": 90,
+                    "output": 0
+                }]
+            }, {
+                "connections": []
+            }, {
+                "connections": []
+            }],
+            "outputs": [],
+            "position": [3180.18798828125, -1014.9620423316956],
+            "title": "Output material"
+        },
+        "81": {
+            "id": 81,
+            "data": {
+                "size": 0.6
+            },
+            "group": null,
+            "inputs": [{
+                "connections": []
+            }],
+            "outputs": [{
+                "connections": [{
+                    "node": 83,
+                    "input": 0
+                }]
+            }],
+            "position": [1533.6461181640625, -580.6883087158203],
+            "title": "Circle texture"
+        },
+        "82": {
+            "id": 82,
+            "data": {
+                "scalar": 0.2
+            },
+            "group": null,
+            "inputs": [{
+                "connections": [{
+                    "node": 83,
+                    "output": 0
+                }]
+            }, {
+                "connections": []
+            }],
+            "outputs": [{
+                "connections": [{
+                    "node": 1,
+                    "input": 2
+                }]
+            }],
+            "position": [2197.345947265625, -673.7854614257812],
+            "title": "Lightness"
+        },
+        "83": {
+            "id": 83,
+            "data": {
+                "x": 0,
+                "y": 0,
+                "repeat": 5
+            },
+            "group": null,
+            "inputs": [{
+                "connections": [{
+                    "node": 81,
+                    "output": 0
+                }]
+            }, {
+                "connections": []
+            }, {
+                "connections": []
+            }, {
+                "connections": []
+            }],
+            "outputs": [{
+                "connections": [{
+                    "node": 82,
+                    "input": 0
+                }, {
+                    "node": 89,
+                    "input": 0
+                }, {
+                    "node": 88,
+                    "input": 0
+                }]
+            }],
+            "position": [1851.5257568359375, -625.1593627929688],
+            "title": "Texture transform"
+        },
+        "84": {
+            "id": 84,
+            "data": {
+                "scalar": 1
+            },
+            "group": null,
+            "inputs": [{
+                "connections": []
+            }, {
+                "connections": []
+            }],
+            "outputs": [{
+                "connections": [{
+                    "node": 85,
+                    "input": 0
+                }]
+            }],
+            "position": [1498.5870361328125, -1462.6482543945312],
+            "title": "Lightness"
+        },
+        "85": {
+            "id": 85,
+            "data": {},
+            "group": null,
+            "inputs": [{
+                "connections": [{
+                    "node": 84,
+                    "output": 0
+                }]
+            }, {
+                "connections": [{
+                    "node": 86,
+                    "output": 0
+                }]
+            }],
+            "outputs": [{
+                "connections": [{
+                    "node": 1,
+                    "input": 0
+                }]
+            }],
+            "position": [1801.0184326171875, -1315.4212646484375],
+            "title": "Multiply"
+        },
+        "86": {
+            "id": 86,
+            "data": {
+                "color": [1, 0, 0]
+            },
+            "group": null,
+            "inputs": [],
+            "outputs": [{
+                "connections": [{
+                    "node": 85,
+                    "input": 1
+                }]
+            }],
+            "position": [1496.364501953125, -1105.0103759765625],
+            "title": "Input color"
+        },
+        "88": {
+            "id": 88,
+            "data": {},
+            "group": null,
+            "inputs": [{
+                "connections": [{
+                    "node": 83,
+                    "output": 0
+                }]
+            }],
+            "outputs": [{
+                "connections": [{
+                    "node": 90,
+                    "input": 0
+                }]
+            }],
+            "position": [2196.643310546875, -320.72735595703125],
+            "title": "Invert"
+        },
+        "89": {
+            "id": 89,
+            "data": {
+                "scale": 3
+            },
+            "group": null,
+            "inputs": [{
+                "connections": [{
+                    "node": 83,
+                    "output": 0
+                }]
+            }, {
+                "connections": []
+            }],
+            "outputs": [{
+                "connections": [{
+                    "node": 1,
+                    "input": 1
+                }]
+            }],
+            "position": [2193.079345703125, -1031.9534912109375],
+            "title": "Normal map"
+        },
+        "90": {
+            "id": 90,
+            "data": {
+                "scalar": -0.9
+            },
+            "group": null,
+            "inputs": [{
+                "connections": [{
+                    "node": 88,
+                    "output": 0
+                }]
+            }, {
+                "connections": []
+            }],
+            "outputs": [{
+                "connections": [{
+                    "node": 1,
+                    "input": 3
+                }]
+            }],
+            "position": [2603.311279296875, -503.7194519042969],
+            "title": "Lightness"
+        }
+    },
+    "groups": {}
+}
