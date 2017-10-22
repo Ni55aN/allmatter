@@ -107,6 +107,9 @@ export class MaterialPreview {
     mesh.material.roughness = 1.0;
     mesh.material.metalness = 1.0;
     mesh.material.emissive.setRGB(1, 1, 1);
+    mesh.material.transparent = true;
+    mesh.material.side = THREE.DoubleSide;
+    mesh.material.alphaTest = 0.1;
     return mesh;
   }
 
@@ -160,6 +163,7 @@ export class MaterialPreview {
     await this.updateMap(maps.metalness, "metalnessMap");
     await this.updateMap(maps.emissive, "emissiveMap");
     await this.updateMap(maps.displacement, "displacementMap");
+    await this.updateMap(maps.alpha, "alphaMap");
     this.render();
   }
 }

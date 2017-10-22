@@ -10,6 +10,7 @@ export default new D3NE.Component('output material', {
         var inp4 = new D3NE.Input('Metalness', sockets.image);
         var inp5 = new D3NE.Input('Emissive', sockets.image);
         var inp6 = new D3NE.Input('Displacement', sockets.image);
+        var inp7 = new D3NE.Input('Alpha', sockets.image);
 
         return new D3NE
             .Node('Output material')
@@ -18,7 +19,8 @@ export default new D3NE.Component('output material', {
             .addInput(inp3)
             .addInput(inp4)
             .addInput(inp5)
-            .addInput(inp6);
+            .addInput(inp6)
+            .addInput(inp7);
     },
     async worker(node, inputs, outputs) {
 
@@ -27,7 +29,7 @@ export default new D3NE.Component('output material', {
             : Utils.createMockTexture();
         var normal = inputs[1][0]instanceof WebGLTexture
             ? inputs[1][0]
-            : Utils.createMockTexture(true);
+            : Utils.createMockTexture('normal');
         var roughness = inputs[2][0]instanceof WebGLTexture
             ? inputs[2][0]
             : Utils.createMockTexture();
@@ -40,6 +42,9 @@ export default new D3NE.Component('output material', {
         var displacement = inputs[5][0]instanceof WebGLTexture
             ? inputs[5][0]
             : Utils.createMockTexture();
+        var alpha = inputs[6][0]instanceof WebGLTexture
+            ? inputs[6][0]
+            : Utils.createMockTexture('white');
 
         store.commit('updateMaterial', {
             diffuse: Utils.textureToSrc(diffuse),
@@ -47,7 +52,8 @@ export default new D3NE.Component('output material', {
             roughness: Utils.textureToSrc(roughness),
             metalness: Utils.textureToSrc(metalness),
             emissive: Utils.textureToSrc(emissive),
-            displacement: Utils.textureToSrc(displacement)
+            displacement: Utils.textureToSrc(displacement),
+            alpha: Utils.textureToSrc(alpha)
         });
 
     }

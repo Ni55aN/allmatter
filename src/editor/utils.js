@@ -1,13 +1,22 @@
 import store from '../store';
 
+function getColor(type) {
+    switch (type) {
+    case 'normal':
+        return [128, 255, 128, 255];
+
+    case 'white':
+        return [255, 255, 255, 255];
+
+    default:
+        return [0, 0, 0, 255];
+    }
+}
+
 export default {
-    createEmptyTexture(w, h, isNormalMap) {
+    createEmptyTexture(w, h, type) {
         var gl = Texturity.getGL();
-
-        var data = isNormalMap
-            ? new Uint8Array([128, 255, 128, 255])
-            : new Uint8Array([0, 0, 0, 255]);
-
+        var data = new Uint8Array(getColor(type));
         var emptyTexture = gl.createTexture();
 
         gl.bindTexture(gl.TEXTURE_2D, emptyTexture);
@@ -23,10 +32,10 @@ export default {
 
         return new Texturity.Canvas(state.textureSize, state.textureSize);
     },
-    createMockTexture(isNormalMap) {
+    createMockTexture(type) {
         var state = store.state;
 
-        return this.createEmptyTexture(state.textureSize, state.textureSize, isNormalMap);
+        return this.createEmptyTexture(state.textureSize, state.textureSize, type);
     },
     textureToSrc(texture) {
         var state = store.state;
