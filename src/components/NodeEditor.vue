@@ -97,12 +97,18 @@ export default {
       }
     });
 
-    this.editor.eventListener.on("change", async i => {
-      if (!store.state.process) return;
-
+    this.editor.eventListener.on("change", () => {
       writeStorage();
-      this.process();
     });
+
+    this.editor.eventListener.on(
+      "nodecreate connectioncreate noderemove connectionremove",
+      async i => {
+        if (!store.state.process) return;
+
+        await this.process();
+      }
+    );
 
     this.engine = new D3NE.Engine(
       store.state.editorIdentifier,
@@ -113,7 +119,7 @@ export default {
 
     store.commit("allowProcess");
     this.editor.view.zoomAt(this.editor.nodes);
-    this.editor.eventListener.trigger("change");
+    this.process();
 
     this.$store.commit("setNodeEditor", this.editor);
 
