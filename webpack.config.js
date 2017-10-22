@@ -81,7 +81,7 @@ module.exports = (env) => {
                 inject: 'body',
                 title: 'allmatter - 3D material authoring tool',
                 template: 'index.html',
-                excludeChunks: ['splash', 'manifest']
+                excludeChunks: ['splash', 'common']
             })
         ]
     }
