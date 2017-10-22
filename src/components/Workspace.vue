@@ -44,7 +44,7 @@ export default {
 <style lang="sass">
 .workspace
   padding: 0.5vh
-  margin-top: -1vh;
+  margin-top: -2vh;
   display: flex
   align-items: stretch
   height: calc(100% - 40px)

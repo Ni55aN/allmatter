@@ -84,12 +84,17 @@ export default {
 };
 </script>
 
-
 <style lang="sass">
+@import '../../style/media';
+
 menu
   flex: 1
   display: flex
   height: 100%
+  +mobile
+    padding-left: 0
+  +tablet
+    padding-left: 15px
   .item
     font-size: 17px
     cursor: default
@@ -99,6 +104,12 @@ menu
     color: grey
     text-decoration: none
     position: relative
+    +mobile
+      padding: 0 6px
+      font-size: 13px
+    +tablet
+      padding: 0 9px
+      font-size: 15px
     &:hover,&:active
       transition: .5s
       background: linear-gradient(to top, transparent, rgba(0,0,0.2,0.2));

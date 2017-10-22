@@ -36,17 +36,13 @@ body {
 	left: 50%;
 	border: 1px solid rgb(207, 207, 207);
 	border-left-color: rgba(0, 47, 117, 0.98);
-	border-radius: 1374px;
-	-o-border-radius: 1374px;
-	-ms-border-radius: 1374px;
-	-webkit-border-radius: 1374px;
-	-moz-border-radius: 1374px;
+	border-radius: 6vw;
 }
 
 .cssload-whirlpool {
-	margin: -34px 0 0 -34px;
-	height: 69px;
-	width: 69px;
+	margin: -2.5vw 0 0 -2.5vw;
+	height: 5vw;
+	width: 5vw;
 	animation: cssload-rotate 1150ms linear infinite;
 	-o-animation: cssload-rotate 1150ms linear infinite;
 	-ms-animation: cssload-rotate 1150ms linear infinite;
@@ -56,9 +52,9 @@ body {
 
 .cssload-whirlpool::before {
 	content: "";
-	margin: -32px 0 0 -32px;
-	height: 61px;
-	width: 61px;
+	margin: -2vw 0 0 -2vw;
+	height: 4vw;
+	width: 4vw;
 	animation: cssload-rotate 1150ms linear infinite;
 	-o-animation: cssload-rotate 1150ms linear infinite;
 	-ms-animation: cssload-rotate 1150ms linear infinite;
@@ -68,9 +64,9 @@ body {
 
 .cssload-whirlpool::after {
 	content: "";
-	margin: -40px 0 0 -40px;
-	height: 77px;
-	width: 77px;
+	margin: -3vw 0 0 -3vw;
+	height: 6vw;
+	width: 6vw;
 	animation: cssload-rotate 2300ms linear infinite;
 	-o-animation: cssload-rotate 2300ms linear infinite;
 	-ms-animation: cssload-rotate 2300ms linear infinite;
