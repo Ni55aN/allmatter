@@ -106,7 +106,7 @@ export default {
       async i => {
         if (!store.state.process) return;
 
-        await this.process();
+        setTimeout(this.process.bind(this));
       }
     );
 
