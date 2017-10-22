@@ -3,24 +3,18 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 
-var htmlConfig = {
-    inject: 'body',
-    title: 'allmatter - 3D material authoring tool',
-    template: 'index.html'
-};
-
 module.exports = (env) => {
 
     return {
         entry: {
+            splash: './src/splash.js',
             three: [
                 'three', 'three-orbit-controls', 'three-obj-loader'
             ],
             vue: [
                 'vue', 'vuex'
             ],
-            app: './src/app.js',
-            d3ne: 'd3-node-editor'
+            app: './src/app.js'
         },
         resolve: {
             alias: {
@@ -44,6 +38,9 @@ module.exports = (env) => {
                     test: /\.css$/,
                     use: ['style-loader', 'css-loader']
                 }, {
+                    test: /\.(sass|scss)$/,
+                    use: ['style-loader', 'css-loader', 'sass-loader']
+                }, {
                     test: /\.js$/,
                     exclude: /node_modules/,
                     loader: 'babel-loader',
@@ -57,9 +54,6 @@ module.exports = (env) => {
                 }, {
                     test: /\.vue$/,
                     loader: 'vue-loader'
-                }, {
-                    test: /\.s[a|c]ss$/,
-                    loader: 'style!css!sass'
                 }
             ]
         },
@@ -68,8 +62,11 @@ module.exports = (env) => {
             new webpack
                 .optimize
                 .CommonsChunkPlugin({
-                    names: ['three', 'vue', 'd3ne']
+                    names: ['three', 'vue', 'splash']
                 }),
+            new webpack
+                .optimize
+                .CommonsChunkPlugin({name: 'common'}),
 
             new CopyWebpackPlugin([
                 {
@@ -78,12 +75,14 @@ module.exports = (env) => {
                 }, {
                     from: './envMap',
                     to: 'envMap'
-                }, {
-                    from: './style',
-                    to: 'style'
                 }
             ]),
-            new HtmlWebpackPlugin(htmlConfig)
+            new HtmlWebpackPlugin({
+                inject: 'body',
+                title: 'allmatter - 3D material authoring tool',
+                template: 'index.html',
+                excludeChunks: ['splash', 'manifest']
+            })
         ]
     }
 }

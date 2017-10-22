@@ -1,0 +1,88 @@
+html, body
+  margin: 0
+  height: 100%
+  overflow: hidden
+  color: black
+
+*
+  box-sizing: border-box
+
+.loading-screen
+  margin-top: 35vh
+  text-align: center
+  .logo
+    width: 40vw
+    margin-bottom: 5vh
+
+#app
+  visibility: hidden
+
+.cssload-container
+  position: relative
+
+.cssload-whirlpool
+  position: absolute
+  top: 50%
+  left: 50%
+  border: 1px solid rgb(207, 207, 207)
+  border-left-color: rgba(0, 47, 117, 0.98)
+  border-radius: 6vw
+  &::before, &::after
+    position: absolute
+    top: 50%
+    left: 50%
+    border: 1px solid rgb(207, 207, 207)
+    border-left-color: rgba(0, 47, 117, 0.98)
+    border-radius: 6vw
+  margin: -2.5vw 0 0 -2.5vw
+  height: 5vw
+  width: 5vw
+  animation: cssload-rotate 1150ms linear infinite
+  -o-animation: cssload-rotate 1150ms linear infinite
+  -ms-animation: cssload-rotate 1150ms linear infinite
+  -webkit-animation: cssload-rotate 1150ms linear infinite
+  -moz-animation: cssload-rotate 1150ms linear infinite
+  &::before
+    content: ""
+    margin: -2vw 0 0 -2vw
+    height: 4vw
+    width: 4vw
+    animation: cssload-rotate 1150ms linear infinite
+    -o-animation: cssload-rotate 1150ms linear infinite
+    -ms-animation: cssload-rotate 1150ms linear infinite
+    -webkit-animation: cssload-rotate 1150ms linear infinite
+    -moz-animation: cssload-rotate 1150ms linear infinite
+  &::after
+    content: ""
+    margin: -3vw 0 0 -3vw
+    height: 6vw
+    width: 6vw
+    animation: cssload-rotate 2300ms linear infinite
+    -o-animation: cssload-rotate 2300ms linear infinite
+    -ms-animation: cssload-rotate 2300ms linear infinite
+    -webkit-animation: cssload-rotate 2300ms linear infinite
+    -moz-animation: cssload-rotate 2300ms linear infinite
+
+@keyframes cssload-rotate
+  100%
+    transform: rotate(360deg)
+
+
+@-o-keyframes cssload-rotate
+  100%
+    -o-transform: rotate(360deg)
+
+
+@-ms-keyframes cssload-rotate
+  100%
+    -ms-transform: rotate(360deg)
+
+
+@-webkit-keyframes cssload-rotate
+  100%
+    -webkit-transform: rotate(360deg)
+
+
+@-moz-keyframes cssload-rotate
+  100%
+    -moz-transform: rotate(360deg)
