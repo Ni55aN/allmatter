@@ -13,6 +13,10 @@ export default function () {
     
     if (!window.localStorage) 
         list.push('Local Storage');
+
+    if(!fetch){
+        list.push('fetch');
+    }
     
     if (list.length > 0) 
         return {
