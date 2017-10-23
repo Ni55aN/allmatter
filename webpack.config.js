@@ -73,6 +73,9 @@ module.exports = (env) => {
                     from: './models',
                     to: 'models'
                 }, {
+                    from: './projects',
+                    to: 'projects'
+                }, {
                     from: './envMap',
                     to: 'envMap'
                 }

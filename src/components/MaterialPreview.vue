@@ -1,5 +1,5 @@
 <template lang="pug">
-.preview
+.preview-material
 </template>
 
 <script>
@@ -203,6 +203,5 @@ export default {
 </script>
 
 <style lang="sass">
-.preview
 </style>
 

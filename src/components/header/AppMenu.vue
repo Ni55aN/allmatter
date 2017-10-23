@@ -23,7 +23,7 @@ menu
     | Help
     .dropmenu
       span.subitem(@click="startTour")
-         span User guide
+         span Guide
       span.subitem(@click="showAbout")
          span About
 </template>

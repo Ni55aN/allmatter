@@ -1,5 +1,5 @@
 <template lang="pug">
-.preview
+.preview-texture
 </template>
 
 <script>
@@ -100,6 +100,5 @@ export default {
 </script>
 
 <style lang="sass">
-
 </style>
 

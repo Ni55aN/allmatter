@@ -117,6 +117,16 @@ export default {
     );
 
     readStorage();
+    if (this.editor.nodes.length === 0) {
+      fetch("./projects/guide.mtr")
+        .then(resp => resp.json())
+        .then(data => {
+          console.log(data);
+          store.commit("denyProcess");
+          this.editor.fromJSON(data);
+          store.commit("allowProcess");
+        });
+    }
 
     store.commit("allowProcess");
     this.editor.view.zoomAt(this.editor.nodes);
