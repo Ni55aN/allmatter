@@ -8,9 +8,7 @@ export default new Vuex.Store({
     state: {
         editorIdentifier: 'allmatter@0.2.0',
         tour: new Tour(),
-        showingAbout: false,
         textureSize: 1024,
-        nodeEditor: null,
         geometry: null,
         process: false,
         maps: [],
@@ -20,9 +18,6 @@ export default new Vuex.Store({
         }
     },
     getters: {
-        showingAbout(state) {
-            return state.showingAbout;
-        },
         tour(state) {
             return state.tour;
         },
@@ -40,9 +35,6 @@ export default new Vuex.Store({
         }
     },
     mutations: {
-        showAbout(state, val = true) {
-            state.showingAbout = val;
-        },
         allowProcess(state) {
             state.process = true;
         },
@@ -54,11 +46,6 @@ export default new Vuex.Store({
         },
         setTextureSize(state, size) {
             state.textureSize = size;
-        },
-        setNodeEditor(state, nodeEditor) {
-            if (state.nodeEditor !== null) 
-                throw new Error('NodeEditor has already been specified');
-            state.nodeEditor = nodeEditor;
         },
         updateMaterial(state, maps) {
             state.maps = maps;

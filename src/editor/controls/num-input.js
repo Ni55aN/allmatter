@@ -1,3 +1,5 @@
+import eventbus from '../../eventbus';
+
 export default function (key, title, def = 1) {
     return new D3NE.Control('<input type="number" title="' + title + '" placeholder="' + title + '"/>', (el, control) => {
 
@@ -5,9 +7,7 @@ export default function (key, title, def = 1) {
         control.putData(key, parseFloat(el.value));
         el.addEventListener('change', () => {
             control.putData(key, parseFloat(el.value));
-            /*  editor
-                .eventListener
-                .trigger('change');*/
+            eventbus.$emit('process');
         });
     });
 }

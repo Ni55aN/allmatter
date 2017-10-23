@@ -31,6 +31,7 @@ menu
 <script>
 import vueSlider from "vue-slider-component";
 import store from "../../store";
+import eventbus from "../../eventbus";
 import "./FileDialog.js";
 import { saveAs } from "file-saver";
 
@@ -59,23 +60,20 @@ export default {
   },
   methods: {
     newProject() {
-      store.state.nodeEditor.fromJSON({
-        id: store.state.editorIdentifier,
-        nodes: {},
-        groups: {}
-      });
+      eventbus.$emit("newproject");
     },
     saveProject() {
-      var data = JSON.stringify(store.state.nodeEditor.toJSON());
-      var blob = new Blob([data], { type: "application/json;charset=utf-8" });
+      eventbus.$emit("saveproject", data => {
+        var blob = new Blob([data], { type: "application/json;charset=utf-8" });
 
-      saveAs(blob, "project.mtr");
+        saveAs(blob, "project.mtr");
+      });
     },
     startTour() {
       store.state.tour.start();
     },
     showAbout() {
-      store.commit("showAbout");
+      eventbus.$emit("showAbout");
     }
   },
   components: {

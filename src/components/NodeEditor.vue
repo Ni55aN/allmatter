@@ -5,6 +5,7 @@
 <script>
 import components from "../editor/components";
 import store from "../store";
+import eventbus from "../eventbus";
 import _ from "lodash";
 
 export default {
@@ -121,12 +122,36 @@ export default {
     this.editor.view.zoomAt(this.editor.nodes);
     this.process();
 
-    this.$store.commit("setNodeEditor", this.editor);
-
     store.watch(
       () => store.getters.textureSize,
       _.debounce(this.process, 1000)
     );
+
+    eventbus.$on("process", () => {
+      this.process();
+      writeStorage();
+    });
+
+    eventbus.$on("newproject", () => {
+      this.editor.fromJSON({
+        id: store.state.editorIdentifier,
+        nodes: {},
+        groups: {}
+      });
+    });
+
+    eventbus.$on("saveproject", callback => {
+      var data = JSON.stringify(this.editor.toJSON());
+      callback(data);
+    });
+
+    eventbus.$on("openproject", data => {
+      store.commit("denyProcess");
+      this.editor.fromJSON(data);
+      store.commit("allowProcess");
+      this.editor.view.zoomAt(this.editor.nodes);
+      eventbus.$emit("process");
+    });
   }
 };
 </script>

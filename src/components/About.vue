@@ -11,20 +11,21 @@ vodal(:show="show",animation="door",@hide="hide",:closeOnEsc="true")
 
 <script>
 import Vodal from "vodal";
+import eventbus from "../eventbus";
 
 export default {
   data() {
-    return {};
-  },
-  computed: {
-    show() {
-      return this.$store.state.showingAbout;
-    }
+    return { show: false };
   },
   methods: {
     hide() {
-      this.$store.commit("showAbout", false);
+      this.show = false;
     }
+  },
+  mounted() {
+    eventbus.$on("showAbout", () => {
+      this.show = true;
+    });
   },
   components: {
     Vodal

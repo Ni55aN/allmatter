@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import store from '../../store';
+import evetbus from '../../eventbus';
 
 Vue.directive('file-dialog', {
     inserted: function (el) {
@@ -13,7 +13,6 @@ Vue.directive('file-dialog', {
             if (input.files.length === 0) 
                 return;
             
-            var editor = store.state.nodeEditor;
             var file = input.files[0];
             var reader = new FileReader();
 
@@ -21,19 +20,7 @@ Vue.directive('file-dialog', {
                 input.value = ''; //clear files
                 var data = JSON.parse(e.target.result);
 
-                store.commit('denyProcess');
-                try {
-                    editor.fromJSON(data);
-                } catch (e) {
-                    alert(e.message);
-                }
-                store.commit('allowProcess');
-                editor
-                    .eventListener
-                    .trigger('change');
-                editor
-                    .view
-                    .zoomAt(editor.nodes);
+                evetbus.$emit('openproject', data);
             };
             reader.onabort = (e) => {
                 alert(e.message);
