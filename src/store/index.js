@@ -10,7 +10,6 @@ export default new Vuex.Store({
         tour: new Tour(),
         textureSize: 1024,
         geometry: null,
-        process: false,
         maps: [],
         texture: {
             el: null,
@@ -35,12 +34,6 @@ export default new Vuex.Store({
         }
     },
     mutations: {
-        allowProcess(state) {
-            state.process = true;
-        },
-        denyProcess(state) {
-            state.process = false;
-        },
         setGeometry(state, geometry) {
             state.geometry = geometry;
         },

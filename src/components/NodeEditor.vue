@@ -7,12 +7,14 @@ import components from "../editor/components";
 import store from "../store";
 import eventbus from "../eventbus";
 import _ from "lodash";
+import LocalStorage from "../localstorage";
 
 export default {
   data() {
     return {
       editor: null,
-      engine: null
+      engine: null,
+      allowProcess: false
     };
   },
   methods: {
@@ -27,25 +29,25 @@ export default {
       console.timeEnd("process");
 
       Texturity.disposeTextures();
+    },
+    saveToStorage() {
+      LocalStorage.write("allmatter", this.editor.toJSON());
+    },
+    restoreFromStorage() {
+      var data = LocalStorage.read("allmatter");
+      if (data) this.import(data);
+    },
+    import(data) {
+      this.allowProcess = false;
+      this.editor.fromJSON(data);
+      this.allowProcess = true;
+      this.editor.view.zoomAt(this.editor.nodes);
+      this.process();
+      this.saveToStorage();
     }
   },
   mounted() {
     Texturity.initGL("webgl2");
-
-    var writeStorage = () => {
-      localStorage.allmatter = JSON.stringify(this.editor.toJSON());
-    };
-
-    var readStorage = () => {
-      if (localStorage.allmatter) {
-        try {
-          this.editor.fromJSON(JSON.parse(localStorage.allmatter));
-        } catch (e) {
-          console.error(e);
-          alert(e.message);
-        }
-      }
-    };
 
     var menu = new D3NE.ContextMenu({
       Input: {
@@ -99,14 +101,14 @@ export default {
     });
 
     this.editor.eventListener.on("change", () => {
-      writeStorage();
+      if (!this.allowProcess) return;
+      this.saveToStorage();
     });
 
     this.editor.eventListener.on(
       "nodecreate connectioncreate noderemove connectionremove",
       async i => {
-        if (!store.state.process) return;
-
+        if (!this.allowProcess) return;
         setTimeout(this.process.bind(this));
       }
     );
@@ -116,31 +118,12 @@ export default {
       components.list
     );
 
-    readStorage();
-    if (this.editor.nodes.length === 0) {
-      fetch("./projects/guide.mtr")
-        .then(resp => resp.json())
-        .then(data => {
-          store.commit("denyProcess");
-          this.editor.fromJSON(data);
-          store.commit("allowProcess");
-          this.process();
-        });
-    }
-
-    store.commit("allowProcess");
-    this.editor.view.zoomAt(this.editor.nodes);
-    this.process();
-
     store.watch(
       () => store.getters.textureSize,
       _.debounce(this.process, 1000)
     );
 
-    eventbus.$on("process", () => {
-      this.process();
-      writeStorage();
-    });
+    eventbus.$on("process", this.process.bind(this));
 
     eventbus.$on("newproject", () => {
       this.editor.fromJSON({
@@ -155,13 +138,15 @@ export default {
       callback(data);
     });
 
-    eventbus.$on("openproject", data => {
-      store.commit("denyProcess");
-      this.editor.fromJSON(data);
-      store.commit("allowProcess");
-      this.editor.view.zoomAt(this.editor.nodes);
-      eventbus.$emit("process");
-    });
+    eventbus.$on("openproject", this.import.bind(this));
+
+    this.restoreFromStorage();
+
+    if (this.editor.nodes.length === 0) {
+      fetch("./projects/guide.mtr")
+        .then(resp => resp.json())
+        .then(this.import.bind(this));
+    }
   }
 };
 </script>
