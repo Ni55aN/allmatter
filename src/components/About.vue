@@ -38,6 +38,7 @@ export default {
 @import "~vodal/door.css";
 .vodal-dialog
   font-family: Gill Sans, sans-serif
+  max-width: 90vw
   .header
     font-size: 17px
     padding-bottom: 10px
