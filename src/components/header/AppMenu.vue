@@ -9,6 +9,8 @@ menu
         span Open
       span.subitem(@click="saveProject")
         span Save
+      span.subitem(@click="exportMaps")
+        span Export maps
   span.item
     | Edit
     .dropmenu
@@ -34,6 +36,7 @@ import store from "../../store";
 import eventbus from "../../eventbus";
 import "./FileDialog.js";
 import { saveAs } from "file-saver";
+import blobUtil from "blob-util/dist/blob-util";
 
 var geometries = ["Cube", "Sphere"];
 
@@ -68,6 +71,14 @@ export default {
 
         saveAs(blob, "project.mtr");
       });
+    },
+    async exportMaps() {
+      var maps = store.state.maps;
+      for (let name in maps) {
+        let src = maps[name].replace("data:image/png;base64,", "");
+        let blob = await blobUtil.base64StringToBlob(src, "image/png");
+        saveAs(blob, `allmatter_${name}.png`);
+      }
     },
     startTour() {
       store.state.tour.start();
