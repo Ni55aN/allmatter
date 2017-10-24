@@ -5,6 +5,15 @@ var s = (selector) => document.querySelector(selector);
 var sAll = (selector) => document.querySelectorAll(selector);
 var compatibility = checkBrowserComp();
 
+window.onerror = function(message, url, line) {
+    try{
+        document.getElementsByClassName('cssload-container')[0].innerHTML = message;
+    }
+    catch(e){
+        console.error(e);
+	}
+};
+
 if (compatibility.status) {
     window.onload = () => {
         s('.loading-screen').style.display = 'none';
