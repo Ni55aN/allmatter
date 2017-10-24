@@ -1,4 +1,5 @@
 import store from '../../store';
+import eventbus from '../../eventbus';
 
 var width = 140;
 var height = 140;
@@ -21,6 +22,7 @@ export default function () {
         el
             .addEventListener('mousedown', function (e) {
                 store.commit('updateTexture', {el, src: el.src});
+                eventbus.$emit('process');
                 e.stopPropagation();
             });
 
