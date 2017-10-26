@@ -6,6 +6,7 @@
 var THREE = require("three");
 var OrbitControls = require("three-orbit-controls")(THREE);
 var OBJLoader = require("three-obj-loader");
+import eventbus from "../eventbus";
 
 OBJLoader(THREE);
 
@@ -52,7 +53,11 @@ export class MaterialPreview {
   }
 
   createRenderer() {
-    var r = new THREE.WebGLRenderer({ antialiasing: true, alpha: true });
+    var r = new THREE.WebGLRenderer({
+      antialiasing: true,
+      alpha: true,
+      preserveDrawingBuffer: true
+    });
 
     this.el.appendChild(r.domElement);
     r.setClearColor(0x000000, 0);
@@ -132,11 +137,22 @@ export class MaterialPreview {
     this.renderer.render(this.scene, this.camera);
   }
 
-  resize() {
-    this.camera.aspect = this.el.clientWidth / this.el.clientHeight;
+  resize(w, h) {
+    w = typeof w === "number" ? w : this.el.clientWidth;
+    h = typeof h === "number" ? h : this.el.clientHeight;
+
+    this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(this.el.clientWidth, this.el.clientHeight);
+    this.renderer.setSize(w, h);
     this.render();
+  }
+
+  getPreview() {
+    this.resize(256, 256);
+
+    var src = this.renderer.domElement.toDataURL();
+    this.resize();
+    return src;
   }
 
   updateMap(src, mapName) {
@@ -192,6 +208,10 @@ export default {
     );
 
     window.addEventListener("resize", this.preview.resize.bind(this.preview));
+
+    eventbus.$on("preview", callback => {
+      callback(this.preview.getPreview());
+    });
   },
   beforeDestroy() {
     window.removeEventListener(

@@ -1,7 +1,7 @@
 <template lang="pug">
 vodal(:show="show",animation="door",@hide="hide",:closeOnEsc="true")
   .header About
-  .body 
+  .body.about
     img.logo(src="~../../logo.svg")
     div Allmatter is a 3D material authoring tool.
     div Author: 
@@ -43,7 +43,7 @@ export default {
     font-size: 17px
     padding-bottom: 10px
     border-bottom: 1px solid #e9e9e9
-  .body
+  .body.about
     color: #a1a1a1
     padding-top: 15px
     font-size: 16px

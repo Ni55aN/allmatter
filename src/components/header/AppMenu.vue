@@ -10,7 +10,7 @@ menu
       span.subitem(@click="saveProject")
         span Save
       span.subitem(@click="exportMaps")
-        span Export maps
+        span Export
   span.item
     | Edit
     .dropmenu
@@ -21,6 +21,8 @@ menu
         span 3D Model
         select(v-model="selectedGeometry")
           option(v-for="geometry in geometries") {{geometry}}
+  span.item.lane(@click="openHub")
+    span Hub
   span.item
     | Help
     .dropmenu
@@ -67,10 +69,18 @@ export default {
     },
     saveProject() {
       eventbus.$emit("saveproject", data => {
-        var blob = new Blob([data], { type: "application/json;charset=utf-8" });
+        var blob = new Blob([JSON.stringify(data)], {
+          type: "application/json;charset=utf-8"
+        });
 
         saveAs(blob, "project.mtr");
       });
+    },
+    openHub() {
+      eventbus.$emit("openhub");
+    },
+    saveHub() {
+      eventbus.$emit("savehub");
     },
     async exportMaps() {
       var maps = store.state.maps;
@@ -124,6 +134,8 @@ menu
       background: linear-gradient(to top, transparent, rgba(0,0,0.2,0.2));
     &.right
       float: right
+    &.lane
+      cursor: pointer
     .dropmenu
       visibility: collapse
       padding: 6px 0

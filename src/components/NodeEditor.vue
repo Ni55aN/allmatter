@@ -134,7 +134,7 @@ export default {
     });
 
     eventbus.$on("saveproject", callback => {
-      var data = JSON.stringify(this.editor.toJSON());
+      var data = this.editor.toJSON();
       callback(data);
     });
 
