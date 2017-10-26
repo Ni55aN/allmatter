@@ -23,6 +23,7 @@ export default {
 
 <style lang="sass">
 @import '../../style/common.sass';
+@import '../../style/media.sass';
 
 section.materials
     .item
@@ -32,6 +33,12 @@ section.materials
         padding-bottom: 0
         position: relative
         overflow: hidden
+        +tablet
+            width: 25%
+            padding-top: 25%
+        +mobile
+            width: 33%
+            padding-top: 33%
         &:hover .button
             opacity: 1
         .title,.button
