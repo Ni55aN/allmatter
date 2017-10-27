@@ -1,3 +1,4 @@
+import {D3NE} from 'd3-node-editor';
 import modifyIdInput from '../../common/builders/modificator/input-id';
 import numInput from '../../controls/num-input';
 import sockets from '../../sockets';

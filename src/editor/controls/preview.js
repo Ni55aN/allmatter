@@ -1,3 +1,5 @@
+import {D3NE} from 'd3-node-editor';
+import * as Texturity from "texturity.js";
 import store from '../../store';
 import eventbus from '../../eventbus';
 
@@ -41,6 +43,6 @@ export default function () {
                     src: canvas.toSrc()
                 });
 
-        }
-    });
+            }
+        });
 }

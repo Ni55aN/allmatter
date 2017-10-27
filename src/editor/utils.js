@@ -1,15 +1,16 @@
+import * as Texturity from "texturity.js";
 import store from '../store';
 
 function getColor(type) {
     switch (type) {
-    case 'normal':
-        return [128, 255, 128, 255];
+        case 'normal':
+            return [128, 255, 128, 255];
 
-    case 'white':
-        return [255, 255, 255, 255];
+        case 'white':
+            return [255, 255, 255, 255];
 
-    default:
-        return [0, 0, 0, 255];
+        default:
+            return [0, 0, 0, 255];
     }
 }
 

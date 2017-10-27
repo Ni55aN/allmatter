@@ -8,6 +8,9 @@ import store from "../store";
 import eventbus from "../eventbus";
 import _ from "lodash";
 import LocalStorage from "../localstorage";
+import { D3NE } from "d3-node-editor";
+import "d3-node-editor/build/d3-node-editor.css";
+import * as Texturity from "texturity.js";
 
 export default {
   data() {

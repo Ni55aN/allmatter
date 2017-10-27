@@ -1,3 +1,4 @@
+import {D3NE} from 'd3-node-editor';
 import createTextureNode, {updatePreview} from '../../common/builders/texture';
 import Utils from '../../utils';
 import sockets from '../../sockets';

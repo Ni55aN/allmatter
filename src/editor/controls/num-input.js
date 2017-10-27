@@ -1,3 +1,4 @@
+import {D3NE} from 'd3-node-editor';
 import eventbus from '../../eventbus';
 
 export default function (key, title, def = 1) {

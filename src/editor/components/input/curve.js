@@ -1,3 +1,4 @@
+import {D3NE} from 'd3-node-editor';
 import modifyIdInput from '../../common/builders/modificator/input-id';
 
 export default new D3NE.Component('input curve', {

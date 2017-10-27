@@ -28,10 +28,6 @@ module.exports = (env) => {
             path: path.resolve(__dirname, 'dist'),
             filename: '[name].js'
         },
-        externals: {
-            'Texturity': 'Texturity',
-            'D3NE': 'D3NE'
-        },
         module: {
             rules: [
                 {

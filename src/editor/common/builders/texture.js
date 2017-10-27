@@ -1,3 +1,4 @@
+import {D3NE} from 'd3-node-editor';
 import preview from '../../controls/preview'
 import sockets from '../../sockets';
 import eventbus from '../../../eventbus';
@@ -14,7 +15,7 @@ export default function () {
     eventbus.$on('updateNodePreview', (nodeData, canvas) => {
         if (node.id === nodeData.id) 
             ctrl.updatePreview(canvas);
-    }
+        }
     );
 
     return node

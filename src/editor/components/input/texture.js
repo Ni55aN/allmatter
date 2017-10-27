@@ -1,3 +1,4 @@
+import {D3NE} from 'd3-node-editor';
 import createTextureNode from '../../common/builders/texture';
 import modifyIdInput from '../../common/builders/modificator/input-id'
 
