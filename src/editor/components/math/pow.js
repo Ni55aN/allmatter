@@ -1,12 +1,11 @@
 import {D3NE} from 'd3-node-editor';
 import sockets from '../../sockets';
 import numInput from '../../controls/num-input';
+import modifyMath from '../../common/builders/math';
 
-export default new D3NE.Component('pow', {
-    builder() {
-        var node = _createMath();
-
-        node.title = 'Pow';
+export default new D3NE.Component('Pow', {
+    builder(node) {
+        modifyMath(node);
 
         var inp = new D3NE.Input('Pow', sockets.num);
 

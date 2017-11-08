@@ -1,12 +1,10 @@
 import {D3NE} from 'd3-node-editor';
-import createBinaryMath from '../../common/builders/binary-math';
+import modifyBinaryMath from '../../common/builders/binary-math';
 import binaryOperation from '../../common/workers/binary-operation';
 
-export default new D3NE.Component('add', {
-    builder() {
-        var node = createBinaryMath();
-
-        node.title = 'Add';
+export default new D3NE.Component('Add', {
+    builder(node) {
+        modifyBinaryMath(node);
 
         return node;
     },

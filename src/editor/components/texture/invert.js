@@ -1,13 +1,11 @@
 import {D3NE} from 'd3-node-editor';
 import Utils from '../../utils';
-import createTextureNode, {updatePreview} from '../../common/builders/texture';
+import modifyTextureNode, {updatePreview} from '../../common/builders/texture';
 import sockets from '../../sockets';
 
-export default new D3NE.Component('invert', {
-    builder() {
-        var node = createTextureNode();
-
-        node.title = 'Invert';
+export default new D3NE.Component('Invert', {
+    builder(node) {
+        modifyTextureNode(node);
 
         var inp = new D3NE.Input('Image', sockets.image);
 

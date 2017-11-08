@@ -1,14 +1,12 @@
 import {D3NE} from 'd3-node-editor';
 import Utils from '../../utils';
-import createTextureNode, {updatePreview} from '../../common/builders/texture';
+import modifyTextureNode, {updatePreview} from '../../common/builders/texture';
 import sockets from '../../sockets';
 import numInput from '../../controls/num-input';
 
-export default new D3NE.Component('lightness', {
-    builder() {
-        var node = createTextureNode();
-
-        node.title = 'Lightness';
+export default new D3NE.Component('Lightness', {
+    builder(node) {
+        modifyTextureNode(node);
 
         var inp = new D3NE.Input('Image', sockets.image);
         var inp2 = new D3NE.Input('Scalar', sockets.num);

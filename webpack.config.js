@@ -14,6 +14,8 @@ module.exports = (env) => {
             vue: [
                 'vue', 'vuex'
             ],
+            d3ne: ['d3-node-editor'],
+            texturity: ['texturity.js'],
             app: './src/app.js'
         },
         resolve: {
@@ -50,15 +52,19 @@ module.exports = (env) => {
                 }, {
                     test: /\.vue$/,
                     loader: 'vue-loader'
+                }, {
+                    test: /\.js$/,
+                    use: ['source-map-loader'],
+                    enforce: 'pre'
                 }
             ]
         },
-        devtool: '#inline-source-map',
+        devtool: 'source-map',
         plugins: [
             new webpack
                 .optimize
                 .CommonsChunkPlugin({
-                    names: ['three', 'vue', 'splash']
+                    names: ['three', 'vue', 'd3ne', 'texturity', 'splash']
                 }),
             new webpack
                 .optimize

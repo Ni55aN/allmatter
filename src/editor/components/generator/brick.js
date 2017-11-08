@@ -1,14 +1,12 @@
 import {D3NE} from 'd3-node-editor';
-import createTextureNode, {updatePreview} from '../../common/builders/texture';
+import modifyTextureNode, {updatePreview} from '../../common/builders/texture';
 import Utils from '../../utils';
 import sockets from '../../sockets';
 import numInput from '../../controls/num-input';
 
-export default new D3NE.Component('brick texture', {
-    builder() {
-        var node = createTextureNode();
-
-        node.title = 'Brick texture';
+export default new D3NE.Component('Brick texture', {
+    builder(node) {
+        modifyTextureNode(node);
 
         var inp = new D3NE.Input('Count', sockets.num);
         var inp2 = new D3NE.Input('Margin', sockets.num);

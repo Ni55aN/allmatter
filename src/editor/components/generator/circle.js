@@ -1,14 +1,12 @@
 import {D3NE} from 'd3-node-editor';
-import createTextureNode, {updatePreview} from '../../common/builders/texture';
+import modifyTextureNode, {updatePreview} from '../../common/builders/texture';
 import Utils from '../../utils';
 import sockets from '../../sockets';
 import numInput from '../../controls/num-input';
 
-export default new D3NE.Component('circle texture', {
-    builder() {
-        var node = createTextureNode();
-
-        node.title = 'Circle texture';
+export default new D3NE.Component('Circle texture', {
+    builder(node) {
+        modifyTextureNode(node);
 
         var inp = new D3NE.Input('Size', sockets.num);
         var ctrl = numInput('size', 'Size', 1);

@@ -1,12 +1,10 @@
 import {D3NE} from 'd3-node-editor';
-import createTextureNode from '../../common/builders/texture';
+import modifyTextureNode from '../../common/builders/texture';
 import sockets from '../../sockets';
 
-export default new D3NE.Component('blend', {
-    builder() {
-        var node = createTextureNode();
-
-        node.title = 'Blend';
+export default new D3NE.Component('Blend', {
+    builder(node) {
+        modifyTextureNode(node);
 
         var inp1 = new D3NE.Input('Image', sockets.image);
         var inp2 = new D3NE.Input('Image', sockets.image);

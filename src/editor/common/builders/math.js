@@ -1,13 +1,12 @@
 import {D3NE} from 'd3-node-editor';
 import sockets from '../../sockets';
 
-export default function () {
+export default function (node) {
 
     var inp = new D3NE.Input('Value', sockets.value);
     var out = new D3NE.Output('Value', sockets.value);
 
-    return new D3NE
-        .Node('Math')
+    return node
         .addInput(inp)
         .addOutput(out);
 }

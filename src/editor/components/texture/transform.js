@@ -1,14 +1,12 @@
 import {D3NE} from 'd3-node-editor';
 import Utils from '../../utils';
-import createTextureNode, {updatePreview} from '../../common/builders/texture';
+import modifyTextureNode, {updatePreview} from '../../common/builders/texture';
 import sockets from '../../sockets';
 import numInput from '../../controls/num-input';
 
-export default new D3NE.Component('texture transform', {
-    builder() {
-        var node = createTextureNode();
-
-        node.title = 'Texture transform';
+export default new D3NE.Component('Texture transform', {
+    builder(node) {
+        modifyTextureNode(node);
 
         var inp = new D3NE.Input('Image', sockets.image);
         var inpX = new D3NE.Input('Translate X', sockets.num);

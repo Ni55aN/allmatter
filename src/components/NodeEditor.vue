@@ -28,7 +28,7 @@ export default {
         key => data.nodes[key].title == "Output material"
       )[0];
 
-      await this.engine.process(data, data.nodes[startId]);
+      await this.engine.process(data, startId);
       console.timeEnd("process");
 
       Texturity.disposeTextures();
@@ -42,7 +42,12 @@ export default {
     },
     import(data) {
       this.allowProcess = false;
-      this.editor.fromJSON(data);
+      try{
+        this.editor.fromJSON(data);
+      }catch(e){
+        console.warn(e);
+        alert(e.message);
+      }
       this.allowProcess = true;
       this.editor.view.zoomAt(this.editor.nodes);
       this.process();
@@ -54,35 +59,35 @@ export default {
 
     var menu = new D3NE.ContextMenu({
       Input: {
-        Texture: components.getBuilder("input texture"),
-        Number: components.getBuilder("input number"),
-        Curve: components.getBuilder("input curve"),
-        Color: components.getBuilder("input color")
+        Texture: components.get("input texture"),
+        Number: components.get("input number"),
+        Curve: components.get("input curve"),
+        Color: components.get("input color")
       },
       Generator: {
-        Noise: components.getBuilder("noise texture"),
-        Brick: components.getBuilder("brick texture"),
-        Circle: components.getBuilder("circle texture")
+        Noise: components.get("noise texture"),
+        Brick: components.get("brick texture"),
+        Circle: components.get("circle texture")
       },
       Texture: {
-        Transform: components.getBuilder("texture transform"),
-        Lightness: components.getBuilder("lightness"),
-        Normal: components.getBuilder("normal map"),
-        Blur: components.getBuilder("blur"),
-        Gradient: components.getBuilder("texture gradient"),
-        Invert: components.getBuilder("invert"),
-        Blend: components.getBuilder("blend")
+        Transform: components.get("texture transform"),
+        Lightness: components.get("lightness"),
+        Normal: components.get("normal map"),
+        Blur: components.get("blur"),
+        Gradient: components.get("texture gradient"),
+        Invert: components.get("invert"),
+        Blend: components.get("blend")
       },
       Math: {
-        Add: components.getBuilder("add"),
-        Subtract: components.getBuilder("subtract"),
-        Distance: components.getBuilder("distance"),
-        Multiply: components.getBuilder("multiply"),
-        Divide: components.getBuilder("divide"),
-        Pow: components.getBuilder("pow")
+        Add: components.get("add"),
+        Subtract: components.get("subtract"),
+        Distance: components.get("distance"),
+        Multiply: components.get("multiply"),
+        Divide: components.get("divide"),
+        Pow: components.get("pow")
       },
       Output: {
-        Material: components.getBuilder("output material")
+        Material: components.get("output material")
       }
     });
 

@@ -1,14 +1,12 @@
 import {D3NE} from 'd3-node-editor';
-import createTextureNode, {updatePreview} from '../../common/builders/texture';
+import modifyTextureNode, {updatePreview} from '../../common/builders/texture';
 import sockets from '../../sockets';
 import numInput from '../../controls/num-input';
 import Utils from '../../utils';
 
-export default new D3NE.Component('noise texture', {
-    builder() {
-        var node = createTextureNode();
-
-        node.title = 'Noise texture';
+export default new D3NE.Component('Noise texture', {
+    builder(node) {
+        modifyTextureNode(node);
 
         var inp = new D3NE.Input('Level', sockets.num);
 

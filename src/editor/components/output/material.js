@@ -3,8 +3,8 @@ import sockets from '../../sockets';
 import Utils from '../../utils';
 import store from '../../../store';
 
-export default new D3NE.Component('output material', {
-    builder() {
+export default new D3NE.Component('Output material', {
+    builder(node) {
         var inp1 = new D3NE.Input('Diffuse', sockets.image);
         var inp2 = new D3NE.Input('Normal', sockets.image);
         var inp3 = new D3NE.Input('Roughness', sockets.image);
@@ -13,8 +13,7 @@ export default new D3NE.Component('output material', {
         var inp6 = new D3NE.Input('Displacement', sockets.image);
         var inp7 = new D3NE.Input('Alpha', sockets.image);
 
-        return new D3NE
-            .Node('Output material')
+        return node
             .addInput(inp1)
             .addInput(inp2)
             .addInput(inp3)
@@ -24,7 +23,7 @@ export default new D3NE.Component('output material', {
             .addInput(inp7);
     },
     async worker(node, inputs, outputs) {
-
+        
         var diffuse = inputs[0][0]instanceof WebGLTexture
             ? inputs[0][0]
             : Utils.createMockTexture();

@@ -48,13 +48,13 @@ export default {
         transform,
         output
     ],
-    getBuilder(name) {
+    get(name) {
         var comp = this
             .list
-            .find(item => item.name === name);
+            .find(item => item.name.toUpperCase() === name.toUpperCase());
 
         if (!comp) 
             throw new Error(`Component '${name}' not found`);
-        return comp.builder;
+        return comp;
     }
 };

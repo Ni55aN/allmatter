@@ -1,10 +1,10 @@
 import {D3NE} from 'd3-node-editor';
-import createTextureNode from '../../common/builders/texture';
+import modifyTextureNode from '../../common/builders/texture';
 import modifyIdInput from '../../common/builders/modificator/input-id'
 
 export default new D3NE.Component('input texture', {
-    builder() {
-        var node = modifyIdInput(createTextureNode());
+    builder(node) {
+        var node = modifyIdInput(modifyTextureNode(node));
 
         node.title = 'Input texture';
 
