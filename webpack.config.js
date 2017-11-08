@@ -24,7 +24,8 @@ module.exports = (env) => {
             }
         },
         devServer: {
-            contentBase: './dist'
+            contentBase: './dist',
+            hot: true
         },
         output: {
             path: path.resolve(__dirname, 'dist'),
@@ -61,6 +62,8 @@ module.exports = (env) => {
         },
         devtool: 'source-map',
         plugins: [
+            new webpack.NamedModulesPlugin(),
+            new webpack.HotModuleReplacementPlugin(),
             new webpack
                 .optimize
                 .CommonsChunkPlugin({
