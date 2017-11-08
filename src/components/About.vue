@@ -1,11 +1,12 @@
 <template lang="pug">
-vodal(:show="show",animation="door",@hide="hide",:closeOnEsc="true")
-  .header About
-  .body.about
-    img.logo(src="~../../logo.svg")
-    div Allmatter is a 3D material authoring tool.
-    div Author: 
-        a(target="_blank" href="https://github.com/Ni55aN") Vitaliy Stoliarov
+#about
+  vodal(:show="show",animation="door",@hide="hide",:closeOnEsc="true")
+    .header About
+    .body
+      img.logo(src="~../../logo.svg")
+      div Allmatter is a 3D material authoring tool.
+      div Author: 
+          a(target="_blank" href="https://github.com/Ni55aN") Vitaliy Stoliarov
 </template>
 
 
@@ -36,21 +37,14 @@ export default {
 <style lang="sass">
 @import "~vodal/common.css";
 @import "~vodal/door.css";
-.vodal-dialog
-  font-family: Gill Sans, sans-serif
-  max-width: 90vw
-  .header
-    font-size: 17px
-    padding-bottom: 10px
-    border-bottom: 1px solid #e9e9e9
-  .body.about
-    color: #a1a1a1
-    padding-top: 15px
-    font-size: 16px
-    .logo
-      width: 60%
+@import "../style/vodal.sass";
+
+#about
+  .vodal-dialog
+    @extend .vodal
+    max-width: 90vw
     div
       padding: 10px 0
-    a
-      color: #717171
+    .logo
+      width: 60%
 </style>

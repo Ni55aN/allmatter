@@ -1,36 +1,37 @@
 <template lang="pug">
-vodal(:show="show",animation="door",@hide="hide",:closeOnEsc="true")
-  .header Allmatter Hub
-  .body.hub
-    .statusbar
-        input.search(@input="search($event.target.value)", placeholder="Search material")
-        .username(v-if="userAuth") {{user.name}}
-        img.signin(v-else, @click="auth",src="https://developers.google.com/identity/images/btn_google_signin_light_normal_web.png")
-    
-    SectionMaterials(title="Current",
-            :click="()=>{}"
-            :materials="activeMaterials",
-            :button="{click:save,text:'💾'}"
-            )
-      input.title(slot="title", 
-                  slot-scope="props",
-                  v-model="materialName"
-                )
-    
-    SectionMaterials(title="Your",
-            :loading="loading",
-            :click="importMaterial",
-            :materials="yourMaterials",
-            :button="{click:remove,text:'✗'}"
-            )
-    
-    SectionMaterials(title="All",
-            :loading="loading",
-            :click="importMaterial",
-            :materials="materials",
-            :button="{}"
-            )
-      span(slot="button", slot-scope="props")
+#hub
+  vodal(:show="show",animation="door",@hide="hide",:closeOnEsc="true")
+    .header Allmatter Hub
+    .body
+      .statusbar
+          input.search(@input="search($event.target.value)", placeholder="Search material")
+          .username(v-if="userAuth") {{user.name}}
+          img.signin(v-else, @click="auth",src="https://developers.google.com/identity/images/btn_google_signin_light_normal_web.png")
+      
+      SectionMaterials(title="Current",
+              :click="()=>{}"
+              :materials="activeMaterials",
+              :button="{click:save,text:'💾'}"
+              )
+        input.title(slot="title", 
+                    slot-scope="props",
+                    v-model="materialName"
+                  )
+      
+      SectionMaterials(title="Your",
+              :loading="loading",
+              :click="importMaterial",
+              :materials="yourMaterials",
+              :button="{click:remove,text:'✗'}"
+              )
+      
+      SectionMaterials(title="All",
+              :loading="loading",
+              :click="importMaterial",
+              :materials="materials",
+              :button="{}"
+              )
+        span(slot="button", slot-scope="props")
 </template>
 <script>
 //// dsd 💾 ✗
@@ -179,24 +180,25 @@ export default {
 <style lang="sass">
 @import "~vodal/common.css";
 @import "~vodal/door.css";
+@import "../../style/vodal.sass";
 
-.vodal-dialog
+#hub
+  .vodal-dialog
+    @extend .vodal
     min-width: 80vw
     min-height: 90vh
-    .body.hub
-        color: #a1a1a1
-        font-size: 16px
-        overflow-y: auto
-        height: calc(100% - 30px)
-        .statusbar
-          padding: 15px
-          height: 40px
-          .search
+    .body
+      overflow-y: auto
+      height: calc(100% - 30px)
+      .statusbar
+        padding: 15px
+        height: 40px
+        .search
 
-          .username
-            float: right
-          .signin
-            float: right
-            height: 32px
+        .username
+          float: right
+        .signin
+          float: right
+          height: 32px
 </style>
 
