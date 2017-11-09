@@ -1,23 +1,21 @@
 import {D3NE} from 'd3-node-editor';
 import preview from '../../controls/preview'
 import sockets from '../../sockets';
-import eventbus from '../../../eventbus';
+import store from '../../../store';
 
-export function updatePreview(node, obj) {
-    eventbus.$emit('updateNodePreview', node, obj);
-}
-
+//builder
 export default function (node) {
     var out = new D3NE.Output('Image', sockets.image);
     var ctrl = preview();
 
-    eventbus.$on('updateNodePreview', (nodeData, canvas) => {
-        if (node.id === nodeData.id) 
-            ctrl.updatePreview(canvas);
-    }
-    );
+    store.commit('registerPreviewControl', { id: node.id, control: ctrl });
 
     return node
         .addControl(ctrl)
         .addOutput(out);
+}
+
+// in worker
+export function updatePreview(node, canvas) {
+    store.commit('updatePreviewControl', {id: node.id, canvas: canvas})
 }

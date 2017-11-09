@@ -1,19 +1,24 @@
 import {D3NE} from 'd3-node-editor';
 import colorPicker from '../../controls/color-picker';
-import modifyIdInput from '../../common/builders/modificator/input-id';
 import sockets from '../../sockets';
+import textInput from '../../controls/text-input';
 import Color from '../../../color';
+import { moduleManager } from '../../module';
 
 export default new D3NE.Component('Input color', {
     builder(node) {
         var out = new D3NE.Output('Color', sockets.color);
-        var ctrl = colorPicker('color', new Color());
+        var ctrl = textInput('name', 'Name');
+        var ctrl2 = colorPicker('color', new Color());
 
-        return modifyIdInput(node)
+        return node
             .addOutput(out)
-            .addControl(ctrl);
+            .addControl(ctrl)
+            .addControl(ctrl2);
     },
     worker(node, inputs, outputs) {
-        outputs[0] = Color.fromArray(node.data.color);
+        moduleManager.workerInputs(...arguments);
+        if (!outputs[0])
+            outputs[0] = Color.fromArray(node.data.color);
     }
 });

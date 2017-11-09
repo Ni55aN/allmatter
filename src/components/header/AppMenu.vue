@@ -143,7 +143,7 @@ menu
       position: absolute
       left: 0
       top: 100%
-      z-index: 1
+      z-index: 5
       min-width: 220px
       background-color: white
       box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3)

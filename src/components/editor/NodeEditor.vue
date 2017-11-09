@@ -1,54 +1,92 @@
 <template lang="pug">
 .node-editor
+  module-stack(:items="names",
+     @clickitem="(i) => openModule(modules[i])",
+     @renameitem="(i,val) => renameModule(modules[i],val)"
+     )
 </template>
 
 <script>
-import components from "../editor/components";
-import store from "../store";
-import eventbus from "../eventbus";
+import components from "../../editor/components";
+import store from "../../store";
+import eventbus from "../../eventbus";
 import _ from "lodash";
-import LocalStorage from "../localstorage";
+import LocalStorage from "../../localstorage";
 import { D3NE } from "d3-node-editor";
 import "d3-node-editor/build/d3-node-editor.css";
 import * as Texturity from "texturity.js";
+import { moduleManager } from "../../editor/module";
+import ModuleStack from "./ModuleStack.vue";
+
+var root = { name: "unnamed", data: null };
 
 export default {
   data() {
     return {
+      root: root,
+      active: root,
       editor: null,
       engine: null,
-      allowProcess: false
+      modules: [root]
     };
   },
+  computed: {
+    names() {
+      return this.modules.map(m => m.name);
+    }
+  },
+  components: {
+    ModuleStack
+  },
   methods: {
+    openModule(module) {
+      var i = this.modules.indexOf(module);
+      if (i >= 0) this.modules.splice(i + 1);
+      else this.modules.push(module);
+
+      this.active = module;
+
+      this.editor.fromJSON(module.data);
+      this.editor.view.zoomAt(this.editor.nodes);
+      this.process();
+    },
+    renameModule(module, name) {
+      module.name = name;
+      this.saveToStorage();
+    },
     async process() {
       console.time("process");
-      var data = this.editor.toJSON();
-      var startId = Object.keys(data.nodes).filter(
-        key => data.nodes[key].title == "Output material"
-      )[0];
+      var startId = Object.keys(this.root.data.nodes).find(
+        key => this.root.data.nodes[key].title == "Output material"
+      );
 
-      await this.engine.process(data, startId);
+      await this.engine.process(this.root.data, startId);
       console.timeEnd("process");
 
       Texturity.disposeTextures();
     },
     saveToStorage() {
-      LocalStorage.write("allmatter", this.editor.toJSON());
+      this.active.data = this.editor.toJSON();
+      LocalStorage.write("allmatter", this.root);
     },
     restoreFromStorage() {
-      var data = LocalStorage.read("allmatter");
-      if (data) this.import(data);
+      var backup = LocalStorage.read("allmatter");
+
+      if (!backup) return;
+
+      this.root.name = backup.name;
+      this.root.data = backup.data;
+      this.import(this.root.data, this.root.name);
     },
-    import(data) {
-      this.allowProcess = false;
-      try{
+    import(data, name = "unnamed") {
+      this.root.name = this.active.name = name;
+      this.root.data = this.active.data = data;
+      try {
         this.editor.fromJSON(data);
-      }catch(e){
+      } catch (e) {
         console.warn(e);
         alert(e.message);
       }
-      this.allowProcess = true;
       this.editor.view.zoomAt(this.editor.nodes);
       this.process();
       this.saveToStorage();
@@ -86,8 +124,15 @@ export default {
         Divide: components.get("divide"),
         Pow: components.get("pow")
       },
+      Module: {
+        Module: components.get("module")
+      },
       Output: {
-        Material: components.get("output material")
+        Material: components.get("output material"),
+        Texture: components.get("output texture"),
+        Number: components.get("output number"),
+        Curve: components.get("output curve"),
+        Color: components.get("output color")
       }
     });
 
@@ -98,25 +143,26 @@ export default {
       menu
     );
     this.editor.view.zoom.translateExtent([[-3000, -3000], [6000, 6000]]);
-    this.editor.eventListener.on("nodecreate", node => {
+    this.editor.eventListener.on("nodecreate", (node, p) => {
       if (
+        p &&
         node.title === "Output material" &&
-        this.editor.nodes.filter(n => n.title == "Output material").length === 1
+        this.data.nodes.find(n => n.title == "Output material")
       ) {
         alert("Output material already exist");
         return false;
       }
     });
 
-    this.editor.eventListener.on("change", () => {
-      if (!this.allowProcess) return;
+    this.editor.eventListener.on("change", (_, p) => {
+      if (!p) return;
       this.saveToStorage();
     });
 
     this.editor.eventListener.on(
       "nodecreate connectioncreate noderemove connectionremove",
-      async i => {
-        if (!this.allowProcess) return;
+      async (_, p) => {
+        if (!p) return;
         setTimeout(this.process.bind(this));
       }
     );
@@ -125,6 +171,7 @@ export default {
       store.state.editorIdentifier,
       components.list
     );
+    moduleManager.setEngine(this.engine);
 
     store.watch(
       () => store.getters.textureSize,
@@ -142,11 +189,12 @@ export default {
     });
 
     eventbus.$on("saveproject", callback => {
-      var data = this.editor.toJSON();
-      callback(data);
+      callback(this.root.data);
     });
 
     eventbus.$on("openproject", this.import.bind(this));
+
+    eventbus.$on("openmodule", this.openModule.bind(this));
 
     this.restoreFromStorage();
 
@@ -192,5 +240,15 @@ export default {
 	padding: 0 2px
 	width: 140px
 	height: 140px
+
+.module-control 
+  position: relative
+  button 
+    position: absolute
+    right: 0
+    top: 0
+    height: 100%
+    background: white
+    border: 1px solid #564;
 
 </style>

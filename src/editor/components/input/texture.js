@@ -1,14 +1,15 @@
 import {D3NE} from 'd3-node-editor';
 import modifyTextureNode from '../../common/builders/texture';
-import modifyIdInput from '../../common/builders/modificator/input-id'
+import sockets from '../../sockets';
+import textInput from '../../controls/text-input';
+import { moduleManager } from '../../module';
 
-export default new D3NE.Component('input texture', {
+export default new D3NE.Component('Input texture', {
     builder(node) {
-        var node = modifyIdInput(modifyTextureNode(node));
+        modifyTextureNode(node);
 
-        node.title = 'Input texture';
-
-        var ctrl = new D3NE.Control('<input type="file"/>', (el, control) => {
+        var ctrl = textInput('name', 'Name');
+        var ctrl2 = new D3NE.Control('<input type="file"/>', (el, control) => {
             el.addEventListener('change', () => {
                 control
                     .getNode()
@@ -17,7 +18,11 @@ export default new D3NE.Component('input texture', {
             });
         });
 
-        return node.addControl(ctrl);
+        return node
+            .addControl(ctrl, 0)
+            //.addControl(ctrl2)
     },
-    async worker(node, inputs, outputs) {}
+    async worker(node, inputs, outputs) {
+        moduleManager.workerInputs(...arguments);
+    }
 });

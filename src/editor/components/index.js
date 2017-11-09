@@ -22,7 +22,13 @@ import normalMap from './texture/normal-map';
 import gradient from './texture/gradient';
 import transform from './texture/transform';
 
+import module from './module/module';
+
 import output from './output/material';
+import outputnumber from './output/number';
+import outputtexture from './output/texture';
+import outputcurve from './output/curve';
+import outputcolor from './output/color';
 
 export default {
     list : [
@@ -46,7 +52,12 @@ export default {
         normalMap,
         gradient,
         transform,
-        output
+        module,
+        output,
+        outputnumber,
+        outputtexture,
+        outputcurve,
+        outputcolor
     ],
     get(name) {
         var comp = this

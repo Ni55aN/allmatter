@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import NodeEditor from "./NodeEditor.vue";
+import NodeEditor from "./editor/NodeEditor.vue";
 import TexturePreview from "./TexturePreview.vue";
 import MaterialPreview from "./MaterialPreview.vue";
 
