@@ -189,7 +189,7 @@ export default {
     });
 
     eventbus.$on("saveproject", callback => {
-      callback(this.root.data);
+      callback(this.root);
     });
 
     eventbus.$on("openproject", this.import.bind(this));

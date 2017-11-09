@@ -68,8 +68,8 @@ export default {
       eventbus.$emit("newproject");
     },
     saveProject() {
-      eventbus.$emit("saveproject", data => {
-        var blob = new Blob([JSON.stringify(data)], {
+      eventbus.$emit("saveproject", project => {
+        var blob = new Blob([JSON.stringify(project)], {
           type: "application/json;charset=utf-8"
         });
 

@@ -13,10 +13,6 @@
               :materials="activeMaterials",
               :button="{click:save,text:'💾'}"
               )
-        input.title(slot="title", 
-                    slot-scope="props",
-                    v-model="materialName"
-                  )
       
       SectionMaterials(title="Your",
               :loading="loading",
@@ -47,7 +43,6 @@ export default {
     return {
       user: null,
       show: false,
-      materialName: "unnamed",
       loading: false,
       activeMaterials: [],
       materials: []
@@ -74,11 +69,11 @@ export default {
         return;
       }
       eventbus.$emit("preview", src => {
-        eventbus.$emit("saveproject", async data => {
+        eventbus.$emit("saveproject", async project => {
           var material = {
-            title: this.materialName,
+            title: project.name,
             preview: src,
-            data: data
+            data: project.data
           };
 
           var res = await this.crossFetch("/material", "POST", material);
@@ -115,7 +110,7 @@ export default {
     },
     importMaterial(material) {
       this.show = false;
-      eventbus.$emit("openproject", material.data);
+      eventbus.$emit("openproject", material.data, material.title);
     },
     auth() {
       var url = "https://allmatter.herokuapp.com/auth/google";
@@ -158,12 +153,12 @@ export default {
       this.loadMaterials();
 
       eventbus.$emit("preview", src => {
-        eventbus.$emit("saveproject", async data => {
+        eventbus.$emit("saveproject", async project => {
           this.activeMaterials = [
             {
-              title: this.materialName,
+              title: project.name,
               preview: src,
-              data: data
+              data: project.data
             }
           ];
         });

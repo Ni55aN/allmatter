@@ -18,9 +18,9 @@ Vue.directive('file-dialog', {
 
             reader.onload = (e) => {
                 input.value = ''; //clear files
-                var data = JSON.parse(e.target.result);
+                var project = JSON.parse(e.target.result);
 
-                evetbus.$emit('openproject', data);
+                evetbus.$emit('openproject', project.data, project.name);
             };
             reader.onabort = (e) => {
                 alert(e.message);
