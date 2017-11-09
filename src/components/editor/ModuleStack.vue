@@ -27,8 +27,6 @@ export default {
       return {width:(20+item.length*8)+'px'}
     },
     clickitem(i,el) {
-      console.dir(el);
-      
       this.$emit("clickitem", i);
       el.blur();
 

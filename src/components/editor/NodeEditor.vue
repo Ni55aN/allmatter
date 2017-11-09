@@ -201,7 +201,7 @@ export default {
     if (this.editor.nodes.length === 0) {
       fetch("./projects/guide.mtr")
         .then(resp => resp.json())
-        .then(this.import.bind(this));
+        .then(proj => this.import(proj.data,proj.name));
     }
   }
 };
