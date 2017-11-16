@@ -1,4 +1,3 @@
-import {D3NE} from 'd3-node-editor';
 import preview from '../../controls/preview'
 import sockets from '../../sockets';
 import store from '../../../store';

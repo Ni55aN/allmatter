@@ -1,5 +1,3 @@
-import {D3NE} from 'd3-node-editor';
-
 var num = new D3NE.Socket('number', 'Number value', 'hint');
 var image = new D3NE.Socket('image', 'Image', 'hint');
 var value = new D3NE.Socket('value', 'Image', 'hint');

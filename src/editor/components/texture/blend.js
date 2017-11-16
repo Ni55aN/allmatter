@@ -1,4 +1,3 @@
-import {D3NE} from 'd3-node-editor';
 import modifyTextureNode from '../../common/builders/texture';
 import sockets from '../../sockets';
 

@@ -1,4 +1,3 @@
-import {D3NE} from 'd3-node-editor';
 import modifyMath from './math';
 import sockets from '../../sockets';
 

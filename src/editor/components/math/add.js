@@ -1,4 +1,3 @@
-import {D3NE} from 'd3-node-editor';
 import modifyBinaryMath from '../../common/builders/binary-math';
 import binaryOperation from '../../common/workers/binary-operation';
 

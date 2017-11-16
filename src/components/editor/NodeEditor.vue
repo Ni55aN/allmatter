@@ -12,7 +12,6 @@ import store from "../../store";
 import eventbus from "../../eventbus";
 import _ from "lodash";
 import LocalStorage from "../../localstorage";
-import { D3NE } from "d3-node-editor";
 import "d3-node-editor/build/d3-node-editor.css";
 import * as Texturity from "texturity.js";
 import { moduleManager } from "../../editor/module";
@@ -39,14 +38,14 @@ export default {
     ModuleStack
   },
   methods: {
-    openModule(module) {
+    async openModule(module) {
       var i = this.modules.indexOf(module);
       if (i >= 0) this.modules.splice(i + 1);
       else this.modules.push(module);
 
       this.active = module;
 
-      this.editor.fromJSON(module.data);
+      await this.editor.fromJSON(module.data);
       this.editor.view.zoomAt(this.editor.nodes);
       this.process();
     },
@@ -59,8 +58,8 @@ export default {
       var startId = Object.keys(this.root.data.nodes).find(
         key => this.root.data.nodes[key].title == "Output material"
       );
-
-      await this.engine.process(this.root.data, startId);
+      
+      await this.engine.process(this.root.data, startId?parseInt(startId):null);
       console.timeEnd("process");
 
       Texturity.disposeTextures();
@@ -78,11 +77,11 @@ export default {
       this.root.data = backup.data;
       this.import(this.root.data, this.root.name);
     },
-    import(data, name = "unnamed") {
+    async import(data, name = "unnamed") {
       this.root.name = this.active.name = name;
       this.root.data = this.active.data = data;
       try {
-        this.editor.fromJSON(data);
+        await this.editor.fromJSON(data);
       } catch (e) {
         console.warn(e);
         alert(e.message);
@@ -180,8 +179,8 @@ export default {
 
     eventbus.$on("process", this.process.bind(this));
 
-    eventbus.$on("newproject", () => {
-      this.editor.fromJSON({
+    eventbus.$on("newproject", async () => {
+      await this.editor.fromJSON({
         id: store.state.editorIdentifier,
         nodes: {},
         groups: {}

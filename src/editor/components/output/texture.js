@@ -1,4 +1,3 @@
-import {D3NE} from 'd3-node-editor';
 import textInput from '../../controls/text-input';
 import sockets from '../../sockets';
 import { moduleManager } from '../../module';

@@ -1,4 +1,3 @@
-import {D3NE} from 'd3-node-editor';
 import colorPicker from '../../controls/color-picker';
 import sockets from '../../sockets';
 import textInput from '../../controls/text-input';

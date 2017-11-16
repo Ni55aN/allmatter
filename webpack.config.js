@@ -72,7 +72,11 @@ module.exports = (env) => {
             new webpack
                 .optimize
                 .CommonsChunkPlugin({name: 'common'}),
-
+            new webpack.ProvidePlugin({
+                'd3': 'd3',
+                'alight': 'alight',
+                'D3NE': 'd3-node-editor'
+            }),
             new CopyWebpackPlugin([
                 {
                     from: './models',

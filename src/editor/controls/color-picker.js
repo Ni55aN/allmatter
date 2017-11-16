@@ -1,4 +1,3 @@
-import {D3NE} from 'd3-node-editor';
 import Color from '../../color';
 import eventbus from '../../eventbus';
 

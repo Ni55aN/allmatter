@@ -1,4 +1,3 @@
-import { D3NE } from 'd3-node-editor';
 import { getSocket, moduleManager } from '../../module';
 import store from '../../../store';
 import moduleEdit from '../../controls/module-edit';
