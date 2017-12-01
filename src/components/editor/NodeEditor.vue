@@ -222,23 +222,20 @@ export default {
   &.color
     background: #279ff2
 
-.node img,
-.node canvas
-	box-sizing: content-box
-	border: 1px solid white
-  margin: 2px
+.node
+  img,canvas
+    box-sizing: content-box
+    border: 1px solid white
+    margin: 2px
+    &:hover
+      border: 3px solid white
+      margin: 0
 
-
-.node img:hover,
-.node canvas:hover
-	border: 3px solid white
-
-
-.node input[type="color"]
-	border-radius: 0
-	padding: 0 2px
-	width: 140px
-	height: 140px
+  input[type="color"]
+    border-radius: 0
+    padding: 0 2px
+    width: 140px
+    height: 140px
 
 .module-control 
   position: relative
