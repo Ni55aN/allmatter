@@ -78,7 +78,7 @@ module.exports = (env) => {
             new CopyWebpackPlugin([
                 {
                     from: './assets',
-                    to: 'assets'
+                    to: '.'
                 }
             ]),
             new HtmlWebpackPlugin({
