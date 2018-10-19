@@ -5,7 +5,7 @@ var s = (selector) => document.querySelector(selector);
 var sAll = (selector) => document.querySelectorAll(selector);
 var compatibility = checkBrowserComp();
 
-window.onerror = function(message, url, line) {
+window.onerror = function(message) {
     try{
         document.getElementsByClassName('cssload-container')[0].innerHTML = message;
     }

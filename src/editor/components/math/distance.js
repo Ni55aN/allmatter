@@ -1,13 +1,19 @@
+import { Component } from 'rete';
 import modifyBinaryMath from '../../common/builders/binary-math';
 import binaryOperation from '../../common/workers/binary-operation';
 
-export default new D3NE.Component('Distance', {
+export default class ColorComponent extends Component {
+    constructor() {
+        super('Distance');
+    }
+    
     builder(node) {
         modifyBinaryMath(node);
 
         return node;
-    },
-    worker(node, inputs, outputs) {
-        outputs[0] = binaryOperation(inputs, 'abs(a - b)');
     }
-});
+
+    worker(node, inputs, outputs) {
+        outputs['value'] = binaryOperation(inputs, 'abs(a - b)');
+    }
+};

@@ -1,16 +1,20 @@
+import { Component, Input } from 'rete';
 import modifyTextureNode from '../../common/builders/texture';
 import sockets from '../../sockets';
 
-export default new D3NE.Component('Texture gradient', {
+export default class extends Component {
+    constructor() {
+        super('Texture gradient')
+    }
+    
     builder(node) {
         modifyTextureNode(node);
 
-        var inp = new D3NE.Input('Image', sockets.image);
-        var inp2 = new D3NE.Input('Curve', sockets.curve);
+        var inp = new Input('image', 'Image', sockets.image);
+        var inp2 = new Input('curve', 'Curve', sockets.curve);
 
         return node
             .addInput(inp)
             .addInput(inp2);
-    },
-    worker(node, inputs, outputs) {}
-});
+    }
+}

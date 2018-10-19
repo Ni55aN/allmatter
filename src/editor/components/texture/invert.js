@@ -1,26 +1,32 @@
+import { Component, Input } from 'rete';
 import Utils from '../../utils';
 import modifyTextureNode, {updatePreview} from '../../common/builders/texture';
 import sockets from '../../sockets';
 
-export default new D3NE.Component('Invert', {
+export default class extends Component {
+    constructor() {
+        super('Invert')
+    }
+    
     builder(node) {
         modifyTextureNode(node);
 
-        var inp = new D3NE.Input('Image', sockets.image);
+        var inp = new Input('image', 'Image', sockets.image);
 
         return node.addInput(inp);
-    },
-    async worker(node, inputs, outputs) {
+    }
 
-        var texture = inputs[0][0]instanceof WebGLTexture
-            ? inputs[0][0]
+    async worker(node, inputs, outputs) {
+        var texture = inputs['image'][0] instanceof WebGLTexture
+            ? inputs['image'][0]
             : Utils.createMockTexture();
 
         var result = Utils.createMockCanvas();
 
         result.blend(texture, 1, 'b - a');
 
-        outputs[0] = result.toTexture();
+        outputs['image'] = result.toTexture();
+        this.editor.nodes.find(n => n.id === node.id).controls.get('preview').updatePreview(result);
         updatePreview(node, result);
     }
-});
+}

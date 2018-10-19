@@ -156,8 +156,8 @@ export class MaterialPreview {
   }
 
   updateMap(src, mapName) {
-    return new Promise((res, rej) => {
-      var texture = new THREE.TextureLoader().load(src, texture => {
+    return new Promise((res) => {
+      new THREE.TextureLoader().load(src, texture => {
         if (this.mesh.material[mapName] instanceof THREE.Texture) {
           this.mesh.material[mapName].dispose();
           this.mesh.material[mapName] = null;

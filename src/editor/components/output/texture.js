@@ -1,15 +1,18 @@
-import textInput from '../../controls/text-input';
+import { Component, Input } from 'rete';
+import FieldControl from '../../controls/field';
 import sockets from '../../sockets';
-import { moduleManager } from '../../module';
 
-export default new D3NE.Component('Output texture', {
+export default class extends Component {
+    constructor() {
+        super('Output texture')
+    }
+
     builder(node) {
-        var inp = new D3NE.Input('Texture', sockets.image);
-        var ctrl = textInput('name', 'Name');
+        var inp = new Input('input', 'Texture', sockets.image);
+        var ctrl = new FieldControl(this.editor, 'name');
 
         return node
             .addInput(inp)
             .addControl(ctrl);
-    },
-    worker: moduleManager.workerOutputs.bind(moduleManager)
-});
+    }
+}

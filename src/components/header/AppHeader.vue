@@ -7,7 +7,6 @@ header
 </template>
 
 <script>
-import store from "../../store";
 import AppMenu from "./AppMenu.vue";
 
 export default {

@@ -1,15 +1,22 @@
-import textInput from '../../controls/text-input';
+import { Component, Input } from 'rete';
+import FieldControl from '../../controls/field';
 import sockets from '../../sockets';
-import { moduleManager } from '../../module';
 
-export default new D3NE.Component('Output number', {
+export default class extends Component {
+    constructor() {
+        super('Output number');
+        this.module = {
+            nodeType: 'output',
+            socket: sockets.num
+        }
+    }
+
     builder(node) {
-        var inp = new D3NE.Input('Number', sockets.num);
-        var ctrl = textInput('name', 'Name');
+        var inp = new Input('input', 'Number', sockets.num);
+        var ctrl = new FieldControl(this.editor, 'name', {value: 'num'});
 
         return node
             .addControl(ctrl)
             .addInput(inp);
-    },
-    worker: moduleManager.workerOutputs.bind(moduleManager)
-});
+    }
+}

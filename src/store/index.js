@@ -6,7 +6,6 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        editorIdentifier: 'allmatter@0.2.1',
         tour: new Tour(),
         textureSize: 1024,
         geometry: null,

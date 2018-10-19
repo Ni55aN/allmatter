@@ -1,8 +1,10 @@
-var num = new D3NE.Socket('number', 'Number value', 'hint');
-var image = new D3NE.Socket('image', 'Image', 'hint');
-var value = new D3NE.Socket('value', 'Image', 'hint');
-var curve = new D3NE.Socket('curve', 'Curve', 'hint');
-var color = new D3NE.Socket('color', 'Color', 'hint');
+import { Socket } from 'rete';
+
+var num = new Socket('Number value');
+var image = new Socket('Image');
+var value = new Socket('Image');
+var curve = new Socket('Curve');
+var color = new Socket('Color');
 
 num.combineWith(value);
 image.combineWith(value);

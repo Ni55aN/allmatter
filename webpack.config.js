@@ -14,7 +14,6 @@ module.exports = (env) => {
             vue: [
                 'vue', 'vuex'
             ],
-            d3ne: ['d3-node-editor'],
             texturity: ['texturity.js'],
             app: './src/app.js'
         },
@@ -39,6 +38,14 @@ module.exports = (env) => {
                 }, {
                     test: /\.(sass|scss)$/,
                     use: ['style-loader', 'css-loader', 'sass-loader']
+                }, {
+                    enforce: "pre",
+                    test: /\.(js|vue)$/,
+                    exclude: /node_modules/,
+                    loader: "eslint-loader",
+                    options: {
+                        fix: true
+                    }
                 }, {
                     test: /\.js$/,
                     exclude: /node_modules/,
@@ -67,14 +74,11 @@ module.exports = (env) => {
             new webpack
                 .optimize
                 .CommonsChunkPlugin({
-                    names: ['three', 'vue', 'd3ne', 'texturity', 'splash']
+                    names: ['three', 'vue', 'texturity', 'splash']
                 }),
             new webpack
                 .optimize
                 .CommonsChunkPlugin({name: 'common'}),
-            new webpack.ProvidePlugin({
-                'D3NE': 'd3-node-editor'
-            }),
             new CopyWebpackPlugin([
                 {
                     from: './assets',

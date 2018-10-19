@@ -1,21 +1,29 @@
+import { Control } from 'rete';
 import Color from '../../color';
 import eventbus from '../../eventbus';
 
-export default function (key, color) {
-    return new D3NE.Control('<input type="color"/>', (el, control) => {
+export default class ColorPicker extends Control {
+    
+    constructor(key, color) {
+        super();
+        color = this.getData(key) ? Color.fromArray(this.getData(key)) : color.clone();
+        this.putData(key, color.toArray());
 
-        color = control.getData(key)
-            ? Color.fromArray(control.getData(key))
-            : color.clone();
-        el.value = color.toHex();
-        control.putData(key, color.toArray());
-
-        el.addEventListener('change', (e) => {
-            let c = Color.fromHex(el.value);
-
-            control.putData(key, c.toArray());
-            eventbus.$emit('process');
-        });
-
-    });
+        this.components = {
+            template: '<input type="color" v-model="value" @change="change()"/>',
+            data() {
+                return {
+                    value: color.toHex()
+                }
+            },
+            methods: {
+                change() {
+                    let c = Color.fromHex(this.value);
+        
+                    this.putData(key, c.toArray());
+                    eventbus.$emit('process');
+                }
+            }
+        }
+    };
 }

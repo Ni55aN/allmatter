@@ -1,26 +1,32 @@
+import { Component, Input } from 'rete';
 import sockets from '../../sockets';
-import numInput from '../../controls/num-input';
+import FieldControl from '../../controls/field';
 import modifyMath from '../../common/builders/math';
 
-export default new D3NE.Component('Pow', {
+export default class ColorComponent extends Component {
+    constructor() {
+        super('Pow');
+    }
+    
     builder(node) {
         modifyMath(node);
 
-        var inp = new D3NE.Input('Pow', sockets.num);
+        var inp = new Input('pow', 'Pow', sockets.num);
 
-        var ctrl = numInput('pow', 'Value');
+        var ctrl = new FieldControl(this.editor, 'pow', {type: 'number', value: 2});
 
         inp.addControl(ctrl);
 
         return node.addInput(inp);
-    },
-    worker(node, inputs, outputs) {
-        var pow = typeof inputs[1][0] === 'number'
-            ? inputs[1][0]
-            : node.data.pow;
-
-        outputs[0] = unaryOperation(inputs, (a) => {
-            return Math.pow(a, pow);
-        });
     }
-});
+
+    // worker(node, inputs) {
+    //     var pow = typeof inputs['pow'][0] === 'number'
+    //         ? inputs['pow'][0]
+    //         : node.data.pow;
+
+    //     outputs['value'] = unaryOperation(inputs, (a) => {
+    //         return Math.pow(a, pow);
+    //     });
+    // }
+};

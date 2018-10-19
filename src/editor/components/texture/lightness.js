@@ -1,34 +1,40 @@
+import { Component, Input } from 'rete';
 import Utils from '../../utils';
-import modifyTextureNode, {updatePreview} from '../../common/builders/texture';
+import modifyTextureNode from '../../common/builders/texture';
 import sockets from '../../sockets';
-import numInput from '../../controls/num-input';
+import FieldControl from '../../controls/field';
 
-export default new D3NE.Component('Lightness', {
+export default class extends Component {
+    constructor() {
+        super('Lightness')
+    }
+    
     builder(node) {
         modifyTextureNode(node);
 
-        var inp = new D3NE.Input('Image', sockets.image);
-        var inp2 = new D3NE.Input('Scalar', sockets.num);
+        var inp = new Input('image', 'Image', sockets.image);
+        var inp2 = new Input('scalar', 'Scalar', sockets.num);
 
-        inp2.addControl(numInput('scalar', 'Scalar', 0));
+        inp2.addControl(new FieldControl(this.editor, 'scalar', {type: 'number', value: 1}));
 
         return node
             .addInput(inp)
             .addInput(inp2);
-    },
+    }
+
     async worker(node, inputs, outputs) {
-        var texture = inputs[0][0]instanceof WebGLTexture
-            ? inputs[0][0]
+        var texture = inputs['image'][0]instanceof WebGLTexture
+            ? inputs['image'][0]
             : Utils.createMockTexture();
-        var scalar = typeof inputs[1][0] === 'number'
-            ? inputs[1][0]
+        var scalar = typeof inputs['scalar'][0] === 'number'
+            ? inputs['scalar'][0]
             : node.data.scalar;
 
         var result = Utils.createMockCanvas();
 
         result.blend(texture, scalar, 'a+b');
 
-        outputs[0] = result.toTexture();
-        updatePreview(node, result);
+        outputs['image'] = result.toTexture();
+        this.editor.nodes.find(n => n.id === node.id).controls.get('preview').updatePreview(result);
     }
-});
+}

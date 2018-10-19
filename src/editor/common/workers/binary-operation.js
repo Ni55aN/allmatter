@@ -2,11 +2,11 @@ import Color from '../../../color';
 import Utils from '../../utils';
 
 export default async function (inputs, expression) {
-    var a = inputs[0][0];
-    var b = inputs[1][0];
+    var a = inputs['value1'][0];
+    var b = inputs['value2'][0];
 
-    var sql = Math.sqrt,
-        abs = Math.abs;
+    // var sql = Math.sqrt,
+    //     abs = Math.abs;
 
     if (typeof a === 'number' && typeof b === 'number') 
         return eval(expression);
@@ -20,8 +20,8 @@ export default async function (inputs, expression) {
     }
 
     if (a instanceof Color && b instanceof Color) {
-        var c1 = a;
-        var c2 = b;
+        // var c1 = a;
+        // var c2 = b;
 
         var color = new Color();
 
@@ -57,12 +57,12 @@ export default async function (inputs, expression) {
         return result.toTexture();
     }
 
-    if (typeof a === 'number' && b instanceof Color || ([a, b] = [
-        b, a
-    ], typeof a === 'number' && b instanceof Color)) {
+    // if (typeof a === 'number' && b instanceof Color || ([a, b] = [
+    //     b, a
+    // ], typeof a === 'number' && b instanceof Color)) {
 
-        var color = new Color(f(b.r, a), f(b.g, a), f(b.b, a));
+    //     var color = new Color(f(b.r, a), f(b.g, a), f(b.b, a));
 
-        return color;
-    }
+    //     return color;
+    // }
 }

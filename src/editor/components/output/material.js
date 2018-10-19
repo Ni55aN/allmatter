@@ -1,16 +1,21 @@
+import { Component, Input } from 'rete';
 import sockets from '../../sockets';
 import Utils from '../../utils';
 import store from '../../../store';
 
-export default new D3NE.Component('Output material', {
+export default class extends Component {
+    constructor() {
+        super('Output material')
+    }
+
     builder(node) {
-        var inp1 = new D3NE.Input('Diffuse', sockets.image);
-        var inp2 = new D3NE.Input('Normal', sockets.image);
-        var inp3 = new D3NE.Input('Roughness', sockets.image);
-        var inp4 = new D3NE.Input('Metalness', sockets.image);
-        var inp5 = new D3NE.Input('Emissive', sockets.image);
-        var inp6 = new D3NE.Input('Displacement', sockets.image);
-        var inp7 = new D3NE.Input('Alpha', sockets.image);
+        var inp1 = new Input('diffuse', 'Diffuse', sockets.image);
+        var inp2 = new Input('normal','Normal', sockets.image);
+        var inp3 = new Input('rough', 'Roughness', sockets.image);
+        var inp4 = new Input('metal','Metalness', sockets.image);
+        var inp5 = new Input('emis','Emissive', sockets.image);
+        var inp6 = new Input('disp','Displacement', sockets.image);
+        var inp7 = new Input('alpha', 'Alpha', sockets.image);
 
         return node
             .addInput(inp1)
@@ -20,29 +25,30 @@ export default new D3NE.Component('Output material', {
             .addInput(inp5)
             .addInput(inp6)
             .addInput(inp7);
-    },
-    async worker(node, inputs, outputs) {
+    }
+
+    async worker(node, inputs) {
         
-        var diffuse = inputs[0][0]instanceof WebGLTexture
-            ? inputs[0][0]
+        var diffuse = inputs['diffuse'][0]instanceof WebGLTexture
+            ? inputs['diffuse'][0]
             : Utils.createMockTexture();
-        var normal = inputs[1][0]instanceof WebGLTexture
-            ? inputs[1][0]
+        var normal = inputs['normal'][0]instanceof WebGLTexture
+            ? inputs['normal'][0]
             : Utils.createMockTexture('normal');
-        var roughness = inputs[2][0]instanceof WebGLTexture
-            ? inputs[2][0]
+        var roughness = inputs['rough'][0]instanceof WebGLTexture
+            ? inputs['rough'][0]
             : Utils.createMockTexture();
-        var metalness = inputs[3][0]instanceof WebGLTexture
-            ? inputs[3][0]
+        var metalness = inputs['metal'][0]instanceof WebGLTexture
+            ? inputs['metal'][0]
             : Utils.createMockTexture();
-        var emissive = inputs[4][0]instanceof WebGLTexture
-            ? inputs[4][0]
+        var emissive = inputs['emis'][0]instanceof WebGLTexture
+            ? inputs['emis'][0]
             : Utils.createMockTexture();
-        var displacement = inputs[5][0]instanceof WebGLTexture
-            ? inputs[5][0]
+        var displacement = inputs['disp'][0]instanceof WebGLTexture
+            ? inputs['disp'][0]
             : Utils.createMockTexture();
-        var alpha = inputs[6][0]instanceof WebGLTexture
-            ? inputs[6][0]
+        var alpha = inputs['alpha'][0]instanceof WebGLTexture
+            ? inputs['alpha'][0]
             : Utils.createMockTexture('white');
 
         store.commit('updateMaterial', {
@@ -54,6 +60,5 @@ export default new D3NE.Component('Output material', {
             displacement: Utils.textureToSrc(displacement),
             alpha: Utils.textureToSrc(alpha)
         });
-
     }
-});
+}

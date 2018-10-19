@@ -1,32 +1,26 @@
-import { getSocket, moduleManager } from '../../module';
-import store from '../../../store';
-import moduleEdit from '../../controls/module-edit';
+import { Component } from 'rete';
+import FieldControl from '../../controls/field';
 
-export default new D3NE.Component('Module', {
-    builder(node) {
-        if (!node.data.module)
-            node.data.module = {
-                name: 'module',
-                data: {
-                    id: store.state.editorIdentifier,
-                    nodes: {}
-                }
-            };
-        
-        moduleManager.getInputs(node.data.module.data).forEach(i => {
-            node.addInput(new D3NE.Input(i.name, getSocket(i.title)));
-        });
-    
-        moduleManager.getOutputs(node.data.module.data).forEach(o => {
-            node.addOutput(new D3NE.Output(o.name, getSocket(o.title)));
-        });
+export default class ModuleComponent extends Component {
 
-        var moduleCtrl = moduleEdit(node.data.module);
-        
-        return node
-            .addControl(moduleCtrl);
-    },
-    async worker(n, i, o) {
-        await moduleManager.workerModule(...arguments);
+    constructor() {
+        super("Module");
+        this.module = {
+            nodeType: 'module'
+        }
     }
-});
+
+    builder(node) {
+        var ctrl = new FieldControl(this.editor, 'module', {value: 'Module name..'});
+        ctrl.onChange = () => {
+            this.updateModuleSockets(node);
+            node.update();
+        }
+        return node.addControl(ctrl);
+    }
+
+    change(node, item) {
+        node.data.module = item;
+        this.editor.trigger('process');
+    }
+}

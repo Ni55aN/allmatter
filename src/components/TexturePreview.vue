@@ -54,7 +54,7 @@ export class TexturePreview {
     this.mouse = [x, y];
   }
 
-  handleUp(e) {
+  handleUp() {
     this.mouse = null;
   }
 
