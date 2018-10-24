@@ -7,13 +7,13 @@ header
 </template>
 
 <script>
-import AppMenu from "./AppMenu.vue";
+import AppMenu from './AppMenu.vue';
 
 export default {
-  data() {
-    return {};
-  },
-  components: { AppMenu }
+    data() {
+        return {};
+    },
+    components: { AppMenu }
 };
 </script>
 
@@ -89,5 +89,4 @@ header
       transition: .5s
       opacity: 0.8
 </style>
-
 

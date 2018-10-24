@@ -14,10 +14,10 @@ section.materials
 
 <script>
 export default {
-  props: ["loading", "title", "materials", "click", "button"],
-  data() {
-    return {};
-  }
+    props: ['loading', 'title', 'materials', 'click', 'button'],
+    data() {
+        return {};
+    }
 };
 </script>
 

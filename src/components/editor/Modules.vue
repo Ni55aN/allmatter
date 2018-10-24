@@ -4,54 +4,52 @@
   button(@click="addModule()") Add
 </template>
 
-
 <script>
-import Vue from 'vue';
 import { ID } from '../../consts'
+import Vue from 'vue';
 
 var initialData = () => ({id: ID, nodes: {}});
 
 export default {
-  props: ['opened'],
-  inject: ['getEditor'],
-  data() {
-    return {
-      current: 'unnamed',
-      list: {
-        unnamed: { name: "unnamed", data: initialData() }
-      }
-    }
-  },
-  computed: {
-    editor() {
-      return this.getEditor();
-    }
-  },
-  watch: {
-    async current(curr, prev) {
-      if(prev)
-        this.list[prev].data = this.editor.toJSON();
-        console.log(this.list)
+    props: ['opened'],
+    inject: ['getEditor'],
+    data() {
+        return {
+            current: 'unnamed',
+            list: {
+                unnamed: { name: 'unnamed', data: initialData() }
+            }
+        }
+    },
+    computed: {
+        editor() {
+            return this.getEditor();
+        }
+    },
+    watch: {
+        async current(curr, prev) {
+            if (prev)
+                this.list[prev].data = this.editor.toJSON();
+            console.log(this.list)
 
-      await this.editor.fromJSON(this.list[curr].data);
-      this.$emit('opened');
-    }
-  },
-  methods: {
-    async openModule(module) {
-      this.current = module;
-      this.$emit('opened');
+            await this.editor.fromJSON(this.list[curr].data);
+            this.$emit('opened');
+        }
     },
-    addModule() {
-      Vue.set(this.list, 'module'+Object.keys(this.list).length, { data: initialData() });
-    },
-    getCurrent() {
-      return this.list[this.current];
+    methods: {
+        async openModule(module) {
+            this.current = module;
+            this.$emit('opened');
+        },
+        addModule() {
+            Vue.set(this.list, 'module'+Object.keys(this.list).length, { data: initialData() });
+        },
+        getCurrent() {
+            return this.list[this.current];
+        }
     }
-  }
 }
 </script>
-
 
 <style lang="sass" scoped>
 .modules

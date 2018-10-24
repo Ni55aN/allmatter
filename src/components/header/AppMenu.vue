@@ -33,73 +33,75 @@ menu
 </template>
 
 <script>
-import vueSlider from "vue-slider-component";
-import store from "../../store";
-import eventbus from "../../eventbus";
-import "./FileDialog.js";
-import { saveAs } from "file-saver";
-import blobUtil from "blob-util/dist/blob-util";
+import './FileDialog.js';
+import { saveAs } from 'file-saver';
+import blobUtil from 'blob-util/dist/blob-util';
+import eventbus from '../../eventbus';
+import store from '../../store';
+import vueSlider from 'vue-slider-component';
 
-var geometries = ["Cube", "Sphere"];
+var geometries = ['Cube', 'Sphere'];
 
 export default {
-  data() {
-    return {
-      textureSize: store.state.textureSize,
-      sizes: [256, 512, 1024, 2048, 4096],
-      selectedGeometry: geometries[0]
-    };
-  },
-  computed: {
-    geometries() {
-      return geometries;
-    }
-  },
-  watch: {
-    selectedGeometry(val) {
-      store.commit("setGeometry", val);
+    data() {
+        return {
+            textureSize: store.state.textureSize,
+            sizes: [256, 512, 1024, 2048, 4096],
+            selectedGeometry: geometries[0]
+        };
     },
-    textureSize(val) {
-      store.commit("setTextureSize", val);
-    }
-  },
-  methods: {
-    newProject() {
-      eventbus.$emit("newproject");
+    computed: {
+        geometries() {
+            return geometries;
+        }
     },
-    saveProject() {
-      eventbus.$emit("saveproject", project => {
-        var blob = new Blob([JSON.stringify(project)], {
-          type: "application/json;charset=utf-8"
-        });
+    watch: {
+        selectedGeometry(val) {
+            store.commit('setGeometry', val);
+        },
+        textureSize(val) {
+            store.commit('setTextureSize', val);
+        }
+    },
+    methods: {
+        newProject() {
+            eventbus.$emit('newproject');
+        },
+        saveProject() {
+            eventbus.$emit('saveproject', project => {
+                var blob = new Blob([JSON.stringify(project)], {
+                    type: 'application/json;charset=utf-8'
+                });
 
-        saveAs(blob, "project.mtr");
-      });
+                saveAs(blob, 'project.mtr');
+            });
+        },
+        openHub() {
+            eventbus.$emit('openhub');
+        },
+        saveHub() {
+            eventbus.$emit('savehub');
+        },
+        async exportMaps() {
+            var maps = store.state.maps;
+
+            for (const name in maps) {
+                const src = maps[name].replace('data:image/png;base64,', '');
+                const blob = await blobUtil.base64StringToBlob(src, 'image/png');
+
+                saveAs(blob, `allmatter_${name}.png`);
+            }
+        },
+        startTour() {
+            store.state.tour.start();
+        },
+        showAbout() {
+            eventbus.$emit('showAbout');
+        }
     },
-    openHub() {
-      eventbus.$emit("openhub");
-    },
-    saveHub() {
-      eventbus.$emit("savehub");
-    },
-    async exportMaps() {
-      var maps = store.state.maps;
-      for (let name in maps) {
-        let src = maps[name].replace("data:image/png;base64,", "");
-        let blob = await blobUtil.base64StringToBlob(src, "image/png");
-        saveAs(blob, `allmatter_${name}.png`);
-      }
-    },
-    startTour() {
-      store.state.tour.start();
-    },
-    showAbout() {
-      eventbus.$emit("showAbout");
+    components: {
+        vueSlider
     }
-  },
-  components: {
-    vueSlider
-  }
 };
 </script>
 

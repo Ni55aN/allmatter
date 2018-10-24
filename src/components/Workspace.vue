@@ -14,30 +14,30 @@
 </template>
 
 <script>
-import NodeEditor from "./editor/NodeEditor.vue";
-import TexturePreview from "./TexturePreview.vue";
-import MaterialPreview from "./MaterialPreview.vue";
+import MaterialPreview from './MaterialPreview.vue';
+import NodeEditor from './editor/NodeEditor.vue';
+import TexturePreview from './TexturePreview.vue';
 
 export default {
-  data() {
-    return {
-      active: ""
-    };
-  },
-  methods: {
-    setActive(val) {
-      this.active = this.active === val ? "" : val;
-      setTimeout(() => window.dispatchEvent(new Event("resize")));
+    data() {
+        return {
+            active: ''
+        };
     },
-    isVisible(val) {
-      return this.active === "" || this.active === val;
+    methods: {
+        setActive(val) {
+            this.active = this.active === val ? '' : val;
+            setTimeout(() => window.dispatchEvent(new Event('resize')));
+        },
+        isVisible(val) {
+            return this.active === '' || this.active === val;
+        }
+    },
+    components: {
+        NodeEditor,
+        TexturePreview,
+        MaterialPreview
     }
-  },
-  components: {
-    NodeEditor,
-    TexturePreview,
-    MaterialPreview
-  }
 };
 </script>
 
@@ -79,7 +79,6 @@ export default {
 .editor-wrap
   flex: 2
 
-
 @media (orientation: portrait)
   .workspace
     flex-direction: column-reverse
@@ -87,5 +86,4 @@ export default {
       flex-direction: row-reverse
       flex: 1.5;
 </style>
-
 

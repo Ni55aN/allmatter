@@ -9,28 +9,27 @@
           a(target="_blank" href="https://github.com/Ni55aN") Vitaliy Stoliarov
 </template>
 
-
 <script>
-import Vodal from "vodal";
-import eventbus from "../eventbus";
+import Vodal from 'vodal';
+import eventbus from '../eventbus';
 
 export default {
-  data() {
-    return { show: false };
-  },
-  methods: {
-    hide() {
-      this.show = false;
+    data() {
+        return { show: false };
+    },
+    methods: {
+        hide() {
+            this.show = false;
+        }
+    },
+    mounted() {
+        eventbus.$on('showAbout', () => {
+            this.show = true;
+        });
+    },
+    components: {
+        Vodal
     }
-  },
-  mounted() {
-    eventbus.$on("showAbout", () => {
-      this.show = true;
-    });
-  },
-  components: {
-    Vodal
-  }
 };
 </script>
 
