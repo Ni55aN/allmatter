@@ -26,4 +26,4 @@ export default class Number extends Component {
         if (!outputs['output'])
             outputs['output'] = node.data.number;
     }
-};
+}

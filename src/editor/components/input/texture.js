@@ -1,7 +1,7 @@
 import { Component } from 'rete';
+import FieldControl from '../../controls/field';
 import modifyTextureNode from '../../common/builders/texture';
 import sockets from '../../sockets';
-import FieldControl from '../../controls/field';
 
 export default class ColorComponent extends Component {
     constructor() {
@@ -29,4 +29,4 @@ export default class ColorComponent extends Component {
             .addControl(ctrl, 0)
             //.addControl(ctrl2)
     }
-};
+}

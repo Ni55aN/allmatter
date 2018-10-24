@@ -14,7 +14,7 @@ export default function () {
     if (!window.localStorage) 
         list.push('Local Storage');
 
-    if(!window.fetch){
+    if (!window.fetch) {
         list.push('fetch');
     }
     

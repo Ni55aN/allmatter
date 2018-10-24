@@ -1,6 +1,6 @@
+import Tour from '../guide-tour';
 import Vue from 'vue';
 import Vuex from 'vuex';
-import Tour from '../guide-tour';
 
 Vue.use(Vuex);
 

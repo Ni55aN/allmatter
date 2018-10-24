@@ -1,6 +1,6 @@
-import Shepherd from 'tether-shepherd';
-import 'tether-shepherd/dist/css/shepherd-theme-arrows.css';
 import './style/tour.sass';
+import 'tether-shepherd/dist/css/shepherd-theme-arrows.css';
+import Shepherd from 'tether-shepherd';
 
 export default class {
     constructor() {

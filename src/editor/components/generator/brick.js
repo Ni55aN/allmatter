@@ -1,8 +1,8 @@
 import { Component, Input } from 'rete';
-import modifyTextureNode from '../../common/builders/texture';
-import Utils from '../../utils';
-import sockets from '../../sockets';
 import FieldControl from '../../controls/field';
+import Utils from '../../utils';
+import modifyTextureNode from '../../common/builders/texture';
+import sockets from '../../sockets';
 
 export default class Brick extends Component {
     
@@ -35,6 +35,7 @@ export default class Brick extends Component {
         var margin = typeof inputs['margin'][0] === 'number'
             ? inputs['margin'][0]
             : node.data.margin;
+
         console.log(node)
         var result = Utils.createMockCanvas();
 
@@ -44,4 +45,4 @@ export default class Brick extends Component {
         outputs['image'] = result.toTexture();
         this.editor.nodes.find(n => n.id === node.id).controls.get('preview').updatePreview(result);
     }
-};
+}

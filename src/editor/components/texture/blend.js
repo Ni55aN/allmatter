@@ -3,15 +3,15 @@ import modifyTextureNode from '../../common/builders/texture';
 import sockets from '../../sockets';
 
 export default class extends Component {
-    constructor(){
+    constructor() {
         super('Blend')
     }
 
     builder(node) {
         modifyTextureNode(node);
 
-        var inp1 = new Input('image1','Image', sockets.image);
-        var inp2 = new Input('image2','Image', sockets.image);
+        var inp1 = new Input('image1', 'Image', sockets.image);
+        var inp2 = new Input('image2', 'Image', sockets.image);
         var inp3 = new Input('mask', 'Mask', sockets.image);
 
         return node
@@ -19,4 +19,4 @@ export default class extends Component {
             .addInput(inp2)
             .addInput(inp3);
     }
-};
+}

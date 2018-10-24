@@ -1,9 +1,8 @@
 import * as Texturity from 'texturity.js';
 import { Control } from 'rete';
-import store from '../../store';
-import eventbus from '../../eventbus';
 import Preview from './Preview.vue';
-
+import eventbus from '../../eventbus';
+import store from '../../store';
 
 export default class extends Control {
     constructor() {
@@ -11,7 +10,6 @@ export default class extends Control {
         this.component = Preview;
         this.props = { emitter: eventbus, store };
     }
-
 
     updatePreview(canvas) {
         if (!(canvas instanceof Texturity.Canvas)) 

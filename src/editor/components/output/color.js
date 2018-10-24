@@ -19,4 +19,4 @@ export default class ColorComponent extends Component {
             .addInput(inp)
             .addControl(ctrl);
     }
-};
+}

@@ -18,12 +18,12 @@ export default class ColorPicker extends Control {
             },
             methods: {
                 change() {
-                    let c = Color.fromHex(this.value);
+                    const c = Color.fromHex(this.value);
         
                     this.putData(key, c.toArray());
                     eventbus.$emit('process');
                 }
             }
         }
-    };
+    }
 }

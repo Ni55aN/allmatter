@@ -6,12 +6,12 @@ var sAll = (selector) => document.querySelectorAll(selector);
 var compatibility = checkBrowserComp();
 
 window.onerror = function(message) {
-    try{
+    try {
         document.getElementsByClassName('cssload-container')[0].innerHTML = message;
     }
-    catch(e){
+    catch (e) {
         console.error(e);
-	}
+    }
 };
 
 if (compatibility.status) {

@@ -4,14 +4,15 @@ import FieldControl from '../../controls/field';
 export default class ModuleComponent extends Component {
 
     constructor() {
-        super("Module");
+        super('Module');
         this.module = {
             nodeType: 'module'
         }
     }
 
     builder(node) {
-        var ctrl = new FieldControl(this.editor, 'module', {value: 'Module name..'});
+        const ctrl = new FieldControl(this.editor, 'module', {value: 'Module name..'});
+
         ctrl.onChange = () => {
             this.updateModuleSockets(node);
             node.update();

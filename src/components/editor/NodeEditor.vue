@@ -6,32 +6,32 @@ div
 
 <script>
 import { NodeEditor, Engine } from 'rete';
-import VueRenderPlugin from 'rete-vue-render-plugin';
-import ConnectionPlugin from 'rete-connection-plugin';
-import AreaPlugin from 'rete-area-plugin';
-import ContextMenuPlugin from 'rete-context-menu-plugin';
-import ModulePlugin from 'rete-module-plugin/build/module-plugin.debug';
+import VueRenderPlugin from "rete-vue-render-plugin";
+import ConnectionPlugin from "rete-connection-plugin";
+import AreaPlugin from "rete-area-plugin";
+import ContextMenuPlugin from "rete-context-menu-plugin";
+import ModulePlugin from "rete-module-plugin/build/module-plugin.debug";
+import ProfilerPlugin from "rete-profiler-plugin";
 import components from "../../editor/components";
 import store from "../../store";
 import eventbus from "../../eventbus";
 import _ from "lodash";
 // import LocalStorage from "../../localstorage";
 import * as Texturity from "texturity.js";
-import Modules from './Modules.vue';
-import { ID } from '../../consts'
-
+import Modules from "./Modules.vue";
+import { ID } from "../../consts";
 
 export default {
   provide() {
-    return { 
+      return {
       getEditor: () => this.editor,
       zoomAt: this.zoomAt
-    }
+    };
   },
   data() {
     return {
       editor: null,
-      engine: null,
+      engine: null
     };
   },
   components: {
@@ -43,14 +43,21 @@ export default {
     },
     async process() {
       console.log("process");
-      var startId = Object.keys(this.$refs.modules.getCurrent().data.nodes).find(
-        key => this.$refs.modules.getCurrent().data.nodes[key].title == "Output material"
+      var startId = Object.keys(
+        this.$refs.modules.getCurrent().data.nodes
+      ).find(
+        key =>
+          this.$refs.modules.getCurrent().data.nodes[key].title ==
+          "Output material"
       );
       await this.engine.abort();
-      await this.engine.process(this.editor.toJSON(), startId?parseInt(startId):null);
+      await this.engine.process(
+        this.editor.toJSON(),
+        startId ? parseInt(startId) : null
+      );
 
       Texturity.disposeTextures();
-    },
+    }
     // saveToStorage() {
     //   this.module.data = this.editor.toJSON();
     //   LocalStorage.write("allmatter", this.module);
@@ -64,19 +71,19 @@ export default {
     //   this.root.data = backup.data;
     //   this.import(this.root.data, this.root.name);
     // },
-  //   async import(data, name = "unnamed") {
-  //     this.module.name = this.module.name = name;
-  //     this.module.data = this.module.data = data;
-  //     try {
-  //       await this.editor.fromJSON(data);
-  //     } catch (e) {
-  //       console.warn(e);
-  //       alert(e.message);
-  //     }
-  //     this.zoomAt();
-  //     this.process();
-  //     this.saveToStorage();
-  //   }
+    //   async import(data, name = "unnamed") {
+    //     this.module.name = this.module.name = name;
+    //     this.module.data = this.module.data = data;
+    //     try {
+    //       await this.editor.fromJSON(data);
+    //     } catch (e) {
+    //       console.warn(e);
+    //       alert(e.message);
+    //     }
+    //     this.zoomAt();
+    //     this.process();
+    //     this.saveToStorage();
+    //   }
   },
   mounted() {
     Texturity.initGL("webgl2");
@@ -129,8 +136,13 @@ export default {
     this.editor.use(ConnectionPlugin);
     this.editor.use(AreaPlugin);
     this.editor.use(ContextMenuPlugin);
-    this.editor.use(ModulePlugin, { engine: this.engine, modules: this.$refs.modules.list });
-    
+    this.editor.use(ModulePlugin, {
+      engine: this.engine,
+      modules: this.$refs.modules.list
+    });
+
+    this.engine.use(ProfilerPlugin, { editor: this.editor, enable: true });
+
     // this.editor.on("nodecreate", (node, p) => {
     //   if (
     //     p &&
@@ -147,15 +159,18 @@ export default {
     //   this.saveToStorage();
     // });
 
-    this.editor.on("process nodecreated connectioncreated noderemoved connectionremoved", async () => {
+    this.editor.on(
+      "process nodecreated connectioncreated noderemoved connectionremoved",
+      async () => {
         if (this.editor.silent) return;
         await this.process();
-    });
+      }
+    );
 
     components.list.map(c => {
-      this.editor.register(c)
-      this.engine.register(c)
-    })
+      this.editor.register(c);
+      this.engine.register(c);
+    });
 
     store.watch(
       () => store.getters.textureSize,

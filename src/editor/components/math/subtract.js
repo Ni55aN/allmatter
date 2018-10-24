@@ -1,6 +1,6 @@
 import { Component } from 'rete';
-import modifyBinaryMath from '../../common/builders/binary-math';
 import binaryOperation from '../../common/workers/binary-operation';
+import modifyBinaryMath from '../../common/builders/binary-math';
 
 export default class ColorComponent extends Component {
     constructor() {
@@ -16,4 +16,4 @@ export default class ColorComponent extends Component {
     worker(node, inputs, outputs) {
         outputs['value'] = binaryOperation(inputs, 'a - b');
     }
-};
+}

@@ -1,6 +1,6 @@
 import { Component, Output } from 'rete';
-import sockets from '../../sockets';
 import FieldControl from '../../controls/field';
+import sockets from '../../sockets';
 
 export default class Curve extends Component {
     constructor() {

@@ -1,7 +1,7 @@
 import { Component, Input } from 'rete';
-import sockets from '../../sockets';
 import FieldControl from '../../controls/field';
 import modifyMath from '../../common/builders/math';
+import sockets from '../../sockets';
 
 export default class ColorComponent extends Component {
     constructor() {
@@ -29,4 +29,4 @@ export default class ColorComponent extends Component {
     //         return Math.pow(a, pow);
     //     });
     // }
-};
+}

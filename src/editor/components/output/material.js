@@ -1,6 +1,6 @@
 import { Component, Input } from 'rete';
-import sockets from '../../sockets';
 import Utils from '../../utils';
+import sockets from '../../sockets';
 import store from '../../../store';
 
 export default class extends Component {
@@ -10,11 +10,11 @@ export default class extends Component {
 
     builder(node) {
         var inp1 = new Input('diffuse', 'Diffuse', sockets.image);
-        var inp2 = new Input('normal','Normal', sockets.image);
+        var inp2 = new Input('normal', 'Normal', sockets.image);
         var inp3 = new Input('rough', 'Roughness', sockets.image);
-        var inp4 = new Input('metal','Metalness', sockets.image);
-        var inp5 = new Input('emis','Emissive', sockets.image);
-        var inp6 = new Input('disp','Displacement', sockets.image);
+        var inp4 = new Input('metal', 'Metalness', sockets.image);
+        var inp5 = new Input('emis', 'Emissive', sockets.image);
+        var inp6 = new Input('disp', 'Displacement', sockets.image);
         var inp7 = new Input('alpha', 'Alpha', sockets.image);
 
         return node

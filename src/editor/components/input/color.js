@@ -1,8 +1,8 @@
 import { Component, Output } from 'rete';
+import Color from '../../../color';
+import FieldControl from '../../controls/field';
 import colorPicker from '../../controls/color-picker';
 import sockets from '../../sockets';
-import FieldControl from '../../controls/field';
-import Color from '../../../color';
 
 export default class ColorComponent extends Component {
     constructor() {
@@ -28,4 +28,4 @@ export default class ColorComponent extends Component {
         if (!outputs['output'])
             outputs['output'] = Color.fromArray(node.data.color);
     }
-};
+}

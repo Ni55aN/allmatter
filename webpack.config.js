@@ -41,10 +41,10 @@ module.exports = (env) => {
                 }, {
                     enforce: "pre",
                     test: /\.(js|vue)$/,
-                    exclude: /node_modules/,
+                    include: /src/,
                     loader: "eslint-loader",
                     options: {
-                        fix: true
+                        emitWarning: true
                     }
                 }, {
                     test: /\.js$/,

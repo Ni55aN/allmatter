@@ -1,63 +1,63 @@
-import number from './input/number';
-import texture from './input/texture';
-import curve from './input/curve';
-import color from './input/color';
+import Color from './input/color';
+import Curve from './input/curve';
+import Number from './input/number';
+import Texture from './input/texture';
 
-import brick from './generator/brick';
-import circle from './generator/circle';
-import noise from './generator/noise';
+import Brick from './generator/brick';
+import Circle from './generator/circle';
+import Noise from './generator/noise';
 
-import add from './math/add';
-import distance from './math/distance';
-import divide from './math/divide';
-import multiply from './math/multiply';
-import pow from './math/pow';
-import subtract from './math/subtract';
+import Add from './math/add';
+import Distance from './math/distance';
+import Divide from './math/divide';
+import Multiply from './math/multiply';
+import Pow from './math/pow';
+import Subtract from './math/subtract';
 
-import blend from './texture/blend';
-import blur from './texture/blur';
-import invert from './texture/invert';
-import lightness from './texture/lightness';
-import normalMap from './texture/normal-map';
-import gradient from './texture/gradient';
-import transform from './texture/transform';
+import Blend from './texture/blend';
+import Blur from './texture/blur';
+import Gradient from './texture/gradient';
+import Invert from './texture/invert';
+import Lightness from './texture/lightness';
+import NormalMap from './texture/normal-map';
+import Transform from './texture/transform';
 
-import module from './module/module';
+import Module from './module/module';
 
-import output from './output/material';
-import outputnumber from './output/number';
-import outputtexture from './output/texture';
-import outputcurve from './output/curve';
-import outputcolor from './output/color';
+import Output from './output/material';
+import Outputcolor from './output/color';
+import Outputcurve from './output/curve';
+import Outputnumber from './output/number';
+import Outputtexture from './output/texture';
 
 export default {
     list : [
-        new number,
-        new texture,
-        new curve,
-        new color,
-        new brick,
-        new circle,
-        new noise,
-        new add,
-        new distance,
-        new divide,
-        new multiply,
-        new pow,
-        new subtract,
-        new blend,
-        new blur,
-        new invert,
-        new lightness,
-        new normalMap,
-        new gradient,
-        new transform,
-        new module,
-        new output,
-        new outputnumber,
-        new outputtexture,
-        new outputcurve,
-        new outputcolor
+        new Number,
+        new Texture,
+        new Curve,
+        new Color,
+        new Brick,
+        new Circle,
+        new Noise,
+        new Add,
+        new Distance,
+        new Divide,
+        new Multiply,
+        new Pow,
+        new Subtract,
+        new Blend,
+        new Blur,
+        new Invert,
+        new Lightness,
+        new NormalMap,
+        new Gradient,
+        new Transform,
+        new Module,
+        new Output,
+        new Outputnumber,
+        new Outputtexture,
+        new Outputcurve,
+        new Outputcolor
     ],
     get(name) {
         var comp = this

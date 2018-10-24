@@ -1,8 +1,8 @@
 import { Component, Input } from 'rete';
+import FieldControl from '../../controls/field';
 import Utils from '../../utils';
 import modifyTextureNode from '../../common/builders/texture';
 import sockets from '../../sockets';
-import FieldControl from '../../controls/field';
 
 export default class extends Component {
     constructor() {
@@ -37,4 +37,4 @@ export default class extends Component {
         outputs['image'] = result.toTexture();
         this.editor.nodes.find(n => n.id === node.id).controls.get('preview').updatePreview(result);
     }
-};
+}

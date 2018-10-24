@@ -7,7 +7,8 @@
     "start": "webpack-dev-server --open",
     "watch": "webpack --progress --watch",
     "build": "webpack",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix"
   },
   "repository": {
     "type": "git",
@@ -34,6 +35,8 @@
     "css-loader": "^0.28.7",
     "eslint": "^4.19.1",
     "eslint-loader": "^2.1.1",
+    "eslint-plugin-sort-imports-es6-autofix": "^0.3.0",
+    "eslint-plugin-spellcheck": "0.0.11",
     "eslint-plugin-vue": "^4.7.1",
     "file-loader": "^1.1.5",
     "html-webpack-plugin": "^3.2.0",
@@ -60,6 +63,7 @@
     "rete-connection-plugin": "^0.2.1",
     "rete-context-menu-plugin": "^0.1.4",
     "rete-module-plugin": "^0.2.0",
+    "rete-profiler-plugin": "^0.1.5",
     "rete-vue-render-plugin": "^0.2.4",
     "tether-shepherd": "^1.8.1",
     "texturity.js": "^0.3.0",

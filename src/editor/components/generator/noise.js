@@ -1,8 +1,8 @@
 import { Component, Input } from 'rete';
-import modifyTextureNode from '../../common/builders/texture';
-import sockets from '../../sockets';
 import FieldControl from '../../controls/field';
 import Utils from '../../utils';
+import modifyTextureNode from '../../common/builders/texture';
+import sockets from '../../sockets';
 
 export default class Noise extends Component {
     constructor() {
@@ -32,4 +32,4 @@ export default class Noise extends Component {
         outputs['image'] = result.toTexture();
         this.editor.nodes.find(n => n.id === node.id).controls.get('preview').updatePreview(result);
     }
-};
+}
