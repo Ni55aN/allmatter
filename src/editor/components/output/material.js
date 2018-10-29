@@ -6,6 +6,7 @@ import store from '../../../store';
 export default class extends Component {
     constructor() {
         super('Output material')
+        this.allocation = ['Output'];
     }
 
     builder(node) {

@@ -7,6 +7,7 @@ import sockets from '../../sockets';
 export default class extends Component {
     constructor() {
         super('Texture transform')
+        this.allocation = ['Texture'];
     }
     
     builder(node) {

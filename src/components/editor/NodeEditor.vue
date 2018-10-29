@@ -89,54 +89,17 @@ export default {
     mounted() {
         Texturity.initGL('webgl2');
 
-        // var menu = new Rete.ContextMenu({
-        //   Input: {
-        //     Texture: components.get("input texture"),
-        //     Number: components.get("input number"),
-        //     Curve: components.get("input curve"),
-        //     Color: components.get("input color")
-        //   },
-        //   Generator: {
-        //     Noise: components.get("noise texture"),
-        //     Brick: components.get("brick texture"),
-        //     Circle: components.get("circle texture")
-        //   },
-        //   Texture: {
-        //     Transform: components.get("texture transform"),
-        //     Lightness: components.get("lightness"),
-        //     Normal: components.get("normal map"),
-        //     Blur: components.get("blur"),
-        //     Gradient: components.get("texture gradient"),
-        //     Invert: components.get("invert"),
-        //     Blend: components.get("blend")
-        //   },
-        //   Math: {
-        //     Add: components.get("add"),
-        //     Subtract: components.get("subtract"),
-        //     Distance: components.get("distance"),
-        //     Multiply: components.get("multiply"),
-        //     Divide: components.get("divide"),
-        //     Pow: components.get("pow")
-        //   },
-        //   Module: {
-        //     Module: components.get("module")
-        //   },
-        //   Output: {
-        //     Material: components.get("output material"),
-        //     Texture: components.get("output texture"),
-        //     Number: components.get("output number"),
-        //     Curve: components.get("output curve"),
-        //     Color: components.get("output color")
-        //   }
-        // });
-
         this.editor = new NodeEditor(ID, this.$refs.area);
         this.engine = new Engine(ID);
 
         this.editor.use(VueRenderPlugin);
         this.editor.use(ConnectionPlugin);
         this.editor.use(AreaPlugin);
-        this.editor.use(ContextMenuPlugin);
+        this.editor.use(ContextMenuPlugin, { 
+            allocate(component) {
+                return component.allocation || [];
+            }
+        });
         this.editor.use(ModulePlugin, {
             engine: this.engine,
             modules: this.$refs.modules.list

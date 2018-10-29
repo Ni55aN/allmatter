@@ -7,7 +7,8 @@ import sockets from '../../sockets';
 export default class Brick extends Component {
     
     constructor() {
-        super('Brick texture')
+        super('Brick texture');
+        this.allocation = ['Generator'];
     }
 
     builder(node) {
@@ -28,7 +29,6 @@ export default class Brick extends Component {
     }
 
     async worker(node, inputs, outputs) {
-        console.log(inputs)
         var count = typeof inputs['count'][0] === 'number'
             ? inputs['count'][0]
             : node.data.count;
@@ -36,7 +36,6 @@ export default class Brick extends Component {
             ? inputs['margin'][0]
             : node.data.margin;
 
-        console.log(node)
         var result = Utils.createMockCanvas();
 
         result.fillStyle([1, 1, 1, 1]);

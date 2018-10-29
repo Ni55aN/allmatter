@@ -5,6 +5,7 @@ import sockets from '../../sockets';
 export default class extends Component {
     constructor() {
         super('Output curve')
+        this.allocation = ['Output'];
     }
         
     builder(node) {

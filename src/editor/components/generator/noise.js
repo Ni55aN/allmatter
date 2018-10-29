@@ -7,6 +7,7 @@ import sockets from '../../sockets';
 export default class Noise extends Component {
     constructor() {
         super('Noise texture')
+        this.allocation = ['Generator'];
     }
 
     builder(node) {

@@ -6,6 +6,7 @@ import sockets from '../../sockets';
 export default class ColorComponent extends Component {
     constructor() {
         super('Pow');
+        this.allocation = ['Math'];
     }
     
     builder(node) {

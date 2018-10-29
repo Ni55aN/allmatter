@@ -5,6 +5,7 @@ import sockets from '../../sockets';
 export default class Curve extends Component {
     constructor() {
         super('Input curve');
+        this.allocation = ['Input'];
         this.module = {
             nodeType: 'input',
             socket: sockets.curve

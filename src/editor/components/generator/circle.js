@@ -8,6 +8,7 @@ export default class Circle extends Component {
     
     constructor() {
         super('Circle texture')
+        this.allocation = ['Generator'];
     }
 
     builder(node) {

@@ -5,6 +5,7 @@ import modifyBinaryMath from '../../common/builders/binary-math';
 export default class ColorComponent extends Component {
     constructor() {
         super('Multiply');
+        this.allocation = ['Math'];
     }
     
     builder(node) {

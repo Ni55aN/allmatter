@@ -6,6 +6,7 @@ import sockets from '../../sockets';
 export default class extends Component {
     constructor() {
         super('Invert')
+        this.allocation = ['Texture'];
     }
     
     builder(node) {

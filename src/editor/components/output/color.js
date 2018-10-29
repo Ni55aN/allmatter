@@ -5,6 +5,7 @@ import sockets from '../../sockets';
 export default class ColorComponent extends Component {
     constructor() {
         super('Input color');
+        this.allocation = ['Output'];
         this.module = {
             nodeType: 'output',
             socket: sockets.color

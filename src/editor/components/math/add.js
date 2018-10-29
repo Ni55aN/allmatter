@@ -5,6 +5,7 @@ import modifyBinaryMath from '../../common/builders/binary-math';
 export default class Add extends Component {
     constructor() {
         super('Add');
+        this.allocation = ['Math'];
     }
 
     builder(node) {

@@ -5,6 +5,7 @@ import sockets from '../../sockets';
 export default class Number extends Component {
     constructor() {
         super('Input number');
+        this.allocation = ['Input'];
         this.module = {
             nodeType: 'input',
             socket: sockets.num

@@ -30,7 +30,6 @@ export default {
         async current(curr, prev) {
             if (prev)
                 this.list[prev].data = this.editor.toJSON();
-            console.log(this.list)
 
             await this.editor.fromJSON(this.list[curr].data);
             this.$emit('opened');
