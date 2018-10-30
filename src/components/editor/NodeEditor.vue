@@ -42,7 +42,8 @@ export default {
             AreaPlugin.zoomAt(this.editor);
         },
         async process() {
-            console.log('process');
+            Texturity.disposeTextures();
+            
             var startId = Object.keys(
                 this.$refs.modules.getCurrent().data.nodes
             ).find(
@@ -56,8 +57,6 @@ export default {
                 this.editor.toJSON(),
                 startId ? parseInt(startId) : null
             );
-
-            Texturity.disposeTextures();
         }
     // saveToStorage() {
     //   this.module.data = this.editor.toJSON();

@@ -1,53 +1,43 @@
 <template lang="pug">
-img(:width="width+'px'" :height="height+'px'", :src="src", @click="click()", @mousedown.stop="mousedown")
+img(:width="width+'px'" :height="height+'px'", :src="src", @mousedown.stop="mousedown")
 </template>
 
 <script>
 import * as Texturity from 'texturity.js';
+import store from '../../store';
 
 export default {
     props: ['emitter', 'store'],
     data() {
         return {
-            width: 140,
-            height: 140,
-            canvas: null
+            width: 180,
+            height: 180,
+            texture: null
         }
     },
     computed: {
         src() {
-            if (!this.canvas) return '';
+            if (!this.texture) return '';
 
-            return this.optimizeCanvasSrc(this.canvas)
+            return this.texture2src(this.texture, this.width, this.height)
         }
     },
     methods: {
-        setCanvas(c) {
-            this.canvas = c;
+        setTexture(texture) {
+            this.texture = texture;
         },
-        optimizeCanvasSrc(canvas) {
-            canvas.save();
-            var texture = canvas.toTexture();
-            var c = new Texturity.Canvas(this.width, this.height);
+        texture2src(texture, w, h) {
+            var c = new Texturity.Canvas(w, h);
 
-            c.drawTexture(texture, 0, 0, this.width, this.height);
-            Texturity.disposeTexture(texture);
+            c.drawTexture(texture, 0, 0, w, h);
             var src = c.toSrc();
       
-            canvas.restore();
             return src;
         },
-        click() {
-            // if (this.store.state.texture.el === this.$el) 
-            //     this.store.commit('updateTexture', {
-            //         el: this.$el,
-            //         src: this.canvas.toSrc()
-            //     });
-        },
         mousedown() {
-            console.log(this.src)
-            this.store.commit('updateTexture', {src: this.src});
-            // this.emitter.$emit('process');
+            const size = store.state.textureSize;
+        
+            this.store.commit('updateTexture', { src: this.texture2src(this.texture, size, size) });
         }
     }
 }

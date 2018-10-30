@@ -34,13 +34,6 @@ export default new Vuex.Store({
         }
     },
     mutations: {
-        registerPreviewControl(state, {id, control}) {
-            state.previewControls[id] = control;
-        },
-        updatePreviewControl(state, { id, canvas }) {
-            if (state.previewControls[id]) // check if control exist in editor
-                state.previewControls[id].updatePreview(canvas);
-        },
         setGeometry(state, geometry) {
             state.geometry = geometry;
         },

@@ -1,6 +1,6 @@
 import { Component, Input } from 'rete';
 import Utils from '../../utils';
-import modifyTextureNode, {updatePreview} from '../../common/builders/texture';
+import modifyTextureNode from '../../common/builders/texture';
 import sockets from '../../sockets';
 
 export default class extends Component {
@@ -27,7 +27,6 @@ export default class extends Component {
         result.blend(texture, 1, 'b - a');
 
         outputs['image'] = result.toTexture();
-        this.editor.nodes.find(n => n.id === node.id).controls.get('preview').updatePreview(result);
-        updatePreview(node, result);
+        this.editor.nodes.find(n => n.id === node.id).controls.get('preview').updatePreview(outputs['image']);
     }
 }

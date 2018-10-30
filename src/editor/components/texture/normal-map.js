@@ -36,6 +36,6 @@ export default class extends Component {
         result.normalMap(texture, scale);
 
         outputs['image'] = result.toTexture();
-        this.editor.nodes.find(n => n.id === node.id).controls.get('preview').updatePreview(result);
+        this.editor.nodes.find(n => n.id === node.id).controls.get('preview').updatePreview(outputs['image']);
     }
 }

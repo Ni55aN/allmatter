@@ -1,4 +1,3 @@
-import * as Texturity from 'texturity.js';
 import { Control } from 'rete';
 import Preview from './Preview.vue';
 import eventbus from '../../eventbus';
@@ -11,10 +10,10 @@ export default class extends Control {
         this.props = { emitter: eventbus, store };
     }
 
-    updatePreview(canvas) {
-        if (!(canvas instanceof Texturity.Canvas)) 
+    updatePreview(texture) {
+        if (!(texture instanceof WebGLTexture)) 
             throw new Error('Need Canvas instance');
-        console.log('updatePreview')
-        this.vueContext.setCanvas(canvas);
+
+        this.vueContext.setTexture(texture);
     }
 }

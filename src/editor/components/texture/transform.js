@@ -48,6 +48,6 @@ export default class extends Component {
         result.transform(texture, x, y, repeat);
 
         outputs['image'] = result.toTexture();
-        this.editor.nodes.find(n => n.id === node.id).controls.get('preview').updatePreview(result);
+        this.editor.nodes.find(n => n.id === node.id).controls.get('preview').updatePreview(outputs['image']);
     }
 }

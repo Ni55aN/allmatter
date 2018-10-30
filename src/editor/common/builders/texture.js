@@ -8,14 +8,9 @@ export default function (node) {
     var out = new Output('image', 'Image', sockets.image);
     var ctrl = new Preview();
 
-    store.commit('registerPreviewControl', { id: node.id, control: ctrl });
+    // store.commit('registerPreviewControl', { id: node.id, control: ctrl });
 
     return node
         .addControl(ctrl)
         .addOutput(out);
 }
-
-// in worker
-// export function updatePreview(node, canvas) {
-//     // store.commit('updatePreviewControl', {id: node.id, canvas: canvas})
-// }
