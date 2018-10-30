@@ -96,6 +96,7 @@ export default {
         this.editor.use(ConnectionPlugin);
         this.editor.use(AreaPlugin);
         this.editor.use(ContextMenuPlugin, { 
+            delay: 100,
             allocate(component) {
                 return component.allocation || [];
             }
