@@ -9,8 +9,7 @@
         v-on:dblclick.prevent.native="setActive('texture')",
         v-show="isVisible('texture')"
       )
-    .editor-wrap.region(v-show="isVisible('')")
-      node-editor
+    node-editor.editor-wrap.region(v-show="isVisible('')")
 </template>
 
 <script>
