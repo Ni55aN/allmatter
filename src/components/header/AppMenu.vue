@@ -21,8 +21,8 @@ menu
         span 3D Model
         select(v-model="selectedGeometry")
           option(v-for="geometry in geometries") {{geometry}}
-  span.item.lane(@click="openHub")
-    span Hub
+  //- span.item.lane(@click="openHub")
+  //-   span Hub
   span.item
     | Help
     .dropmenu
