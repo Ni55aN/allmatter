@@ -12,7 +12,7 @@ import { saveAs } from 'file-saver';
 import AreaPlugin from 'rete-area-plugin';
 import ConnectionPlugin from 'rete-connection-plugin';
 import ContextMenuPlugin from 'rete-context-menu-plugin';
-import ModulePlugin from 'rete-module-plugin/build/module-plugin.debug';
+import ModulePlugin from 'rete-module-plugin';
 import Modules from './Modules.vue';
 import ProfilerPlugin from 'rete-profiler-plugin';
 import VueRenderPlugin from 'rete-vue-render-plugin';

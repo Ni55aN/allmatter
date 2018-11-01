@@ -61,7 +61,7 @@
     "rete": "^1.0.0-beta.4",
     "rete-area-plugin": "0.2.0",
     "rete-connection-plugin": "0.2.1",
-    "rete-context-menu-plugin": "^0.2.4",
+    "rete-context-menu-plugin": "0.2.4",
     "rete-module-plugin": "0.2.0",
     "rete-profiler-plugin": "0.1.5",
     "rete-vue-render-plugin": "0.2.4",
