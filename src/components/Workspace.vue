@@ -14,7 +14,7 @@
 
 <script>
 import MaterialPreview from './MaterialPreview.vue';
-import NodeEditor from './editor/NodeEditor.vue';
+import NodeEditor from './NodeEditor/index.vue';
 import TexturePreview from './TexturePreview.vue';
 
 export default {
