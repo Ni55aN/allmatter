@@ -5,21 +5,22 @@ div
 </template>
 
 <script>
+import * as Texturity from 'texturity.js';
 import { Engine, NodeEditor } from 'rete';
+import { ID } from '../../consts';
+import { saveAs } from 'file-saver';
 import AreaPlugin from 'rete-area-plugin';
 import ConnectionPlugin from 'rete-connection-plugin';
 import ContextMenuPlugin from 'rete-context-menu-plugin';
 import ModulePlugin from 'rete-module-plugin/build/module-plugin.debug';
+import Modules from './Modules.vue';
 import ProfilerPlugin from 'rete-profiler-plugin';
 import VueRenderPlugin from 'rete-vue-render-plugin';
 import _ from 'lodash';
+import blobUtil from 'blob-util/dist/blob-util';
 import components from '../../editor/components';
 import eventbus from '../../eventbus';
 import store from '../../store';
-// import LocalStorage from "../../localstorage";
-import * as Texturity from 'texturity.js';
-import { ID } from '../../consts';
-import Modules from './Modules.vue';
 
 export default {
     provide() {
@@ -58,36 +59,10 @@ export default {
                 startId ? parseInt(startId) : null
             );
         }
-    // saveToStorage() {
-    //   this.module.data = this.editor.toJSON();
-    //   LocalStorage.write("allmatter", this.module);
-    // },
-    // restoreFromStorage() {
-    //   var backup = LocalStorage.read("allmatter");
-
-    //   if (!backup) return;
-
-    //   this.root.name = backup.name;
-    //   this.root.data = backup.data;
-    //   this.import(this.root.data, this.root.name);
-    // },
-    //   async import(data, name = "unnamed") {
-    //     this.module.name = this.module.name = name;
-    //     this.module.data = this.module.data = data;
-    //     try {
-    //       await this.editor.fromJSON(data);
-    //     } catch (e) {
-    //       console.warn(e);
-    //       alert(e.message);
-    //     }
-    //     this.zoomAt();
-    //     this.process();
-    //     this.saveToStorage();
-    //   }
     },
     mounted() {
         Texturity.initGL('webgl2');
-
+    
         this.editor = new NodeEditor(ID, this.$refs.area);
         this.engine = new Engine(ID);
 
@@ -107,26 +82,23 @@ export default {
 
         this.engine.use(ProfilerPlugin, { editor: this.editor, enable: true });
 
-        // this.editor.on("nodecreate", (node, p) => {
-        //   if (
-        //     p &&
-        //     node.title === "Output material" &&
-        //     this.data.nodes.find(n => n.title == "Output material")
-        //   ) {
-        //     alert("Output material already exist");
-        //     return false;
-        //   }
-        // });
-
-        // this.editor.on("process", (__, p) => {
-        //   if (!p) return;
-        //   this.saveToStorage();
-        // });
+        this.editor.on('nodecreate', (node, p) => {
+          if (
+            p &&
+            node.title === 'Output material' &&
+            this.data.nodes.find(n => n.title == 'Output material')
+          ) {
+            alert('Output material already exist');
+            return false;
+          }
+        });
 
         this.editor.on(
             'process nodecreated connectioncreated noderemoved connectionremoved',
             async () => {
                 if (this.editor.silent) return;
+                
+                this.$refs.modules.sync();
                 await this.process();
             }
         );
@@ -151,21 +123,32 @@ export default {
             });
         });
 
-    // eventbus.$on("saveproject", callback => {
-    //   callback(this.module);
-    // });
+        eventbus.$on('openproject', modules => {
+            this.$refs.modules.clear();
+            console.log('clear')
+            Object.entries(modules).map(([name, { data }]) => {
+                this.$refs.modules.addModule(name, data)
+            });
+            console.log('openModule')
+            this.$refs.modules.openModule(Object.keys(modules)[0]);
+        });
 
-    // eventbus.$on("openproject", this.import.bind(this));
+        eventbus.$on('saveproject', () => {
+            var blob = new Blob([JSON.stringify(this.$refs.modules.list)], {
+                type: 'application/json;charset=utf-8'
+            });
 
-    // eventbus.$on("openmodule", this.openModule.bind(this));
+            saveAs(blob, 'project.mtr');
+        });
 
-    // this.restoreFromStorage();
+        eventbus.$on('exportmaps', () => {
+            Object.entries(store.state.maps).map(async ([name, map]) => {
+                const src = map.replace('data:image/png;base64,', '');
+                const blob = await blobUtil.base64StringToBlob(src, 'image/png');
 
-    // if (this.editor.nodes.length === 0) {
-    //   fetch("./projects/guide.mtr")
-    //     .then(resp => resp.json())
-    //     .then(proj => this.import(proj.data,proj.name));
-    // }
+                saveAs(blob, `allmatter_${name}.png`);
+            });
+        });
     }
 };
 </script>

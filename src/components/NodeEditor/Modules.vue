@@ -15,10 +15,8 @@ export default {
     inject: ['getEditor'],
     data() {
         return {
-            current: 'unnamed',
-            list: {
-                unnamed: { name: 'unnamed', data: initialData() }
-            }
+            current: null,
+            list: {}
         }
     },
     computed: {
@@ -26,26 +24,32 @@ export default {
             return this.getEditor();
         }
     },
-    watch: {
-        async current(curr, prev) {
-            if (prev)
-                this.list[prev].data = this.editor.toJSON();
-
-            await this.editor.fromJSON(this.list[curr].data);
-            this.$emit('opened');
-        }
-    },
     methods: {
-        async openModule(module) {
-            this.current = module;
+        sync() {
+            this.list[this.current].data = this.editor.toJSON();
+        },
+        async openModule(name) {
+            this.current = name;
+            await this.editor.fromJSON(this.list[name].data);
             this.$emit('opened');
         },
-        addModule() {
-            Vue.set(this.list, 'module'+Object.keys(this.list).length, { data: initialData() });
+        addModule(name, data) {
+            name = name || 'module'+Object.keys(this.list).length;
+            data = data || initialData();
+
+            Vue.set(this.list, name, { data });
         },
         getCurrent() {
             return this.list[this.current];
+        },
+        clear() {
+            Object.keys(this.list).map(name => delete this.list[name]);
+            this.current = null;
         }
+    },
+    mounted() {
+        Vue.set(this.list, 'unnamed', { name: 'unnamed', data: initialData() });
+        this.current = 'unnamed';
     }
 }
 </script>
