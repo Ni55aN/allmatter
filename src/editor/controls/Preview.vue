@@ -10,8 +10,8 @@ export default {
     props: ['emitter', 'store'],
     data() {
         return {
-            width: 180,
-            height: 180,
+            width: 140,
+            height: 140,
             texture: null
         }
     },
