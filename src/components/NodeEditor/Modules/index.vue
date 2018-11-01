@@ -1,11 +1,17 @@
 <template lang="pug">
 .modules
-  .item(v-for="(module, name) in list" @click="openModule(name)") {{name}}
+  Item(
+    v-for="name in sorted"
+    :name="name"
+    @select="openModule(name)"
+    @rename="rename($event.from, $event.to)"
+  )
   button(@click="addModule()") Add
 </template>
 
 <script>
-import { ID } from '../../consts'
+import { ID } from '../../../consts';
+import Item from './Item.vue';
 import Vue from 'vue';
 
 var initialData = () => ({id: ID, nodes: {}});
@@ -22,11 +28,21 @@ export default {
     computed: {
         editor() {
             return this.getEditor();
+        },
+        sorted() {
+            return Object.keys(this.list)
+                .sort((a, b) => a < b ? -1 : 1);
         }
     },
     methods: {
         sync() {
             this.list[this.current].data = this.editor.toJSON();
+        },
+        rename(from, to) {
+            const item = this.list[from];
+
+            Vue.delete(this.list, from);
+            Vue.set(this.list, to, item);
         },
         async openModule(name) {
             this.current = name;
@@ -53,8 +69,11 @@ export default {
         }
     },
     mounted() {
-        Vue.set(this.list, 'unnamed', { name: 'unnamed', data: initialData() });
-        this.current = 'unnamed';
+        Vue.set(this.list, 'main', { name: 'main', data: initialData() });
+        this.current = 'main';
+    },
+    components: {
+        Item
     }
 }
 </script>
@@ -65,12 +84,6 @@ export default {
   left: 1%
   top: 1%
   font-family: Gill Sans, sans-serif
-  .item
-    padding: 8px
-    color: #50a8ff
-    &:hover
-      color: grey
-      cursor: pointer
   button
     background: white
     padding: 4px
