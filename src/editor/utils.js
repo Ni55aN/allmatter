@@ -7,7 +7,7 @@ function getColor(type) {
         return [128, 255, 128, 255];
 
     case 'white':
-        return [255, 200, 255, 255];
+        return [255, 255, 255, 255];
 
     default:
         return [0, 0, 0, 255];
