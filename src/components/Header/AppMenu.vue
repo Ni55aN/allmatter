@@ -21,8 +21,6 @@ menu
         span 3D Model
         select(v-model="selectedGeometry")
           option(v-for="geometry in geometries") {{geometry}}
-  //- span.item.lane(@click="openHub")
-  //-   span Hub
   span.item
     | Help
     .dropmenu
@@ -76,9 +74,6 @@ export default {
 
                 saveAs(blob, 'project.mtr');
             });
-        },
-        openHub() {
-            eventbus.$emit('openhub');
         },
         saveHub() {
             eventbus.$emit('savehub');
