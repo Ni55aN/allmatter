@@ -43,6 +43,7 @@ import vueSlider from 'vue-slider-component';
 var geometries = ['Cube', 'Sphere'];
 
 export default {
+    inject: ['tour'],
     data() {
         return {
             textureSize: store.state.textureSize,
@@ -93,7 +94,7 @@ export default {
             }
         },
         startTour() {
-            store.state.tour.start();
+            this.tour.start();
         },
         showAbout() {
             eventbus.$emit('showAbout');
