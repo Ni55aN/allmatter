@@ -116,11 +116,7 @@ export default {
         eventbus.$on('process', this.process.bind(this));
 
         eventbus.$on('newproject', async () => {
-            await this.editor.fromJSON({
-                id: ID,
-                nodes: {},
-                groups: {}
-            });
+            this.$refs.modules.clear();
         });
 
         eventbus.$on('openproject', modules => {

@@ -42,9 +42,14 @@ export default {
         getCurrent() {
             return this.list[this.current];
         },
-        clear() {
-            Object.keys(this.list).map(name => delete this.list[name]);
+        async clear() {
+            Object.keys(this.list).map(name => Vue.delete(this.list, name));
             this.current = null;
+            await this.editor.fromJSON({
+                id: ID,
+                nodes: {},
+                groups: {}
+            });
         }
     },
     mounted() {
@@ -57,15 +62,22 @@ export default {
 <style lang="sass" scoped>
 .modules
   position: absolute
-  left: 0
-  top: 0
+  left: 1%
+  top: 1%
+  font-family: Gill Sans, sans-serif
   .item
-    padding: 5px
+    padding: 8px
+    color: #50a8ff
     &:hover
       color: grey
       cursor: pointer
   button
     background: white
-    border: 1px solid black
+    padding: 4px
+    border: none
     width: 100%
+    color: #555
+    &:hover
+      background: #eee
+    color: #222
 </style>
