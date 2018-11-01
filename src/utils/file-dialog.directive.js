@@ -1,9 +1,7 @@
-import Vue from 'vue';
-import evetbus from '../../eventbus';
-
-Vue.directive('file-dialog', {
-    inserted: function (el) {
-        var input = document.createElement('input');
+export default {
+    inserted: function (el, binding) {
+        const openProject = binding.value;
+        const input = document.createElement('input');
 
         input.setAttribute('type', 'file');
         input.setAttribute('accept', '.mtr');
@@ -20,7 +18,7 @@ Vue.directive('file-dialog', {
                 input.value = ''; //clear files
                 var project = JSON.parse(e.target.result);
 
-                evetbus.$emit('openproject', project.data, project.name);
+                openProject(project);
             };
             reader.onabort = (e) => {
                 alert(e.message);
@@ -33,4 +31,4 @@ Vue.directive('file-dialog', {
             .appendChild(input);
         el.addEventListener('click', () => input.click());
     }
-})
+}

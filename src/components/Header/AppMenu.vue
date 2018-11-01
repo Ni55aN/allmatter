@@ -5,12 +5,12 @@ menu
     .dropmenu
       span.subitem(@click="newProject")
         span New
-      span.subitem(v-file-dialog='')
+      span.subitem(v-file-dialog='openProject')
         span Open
       span.subitem(@click="saveProject")
         span Save
       span.subitem(@click="exportMaps")
-        span Export
+        span Export maps
   span.item
     | Edit
     .dropmenu
@@ -31,9 +31,6 @@ menu
 </template>
 
 <script>
-import './FileDialog.js';
-import { saveAs } from 'file-saver';
-import blobUtil from 'blob-util/dist/blob-util';
 import eventbus from '../../eventbus';
 import store from '../../store';
 import vueSlider from 'vue-slider-component';
@@ -66,27 +63,17 @@ export default {
         newProject() {
             eventbus.$emit('newproject');
         },
+        openProject(project) {
+            eventbus.$emit('openproject', project);
+        },
         saveProject() {
-            eventbus.$emit('saveproject', project => {
-                var blob = new Blob([JSON.stringify(project)], {
-                    type: 'application/json;charset=utf-8'
-                });
-
-                saveAs(blob, 'project.mtr');
-            });
+            eventbus.$emit('saveproject');
         },
         saveHub() {
             eventbus.$emit('savehub');
         },
         async exportMaps() {
-            var maps = store.state.maps;
-
-            for (const name in maps) {
-                const src = maps[name].replace('data:image/png;base64,', '');
-                const blob = await blobUtil.base64StringToBlob(src, 'image/png');
-
-                saveAs(blob, `allmatter_${name}.png`);
-            }
+            eventbus.$emit('exportmaps');
         },
         startTour() {
             this.tour.start();

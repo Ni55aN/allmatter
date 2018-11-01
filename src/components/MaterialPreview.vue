@@ -7,8 +7,6 @@ var THREE = require('three');
 var OrbitControls = require('three-orbit-controls')(THREE);
 var OBJLoader = require('three-obj-loader');
 
-import eventbus from '../eventbus';
-
 OBJLoader(THREE);
 
 export class MaterialPreview {
@@ -211,16 +209,9 @@ export default {
         );
 
         window.addEventListener('resize', this.preview.resize.bind(this.preview));
-
-        eventbus.$on('preview', callback => {
-            callback(this.preview.getPreview());
-        });
     },
     beforeDestroy() {
-        window.removeEventListener(
-            'resize',
-            this.preview.resize.bind(this.preview)
-        );
+        window.removeEventListener('resize', this.preview.resize.bind(this.preview));
     }
 };
 </script>
