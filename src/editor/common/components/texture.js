@@ -14,8 +14,9 @@ export default class extends Component {
     }
 
     updatePreview(node, texture) {
-        this.editor.nodes.find(n => n.id === node.id)
-            .controls.get('preview')
-            .updatePreview(texture);
+        const inst = this.editor.nodes.find(n => n.id === node.id);
+
+        if (inst)
+            inst.controls.get('preview').updatePreview(texture);
     }
 }
