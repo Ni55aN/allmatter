@@ -1,4 +1,4 @@
-import Color from '../../../color';
+import Color from 'color';
 import Utils from '../../utils';
 
 export default async function (inputs, expression) {

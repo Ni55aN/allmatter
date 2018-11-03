@@ -1,5 +1,5 @@
 import { Component, Output } from 'rete';
-import Color from '../../../color';
+import Color from 'color';
 import FieldControl from '../../controls/field';
 import colorPicker from '../../controls/color-picker';
 import sockets from '../../sockets';
@@ -27,6 +27,6 @@ export default class ColorComponent extends Component {
 
     worker(node, inputs, outputs) {
         if (!outputs['output'])
-            outputs['output'] = Color.fromArray(node.data.color);
+            outputs['output'] = new Color(node.data.color);
     }
 }
