@@ -6,7 +6,7 @@
     @select="openModule(name)"
     @rename="rename($event.from, $event.to)"
   )
-  button(@click="addModule()") Add
+  button(@click="addModule()") +
 </template>
 
 <script>
@@ -43,6 +43,9 @@ export default {
 
             Vue.delete(this.list, from);
             Vue.set(this.list, to, item);
+
+            if (this.current === from)
+                this.current = to;
         },
         async openModule(name) {
             this.current = name;
@@ -81,8 +84,8 @@ export default {
 <style lang="sass" scoped>
 .modules
   position: absolute
-  left: 1%
-  top: 1%
+  left: 12px
+  top: 12px
   font-family: Gill Sans, sans-serif
   button
     background: white
