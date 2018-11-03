@@ -13,8 +13,8 @@ export default class Curve extends Component {
     }
     
     builder(node) {
-        var out = new Output('output', 'Curve', sockets.curve);
-        var ctrl = new FieldControl(this.editor, 'name', {value: ''});
+        const out = new Output('output', 'Curve', sockets.curve);
+        const ctrl = new FieldControl(this.editor, 'name', {value: ''});
         // var ctrl2 = new Rete.Control('<div style="width: 140px; height: 140px; border: 2px solid red"></div>');
         
         return node

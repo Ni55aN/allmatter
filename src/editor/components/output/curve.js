@@ -9,8 +9,8 @@ export default class extends Component {
     }
         
     builder(node) {
-        var inp = new Input('input', 'Curve', sockets.curve);
-        var ctrl = new FieldControl(this.editor, 'name', {value: ''});
+        const inp = new Input('input', 'Curve', sockets.curve);
+        const ctrl = new FieldControl(this.editor, 'name', {value: ''});
 
         return node
             .addInput(inp)

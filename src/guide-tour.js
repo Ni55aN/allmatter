@@ -4,7 +4,7 @@ import Shepherd from 'tether-shepherd';
 
 export default class {
     constructor() {
-        var tour = this.tour = new Shepherd.Tour({
+        const tour = this.tour = new Shepherd.Tour({
             defaults: {
                 classes: 'shepherd-theme-arrows'
             }
@@ -87,7 +87,7 @@ export default class {
     }
 
     getButtons(names = ['Exit', 'Back', 'Next']) {
-        var actions = {
+        const actions = {
             'Exit': this.tour.cancel,
             'Back': this.tour.back,
             'Next': this.tour.next

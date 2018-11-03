@@ -27,10 +27,10 @@ export default {
             this.texture = texture;
         },
         texture2src(texture, w, h) {
-            var c = new Texturity.Canvas(w, h);
+            const c = new Texturity.Canvas(w, h);
 
             c.drawTexture(texture, 0, 0, w, h);
-            var src = c.toSrc();
+            const src = c.toSrc();
       
             return src;
         },

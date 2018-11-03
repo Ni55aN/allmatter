@@ -45,7 +45,7 @@ export default {
         async process() {
             Texturity.disposeTextures();
             
-            var startId = Object.keys(
+            const startId = Object.keys(
                 this.$refs.modules.getCurrent().data.nodes
             ).find(
                 key =>
@@ -58,55 +58,58 @@ export default {
                 this.editor.toJSON(),
                 startId ? parseInt(startId) : null
             );
+        },
+        initEditor() {
+            this.editor = new NodeEditor(ID, this.$refs.area);
+            this.engine = new Engine(ID);
+
+            this.editor.use(VueRenderPlugin);
+            this.editor.use(ConnectionPlugin);
+            this.editor.use(AreaPlugin);
+            this.editor.use(ContextMenuPlugin, { 
+                delay: 100,
+                allocate(component) {
+                    return component.allocation || [];
+                }
+            });
+            this.editor.use(ModulePlugin, {
+                engine: this.engine,
+                modules: this.$refs.modules.list
+            });
+
+            this.engine.use(ProfilerPlugin, { editor: this.editor, enable: true });
+
+            // this.editor.on('nodecreate', (node, p) => {
+            //     if (
+            //         p &&
+            //     node.title === 'Output material' &&
+            //     this.data.nodes.find(n => n.title == 'Output material')
+            //     ) {
+            //         alert('Output material already exist');
+            //         return false;
+            //     }
+            // });
+
+            this.editor.on(
+                'process nodecreated connectioncreated noderemoved connectionremoved',
+                async () => {
+                    if (this.editor.silent) return;
+                    
+                    this.$refs.modules.sync();
+                    await this.process();
+                }
+            );
+
+            components.list.map(c => {
+                this.editor.register(c);
+                this.engine.register(c);
+            });
         }
     },
     mounted() {
         Texturity.initGL('webgl2');
     
-        this.editor = new NodeEditor(ID, this.$refs.area);
-        this.engine = new Engine(ID);
-
-        this.editor.use(VueRenderPlugin);
-        this.editor.use(ConnectionPlugin);
-        this.editor.use(AreaPlugin);
-        this.editor.use(ContextMenuPlugin, { 
-            delay: 100,
-            allocate(component) {
-                return component.allocation || [];
-            }
-        });
-        this.editor.use(ModulePlugin, {
-            engine: this.engine,
-            modules: this.$refs.modules.list
-        });
-
-        this.engine.use(ProfilerPlugin, { editor: this.editor, enable: true });
-
-        this.editor.on('nodecreate', (node, p) => {
-          if (
-            p &&
-            node.title === 'Output material' &&
-            this.data.nodes.find(n => n.title == 'Output material')
-          ) {
-            alert('Output material already exist');
-            return false;
-          }
-        });
-
-        this.editor.on(
-            'process nodecreated connectioncreated noderemoved connectionremoved',
-            async () => {
-                if (this.editor.silent) return;
-                
-                this.$refs.modules.sync();
-                await this.process();
-            }
-        );
-
-        components.list.map(c => {
-            this.editor.register(c);
-            this.engine.register(c);
-        });
+        this.initEditor();
 
         store.watch(
             () => store.getters.textureSize,
@@ -130,7 +133,7 @@ export default {
         });
 
         eventbus.$on('saveproject', () => {
-            var blob = new Blob([JSON.stringify(this.$refs.modules.list)], {
+            const blob = new Blob([JSON.stringify(this.$refs.modules.list)], {
                 type: 'application/json;charset=utf-8'
             });
 

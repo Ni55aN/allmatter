@@ -13,8 +13,8 @@ export default class extends Component {
     }
 
     builder(node) {
-        var inp = new Input('input', 'Number', sockets.num);
-        var ctrl = new FieldControl(this.editor, 'name', {value: 'num'});
+        const inp = new Input('input', 'Number', sockets.num);
+        const ctrl = new FieldControl(this.editor, 'name', {value: 'num'});
 
         return node
             .addControl(ctrl)

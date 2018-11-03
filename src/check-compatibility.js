@@ -1,6 +1,6 @@
 export default function () {
 
-    var list = [];
+    const list = [];
 
     try {
         eval('async ()=>{}');

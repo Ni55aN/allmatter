@@ -16,9 +16,9 @@ function getColor(type) {
 
 export default {
     createEmptyTexture(w, h, type) {
-        var gl = Texturity.getGL();
-        var data = new Uint8Array(getColor(type));
-        var emptyTexture = gl.createTexture();
+        const gl = Texturity.getGL();
+        const data = new Uint8Array(getColor(type));
+        const emptyTexture = gl.createTexture();
 
         gl.bindTexture(gl.TEXTURE_2D, emptyTexture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, data);
@@ -29,20 +29,20 @@ export default {
         return emptyTexture;
     },
     createMockCanvas() {
-        var state = store.state;
+        const state = store.state;
 
         return new Texturity.Canvas(state.textureSize, state.textureSize);
     },
     createMockTexture(type) {
-        var state = store.state;
+        const state = store.state;
 
         return this.createEmptyTexture(state.textureSize, state.textureSize, type);
     },
     textureToSrc(texture) {
-        var state = store.state;
-        var w = state.textureSize;
-        var h = state.textureSize;
-        var canvas = new Texturity.Canvas(w, h);
+        const state = store.state;
+        const w = state.textureSize;
+        const h = state.textureSize;
+        const canvas = new Texturity.Canvas(w, h);
 
         return canvas
             .drawTexture(texture, 0, 0, w, h)

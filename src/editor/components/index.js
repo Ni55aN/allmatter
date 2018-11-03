@@ -60,7 +60,7 @@ export default {
         new Outputcolor
     ],
     get(name) {
-        var comp = this
+        const comp = this
             .list
             .find(item => item.name.toUpperCase() === name.toUpperCase());
 

@@ -1,32 +1,32 @@
-import { Component, Input } from 'rete';
+import { Input } from 'rete';
+import TextureComponent from '../../common/components/texture';
 import Utils from '../../utils';
-import modifyTextureNode from '../../common/builders/texture';
 import sockets from '../../sockets';
 
-export default class extends Component {
+export default class extends TextureComponent {
     constructor() {
         super('Invert')
         this.allocation = ['Texture'];
     }
     
     builder(node) {
-        modifyTextureNode(node);
+        super.builder(node);
 
-        var inp = new Input('image', 'Image', sockets.image);
+        const inp = new Input('image', 'Image', sockets.image);
 
         return node.addInput(inp);
     }
 
     async worker(node, inputs, outputs) {
-        var texture = inputs['image'][0] instanceof WebGLTexture
+        const texture = inputs['image'][0] instanceof WebGLTexture
             ? inputs['image'][0]
             : Utils.createMockTexture();
 
-        var result = Utils.createMockCanvas();
+        const result = Utils.createMockCanvas();
 
         result.blend(texture, 1, 'b - a');
 
         outputs['image'] = result.toTexture();
-        this.editor.nodes.find(n => n.id === node.id).controls.get('preview').updatePreview(outputs['image']);
+        this.updatePreview(node, outputs['image']);
     }
 }

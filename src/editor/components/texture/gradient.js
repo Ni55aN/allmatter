@@ -1,18 +1,18 @@
-import { Component, Input } from 'rete';
-import modifyTextureNode from '../../common/builders/texture';
+import { Input } from 'rete';
+import TextureComponent from '../../common/components/texture';
 import sockets from '../../sockets';
 
-export default class extends Component {
+export default class extends TextureComponent {
     constructor() {
         super('Texture gradient')
         this.allocation = ['Texture'];
     }
     
     builder(node) {
-        modifyTextureNode(node);
+        super.builder(node);
 
-        var inp = new Input('image', 'Image', sockets.image);
-        var inp2 = new Input('curve', 'Curve', sockets.curve);
+        const inp = new Input('image', 'Image', sockets.image);
+        const inp2 = new Input('curve', 'Curve', sockets.curve);
 
         return node
             .addInput(inp)

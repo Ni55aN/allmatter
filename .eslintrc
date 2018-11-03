@@ -23,7 +23,7 @@
   "rules": {
     "comma-dangle": [1, "never"],
     "no-cond-assign": 1,
-    "no-console": 1,
+    "no-console": 0,
     "no-constant-condition": 1,
     "sort-imports-es6-autofix/sort-imports-es6": [2, {
       "ignoreCase": false,
@@ -89,7 +89,8 @@
       "ignoreComments": true
     }],
     "max-params": [1, 6],
-    "max-statements": [1, 8],
+    "max-statements": [1, 10],
+    "no-var": 1,
     "prefer-const": 2,
     "no-const-assign": 2
   }

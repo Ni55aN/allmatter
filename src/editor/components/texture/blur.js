@@ -1,20 +1,20 @@
-import { Component, Input } from 'rete';
+import { Input } from 'rete';
 import FieldControl from '../../controls/field';
+import TextureComponent from '../../common/components/texture';
 import Utils from '../../utils';
-import modifyTextureNode from '../../common/builders/texture';
 import sockets from '../../sockets';
 
-export default class extends Component {
+export default class extends TextureComponent {
     constructor() {
         super('Blur')
         this.allocation = ['Texture'];
     }
 
     builder(node) {
-        modifyTextureNode(node);
+        super.builder(node);
 
-        var inp = new Input('image', 'Image', sockets.image);
-        var inp2 = new Input('radius', 'Radius', sockets.image);
+        const inp = new Input('image', 'Image', sockets.image);
+        const inp2 = new Input('radius', 'Radius', sockets.image);
 
         inp2.addControl(new FieldControl(this.editor, 'radius', {type: 'number', value: 1}));
 
@@ -24,18 +24,18 @@ export default class extends Component {
     }
 
     async worker(node, inputs, outputs) {
-        var texture = inputs['image'][0]instanceof WebGLTexture
+        const texture = inputs['image'][0]instanceof WebGLTexture
             ? inputs['image'][0]
             : Utils.createMockTexture();
-        var radius = typeof inputs['radius'][0] === 'number'
+        const radius = typeof inputs['radius'][0] === 'number'
             ? inputs['radius'][0]
             : node.data.radius;
 
-        var result = Utils.createMockCanvas();
+        const result = Utils.createMockCanvas();
 
         result.blur(texture, radius);
 
         outputs['image'] = result.toTexture();
-        this.editor.nodes.find(n => n.id === node.id).controls.get('preview').updatePreview(outputs['image']);
+        this.updatePreview(node, outputs['image']);
     }
 }

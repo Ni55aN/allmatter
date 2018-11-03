@@ -1,20 +1,20 @@
-import { Component, Input } from 'rete';
+import { Input } from 'rete';
 import FieldControl from '../../controls/field';
+import TextureComponent from '../../common/components/texture';
 import Utils from '../../utils';
-import modifyTextureNode from '../../common/builders/texture';
 import sockets from '../../sockets';
 
-export default class extends Component {
+export default class extends TextureComponent {
     constructor() {
         super('Lightness')
         this.allocation = ['Texture'];
     }
     
     builder(node) {
-        modifyTextureNode(node);
+        super.builder(node);
 
-        var inp = new Input('image', 'Image', sockets.image);
-        var inp2 = new Input('scalar', 'Scalar', sockets.num);
+        const inp = new Input('image', 'Image', sockets.image);
+        const inp2 = new Input('scalar', 'Scalar', sockets.num);
 
         inp2.addControl(new FieldControl(this.editor, 'scalar', {type: 'number', value: 1}));
 
@@ -24,18 +24,18 @@ export default class extends Component {
     }
 
     async worker(node, inputs, outputs) {
-        var texture = inputs['image'][0]instanceof WebGLTexture
+        const texture = inputs['image'][0]instanceof WebGLTexture
             ? inputs['image'][0]
             : Utils.createMockTexture();
-        var scalar = typeof inputs['scalar'][0] === 'number'
+        const scalar = typeof inputs['scalar'][0] === 'number'
             ? inputs['scalar'][0]
             : node.data.scalar;
 
-        var result = Utils.createMockCanvas();
+        const result = Utils.createMockCanvas();
 
         result.blend(texture, scalar, 'a+b');
 
         outputs['image'] = result.toTexture();
-        this.editor.nodes.find(n => n.id === node.id).controls.get('preview').updatePreview(outputs['image']);
+        this.updatePreview(node, outputs['image']);
     }
 }

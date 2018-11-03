@@ -12,9 +12,9 @@ export default class ColorComponent extends Component {
     builder(node) {
         modifyMath(node);
 
-        var inp = new Input('pow', 'Pow', sockets.num);
+        const inp = new Input('pow', 'Pow', sockets.num);
 
-        var ctrl = new FieldControl(this.editor, 'pow', {type: 'number', value: 2});
+        const ctrl = new FieldControl(this.editor, 'pow', {type: 'number', value: 2});
 
         inp.addControl(ctrl);
 

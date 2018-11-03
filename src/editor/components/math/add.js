@@ -1,20 +1,18 @@
-import { Component } from 'rete';
-import binaryOperation from '../../common/workers/binary-operation';
-import modifyBinaryMath from '../../common/builders/binary-math';
+import BinaryMathComponent from '../../common/components/binary-operation';
 
-export default class Add extends Component {
+export default class Add extends BinaryMathComponent {
     constructor() {
         super('Add');
         this.allocation = ['Math'];
     }
 
     builder(node) {
-        modifyBinaryMath(node);
+        super.builder(node);
 
         return node;
     }
 
     worker(node, inputs, outputs) {
-        outputs['value'] = binaryOperation(inputs, 'a + b');
+        outputs['value'] = super.calculate(inputs, 'a + b');
     }
 }

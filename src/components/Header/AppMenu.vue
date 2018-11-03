@@ -35,7 +35,7 @@ import eventbus from '../../eventbus';
 import store from '../../store';
 import vueSlider from 'vue-slider-component';
 
-var geometries = ['Cube', 'Sphere'];
+const geometries = ['Cube', 'Sphere'];
 
 export default {
     inject: ['tour'],

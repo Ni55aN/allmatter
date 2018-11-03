@@ -1,10 +1,10 @@
-import { Component, Input } from 'rete';
+import { Input } from 'rete';
 import FieldControl from '../../controls/field';
+import TextureComponent from '../../common/components/texture';
 import Utils from '../../utils';
-import modifyTextureNode from '../../common/builders/texture';
 import sockets from '../../sockets';
 
-export default class Brick extends Component {
+export default class Brick extends TextureComponent {
     
     constructor() {
         super('Brick texture');
@@ -12,13 +12,13 @@ export default class Brick extends Component {
     }
 
     builder(node) {
-        modifyTextureNode(node);
+        super.builder(node);
 
-        var inp = new Input('count', 'Count', sockets.num);
-        var inp2 = new Input('margin', 'Margin', sockets.num);
+        const inp = new Input('count', 'Count', sockets.num);
+        const inp2 = new Input('margin', 'Margin', sockets.num);
 
-        var ctrl = new FieldControl(this.editor, 'count', {type: 'number', value: 12});
-        var ctrl2 = new FieldControl(this.editor, 'margin', {type: 'number', value: 0.04})
+        const ctrl = new FieldControl(this.editor, 'count', {type: 'number', value: 12});
+        const ctrl2 = new FieldControl(this.editor, 'margin', {type: 'number', value: 0.04})
 
         inp.addControl(ctrl);
         inp2.addControl(ctrl2);
@@ -29,19 +29,19 @@ export default class Brick extends Component {
     }
 
     async worker(node, inputs, outputs) {
-        var count = typeof inputs['count'][0] === 'number'
+        const count = typeof inputs['count'][0] === 'number'
             ? inputs['count'][0]
             : node.data.count;
-        var margin = typeof inputs['margin'][0] === 'number'
+        const margin = typeof inputs['margin'][0] === 'number'
             ? inputs['margin'][0]
             : node.data.margin;
 
-        var result = Utils.createMockCanvas();
+        const result = Utils.createMockCanvas();
 
         result.fillStyle([1, 1, 1, 1]);
         result.drawBricks(count, margin);
 
         outputs['image'] = result.toTexture();
-        this.editor.nodes.find(n => n.id === node.id).controls.get('preview').updatePreview(outputs['image']);
+        this.updatePreview(node, outputs['image']);
     }
 }

@@ -14,7 +14,7 @@ import { ID } from '../../../consts';
 import Item from './Item.vue';
 import Vue from 'vue';
 
-var initialData = () => ({id: ID, nodes: {}});
+const initialData = () => ({id: ID, nodes: {}});
 
 export default {
     props: ['opened'],

@@ -1,9 +1,8 @@
-import { Component } from 'rete';
 import FieldControl from '../../controls/field';
-import modifyTextureNode from '../../common/builders/texture';
+import TextureComponent from '../../common/components/texture';
 import sockets from '../../sockets';
 
-export default class ColorComponent extends Component {
+export default class ColorComponent extends TextureComponent {
     constructor() {
         super('Input texture');
         this.allocation = ['Input'];
@@ -14,9 +13,9 @@ export default class ColorComponent extends Component {
     }
     
     builder(node) {
-        modifyTextureNode(node);
+        super.builder(node);
 
-        var ctrl = new FieldControl(this.editor, 'name', {value: ''});
+        const ctrl = new FieldControl(this.editor, 'name', {value: ''});
         // var ctrl2 = new Rete.Control('<input type="file"/>', (el, control) => {
         //     el.addEventListener('change', () => {
         //         control

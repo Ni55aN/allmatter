@@ -13,9 +13,9 @@ export default class Number extends Component {
     }
 
     builder(node) {
-        var out = new Output('output', 'Number', sockets.num);
-        var ctrl = new FieldControl(this.editor, 'name', {value: ''});
-        var ctrl2 = new FieldControl(this.editor, 'number', {type: 'number', value: 1});
+        const out = new Output('output', 'Number', sockets.num);
+        const ctrl = new FieldControl(this.editor, 'name', {value: ''});
+        const ctrl2 = new FieldControl(this.editor, 'number', {type: 'number', value: 1});
         
         return node
             .addControl(ctrl)

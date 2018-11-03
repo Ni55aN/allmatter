@@ -9,8 +9,8 @@ export default class extends Component {
     }
 
     builder(node) {
-        var inp = new Input('input', 'Texture', sockets.image);
-        var ctrl = new FieldControl(this.editor, 'name');
+        const inp = new Input('input', 'Texture', sockets.image);
+        const ctrl = new FieldControl(this.editor, 'name');
 
         return node
             .addInput(inp)

@@ -15,9 +15,9 @@ export default class ColorComponent extends Component {
     }
 
     builder(node) {
-        var out = new Output('output', 'Color', sockets.color);
-        var ctrl = new FieldControl(this.editor, 'name', {type: 'text', value: ''});
-        var ctrl2 = colorPicker('color', new Color());
+        const out = new Output('output', 'Color', sockets.color);
+        const ctrl = new FieldControl(this.editor, 'name', {type: 'text', value: ''});
+        const ctrl2 = colorPicker('color', new Color());
 
         return node
             .addOutput(out)

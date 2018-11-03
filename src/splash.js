@@ -1,9 +1,9 @@
 import './style/common.sass';
 import checkBrowserComp from './check-compatibility';
 
-var s = (selector) => document.querySelector(selector);
-var sAll = (selector) => document.querySelectorAll(selector);
-var compatibility = checkBrowserComp();
+const s = (selector) => document.querySelector(selector);
+const sAll = (selector) => document.querySelectorAll(selector);
+const compatibility = checkBrowserComp();
 
 window.onerror = function(message) {
     try {

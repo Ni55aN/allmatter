@@ -14,13 +14,18 @@ export class TexturePreview {
         this.bindElement = null;
 
         this.el.addEventListener('wheel', e => {
-            var d = 0.2 * Math.sign(e.wheelDelta);
+            const d = 0.2 * Math.sign(e.wheelDelta);
 
             this.scale *= 1 + d;
 
             this.resize();
         });
 
+        this.handleEvents();
+        this.resize();
+    }
+
+    handleEvents() {
         this.el.addEventListener('mousedown', this.handleDown.bind(this));
         window.addEventListener('mousemove', this.handleMove.bind(this));
         window.addEventListener('mouseup', this.handleUp.bind(this));
@@ -29,8 +34,6 @@ export class TexturePreview {
         this.el.addEventListener('touchmove', this.handleMove.bind(this));
         this.el.addEventListener('touchend', this.handleUp.bind(this));
         this.el.addEventListener('touchcancel', this.handleUp.bind(this));
-
-        this.resize();
     }
 
     extractCoords(e) {
@@ -47,7 +50,7 @@ export class TexturePreview {
     handleMove(e) {
         if (!this.mouse) return;
         e.preventDefault();
-        var [x, y] = this.extractCoords(e);
+        const [x, y] = this.extractCoords(e);
 
         this.position[0] += x - this.mouse[0];
         this.position[1] += y - this.mouse[1];
@@ -80,7 +83,7 @@ export default {
         return { preview: null };
     },
     mounted() {
-        var store = this.$store;
+        const store = this.$store;
 
         this.preview = new TexturePreview(this.$el);
 

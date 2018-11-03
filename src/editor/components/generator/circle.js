@@ -1,10 +1,10 @@
-import { Component, Input } from 'rete';
+import { Input } from 'rete';
 import FieldControl from '../../controls/field';
+import TextureComponent from '../../common/components/texture';
 import Utils from '../../utils';
-import modifyTextureNode from '../../common/builders/texture';
 import sockets from '../../sockets';
 
-export default class Circle extends Component {
+export default class Circle extends TextureComponent {
     
     constructor() {
         super('Circle texture')
@@ -12,10 +12,10 @@ export default class Circle extends Component {
     }
 
     builder(node) {
-        modifyTextureNode(node);
+        super.builder(node);
 
-        var inp = new Input('size', 'Size', sockets.num);
-        var ctrl = new FieldControl(this.editor, 'size', {type: 'number', value: 1});
+        const inp = new Input('size', 'Size', sockets.num);
+        const ctrl = new FieldControl(this.editor, 'size', {type: 'number', value: 1});
 
         inp.addControl(ctrl);
 
@@ -23,15 +23,15 @@ export default class Circle extends Component {
     }
 
     async worker(node, inputs, outputs) {
-        var size = typeof inputs['size'][0] === 'number'
+        const size = typeof inputs['size'][0] === 'number'
             ? inputs['size'][0]
             : node.data.size;
 
-        var result = Utils.createMockCanvas();
+        const result = Utils.createMockCanvas();
 
         result.drawCircle(size);
 
         outputs['image'] = result.toTexture();
-        this.editor.nodes.find(n => n.id === node.id).controls.get('preview').updatePreview(outputs['image']);
+        this.updatePreview(node, outputs['image']);
     }
 }

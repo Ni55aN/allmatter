@@ -11,12 +11,12 @@ export default {
             if (input.files.length === 0) 
                 return;
             
-            var file = input.files[0];
-            var reader = new FileReader();
+            const file = input.files[0];
+            const reader = new FileReader();
 
             reader.onload = (e) => {
                 input.value = ''; //clear files
-                var project = JSON.parse(e.target.result);
+                const project = JSON.parse(e.target.result);
 
                 openProject(project);
             };

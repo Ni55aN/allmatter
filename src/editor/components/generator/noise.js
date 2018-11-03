@@ -1,20 +1,20 @@
-import { Component, Input } from 'rete';
+import { Input } from 'rete';
 import FieldControl from '../../controls/field';
+import TextureComponent from '../../common/components/texture';
 import Utils from '../../utils';
-import modifyTextureNode from '../../common/builders/texture';
 import sockets from '../../sockets';
 
-export default class Noise extends Component {
+export default class Noise extends TextureComponent {
     constructor() {
         super('Noise texture')
         this.allocation = ['Generator'];
     }
 
     builder(node) {
-        modifyTextureNode(node);
+        super.builder(node);
 
-        var inp = new Input('level', 'Level', sockets.num);
-        var ctrl = new FieldControl(this.editor, 'level', {type: 'number', value: 1});
+        const inp = new Input('level', 'Level', sockets.num);
+        const ctrl = new FieldControl(this.editor, 'level', {type: 'number', value: 1});
 
         inp.addControl(ctrl);
 
@@ -26,11 +26,11 @@ export default class Noise extends Component {
         //     ? inputs['level'][0] /// ??? 1 or level
         //     : node.data.level;
 
-        var result = Utils.createMockCanvas();
+        const result = Utils.createMockCanvas();
 
         result.noise();
 
         outputs['image'] = result.toTexture();
-        this.editor.nodes.find(n => n.id === node.id).controls.get('preview').updatePreview(outputs['image']);
+        this.updatePreview(node, outputs['image']);
     }
 }

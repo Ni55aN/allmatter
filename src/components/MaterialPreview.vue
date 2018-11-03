@@ -3,56 +3,46 @@
 </template>
 
 <script>
-var THREE = require('three');
-var OrbitControls = require('three-orbit-controls')(THREE);
-var OBJLoader = require('three-obj-loader');
+const THREE = require('three');
+const OrbitControls = require('three-orbit-controls')(THREE);
+const OBJLoader = require('three-obj-loader');
 
-OBJLoader(THREE);
+OBJLoader.call(null, THREE);
 
 export class MaterialPreview {
     constructor(el) {
         this.el = el;
+        
         this.scene = new THREE.Scene();
-
-        this.camera = new THREE.PerspectiveCamera(
-            50,
-            el.clientWidth / el.clientHeight,
-            0.0001,
-            10
-        );
-        this.camera.position.set(1.2, 1.8, 3.2);
-
+        this.camera = this.createCamera();
         this.renderer = this.createRenderer();
-
-        this.el.parentElement.addEventListener('resize', this.resize.bind(this));
 
         this.controls = this.createControls();
 
-        var alight = new THREE.AmbientLight(0x777777);
-
-        this.scene.add(alight);
-
-        var light = new THREE.PointLight(0xffffff, 0.8);
-
-        light.position.set(2, 1, 2);
-        this.scene.add(light);
-
-        var light2 = new THREE.PointLight(0xffffff, 0.7);
-
-        light2.position.set(-2, 2, -2.5);
-        this.scene.add(light2);
-
         this.mesh = this.createMesh();
 
+        this.createLights();
         this.loadEnvMap('envMap/', '.jpg');
         this.loadGeometry('cube');
 
         this.resize();
-        this.render();
+    }
+
+    createCamera() {
+        const camera = new THREE.PerspectiveCamera(
+            50,
+            this.el.clientWidth / this.el.clientHeight,
+            0.0001,
+            10
+        );
+
+        camera.position.set(1.2, 1.8, 3.2);
+
+        return camera;
     }
 
     createRenderer() {
-        var r = new THREE.WebGLRenderer({
+        const r = new THREE.WebGLRenderer({
             antialiasing: true,
             alpha: true,
             preserveDrawingBuffer: true
@@ -65,17 +55,36 @@ export class MaterialPreview {
             'webglcontextrestored',
             this.render.bind(this)
         );
+
+        this.el.parentElement.addEventListener('resize', this.resize.bind(this));
+        
         return r;
+    }
+
+    createLights() {
+        const alight = new THREE.AmbientLight(0x777777);
+
+        this.scene.add(alight);
+
+        const light = new THREE.PointLight(0xffffff, 0.8);
+
+        light.position.set(2, 1, 2);
+        this.scene.add(light);
+
+        const light2 = new THREE.PointLight(0xffffff, 0.7);
+
+        light2.position.set(-2, 2, -2.5);
+        this.scene.add(light2);
     }
 
     loadGeometry(name) {
     // var tessellateModifier = new THREE.TessellateModifier(0.04);
 
         new THREE.OBJLoader().load(`models/${name.toLowerCase()}.obj`, object => {
-            var geom = object.children[0].geometry;
-            var geometry = new THREE.Geometry().fromBufferGeometry(geom);
+            const geom = object.children[0].geometry;
+            const geometry = new THREE.Geometry().fromBufferGeometry(geom);
 
-            for (var i = 0; i < 15; i++) {
+            for (let i = 0; i < 15; i++) {
                 //     tessellateModifier.modify(geometry);
             }
 
@@ -85,12 +94,12 @@ export class MaterialPreview {
     }
 
     createControls() {
-        var takeControl = e => {
+        const takeControl = e => {
             e.stopPropagation();
             this.controls.update();
         };
 
-        var controls = new OrbitControls(this.camera, this.renderer.domElement);
+        const controls = new OrbitControls(this.camera, this.renderer.domElement);
 
         controls.addEventListener('change', this.render.bind(this));
 
@@ -104,7 +113,7 @@ export class MaterialPreview {
     }
 
     createMesh() {
-        var mesh = new THREE.Mesh();
+        const mesh = new THREE.Mesh();
 
         this.scene.add(mesh);
         mesh.material = new THREE.MeshPhysicalMaterial();
@@ -118,7 +127,7 @@ export class MaterialPreview {
     }
 
     loadEnvMap(path, format) {
-        var urls = [
+        const urls = [
             path + 'px' + format,
             path + 'nx' + format,
             path + 'py' + format,
@@ -127,7 +136,7 @@ export class MaterialPreview {
             path + 'nz' + format
         ];
 
-        var reflectionmesh = new THREE.CubeTextureLoader().load(urls);
+        const reflectionmesh = new THREE.CubeTextureLoader().load(urls);
 
         this.mesh.material.envMap = reflectionmesh;
     }
@@ -149,7 +158,7 @@ export class MaterialPreview {
     getPreview() {
         this.resize(256, 256);
 
-        var src = this.renderer.domElement.toDataURL();
+        const src = this.renderer.domElement.toDataURL();
 
         this.resize();
         return src;
@@ -189,7 +198,7 @@ export default {
         return { preview: null };
     },
     mounted() {
-        var store = this.$store;
+        const store = this.$store;
 
         this.preview = new MaterialPreview(this.$el);
         this.preview.render();
