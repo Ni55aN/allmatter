@@ -1,1 +1,407 @@
-{"name":"Example 1","data":{"id":"allmatter@0.2.1","nodes":{"5":{"id":5,"data":{},"group":null,"inputs":[{"connections":[{"node":20,"output":0}]},{"connections":[{"node":10,"output":0}]},{"connections":[{"node":15,"output":0}]},{"connections":[{"node":19,"output":0}]},{"connections":[]},{"connections":[]},{"connections":[]}],"outputs":[],"position":[482.2572039475061,-465.13904717424936],"title":"Output material"},"8":{"id":8,"data":{"x":0,"y":0,"repeat":4},"group":null,"inputs":[{"connections":[{"node":9,"output":0}]},{"connections":[]},{"connections":[]},{"connections":[]}],"outputs":[{"connections":[{"node":11,"input":0},{"node":15,"input":0},{"node":18,"input":0}]}],"position":[-732.7619889923842,-83.92900138399844],"title":"Texture transform"},"9":{"id":9,"data":{"size":0.6},"group":null,"inputs":[{"connections":[]}],"outputs":[{"connections":[{"node":8,"input":0}]}],"position":[-990.3397392309628,16.06048087298172],"title":"Circle texture"},"10":{"id":10,"data":{"scale":1},"group":null,"inputs":[{"connections":[{"node":11,"output":0}]},{"connections":[]}],"outputs":[{"connections":[{"node":5,"input":1}]}],"position":[-156.88301975306527,-707.4708708589284],"title":"Normal map"},"11":{"id":11,"data":{"radius":2},"group":null,"inputs":[{"connections":[{"node":8,"output":0}]},{"connections":[]}],"outputs":[{"connections":[{"node":10,"input":0}]}],"position":[-437.1054996692976,-402.1910901620753],"title":"Blur"},"15":{"id":15,"data":{"scalar":-0.7},"group":null,"inputs":[{"connections":[{"node":8,"output":0}]},{"connections":[]}],"outputs":[{"connections":[{"node":5,"input":2}]}],"position":[-200.05062063823132,-202.09399254113023],"title":"Lightness"},"18":{"id":18,"data":{},"group":null,"inputs":[{"connections":[{"node":8,"output":0}]}],"outputs":[{"connections":[{"node":19,"input":0}]}],"position":[-424.5892593160686,99.61832946680147],"title":"Invert"},"19":{"id":19,"data":{"scalar":-0.9},"group":null,"inputs":[{"connections":[{"node":18,"output":0}]},{"connections":[]}],"outputs":[{"connections":[{"node":5,"input":3}]}],"position":[144.19549375378577,67.6836390978305],"title":"Lightness"},"20":{"id":20,"data":{"module":{"name":"color texture","data":{"id":"allmatter@0.2.1","nodes":{"21":{"id":21,"data":{"name":"","color":[0,0.27058823529411763,0.8431372549019608]},"group":null,"inputs":[],"outputs":[{"connections":[{"node":36,"input":0}]}],"position":[-453.2297837973739,-1061.270156816536],"title":"Input color"},"35":{"id":35,"data":{"scalar":1},"group":null,"inputs":[{"connections":[]},{"connections":[]}],"outputs":[{"connections":[{"node":36,"input":1}]}],"position":[-463.3339436848958,-746.808336046007],"title":"Lightness"},"36":{"id":36,"data":{},"group":null,"inputs":[{"connections":[{"node":21,"output":0}]},{"connections":[{"node":35,"output":0}]}],"outputs":[{"connections":[{"node":37,"input":0}]}],"position":[-172.9892948834232,-906.6574993829945],"title":"Multiply"},"37":{"id":37,"data":{"name":""},"group":null,"inputs":[{"connections":[{"node":36,"output":0}]}],"outputs":[],"position":[84.28644522507317,-930.8310588562758],"title":"Output texture"}},"groups":{}}}},"group":null,"inputs":[{"connections":[{"node":71,"output":0}]}],"outputs":[{"connections":[{"node":5,"input":0}]}],"position":[-158.93081063947034,-959.5034358347873],"title":"Module"},"71":{"id":71,"data":{"name":"","color":[1,0.3333333333333333,0]},"group":null,"inputs":[],"outputs":[{"connections":[{"node":20,"input":0}]}],"position":[-450.6472367553456,-949.8334094782784],"title":"Input color"}},"groups":{}}}
+{
+    "index": {
+        "data": {
+            "id": "allmatter@0.2.1",
+            "nodes": {
+                "7": {
+                    "id": 7,
+                    "data": {
+                        "name": "",
+                        "color": [255, 123, 0]
+                    },
+                    "inputs": {},
+                    "outputs": {
+                        "output": {
+                            "connections": [{
+                                "node": 8,
+                                "input": "color",
+                                "data": {}
+                            }]
+                        }
+                    },
+                    "position": [-345.8886706575311, -296.9996337890625],
+                    "name": "Input color"
+                },
+                "8": {
+                    "id": 8,
+                    "data": {
+                        "module": "color texture"
+                    },
+                    "inputs": {
+                        "color": {
+                            "connections": [{
+                                "node": 7,
+                                "output": "output",
+                                "data": {}
+                            }]
+                        }
+                    },
+                    "outputs": {
+                        "texture": {
+                            "connections": [{
+                                "node": 16,
+                                "input": "diffuse",
+                                "data": {}
+                            }]
+                        }
+                    },
+                    "position": [-86.97715085144162, -293.5707582197585],
+                    "name": "Module"
+                },
+                "9": {
+                    "id": 9,
+                    "data": {
+                        "scale": 1
+                    },
+                    "inputs": {
+                        "image": {
+                            "connections": [{
+                                "node": 10,
+                                "output": "image",
+                                "data": {}
+                            }]
+                        },
+                        "scale": {
+                            "connections": []
+                        }
+                    },
+                    "outputs": {
+                        "image": {
+                            "connections": [{
+                                "node": 16,
+                                "input": "normal",
+                                "data": {}
+                            }]
+                        }
+                    },
+                    "position": [-78.38436425079986, 25.46816859829741],
+                    "name": "Normal map"
+                },
+                "10": {
+                    "id": 10,
+                    "data": {
+                        "radius": 2
+                    },
+                    "inputs": {
+                        "image": {
+                            "connections": [{
+                                "node": 12,
+                                "output": "image",
+                                "data": {}
+                            }]
+                        },
+                        "radius": {
+                            "connections": []
+                        }
+                    },
+                    "outputs": {
+                        "image": {
+                            "connections": [{
+                                "node": 9,
+                                "input": "image",
+                                "data": {}
+                            }]
+                        }
+                    },
+                    "position": [-345.1655846295199, 312.89593489750723],
+                    "name": "Blur"
+                },
+                "11": {
+                    "id": 11,
+                    "data": {
+                        "size": 0.6
+                    },
+                    "inputs": {
+                        "size": {
+                            "connections": []
+                        }
+                    },
+                    "outputs": {
+                        "image": {
+                            "connections": [{
+                                "node": 12,
+                                "input": "image",
+                                "data": {}
+                            }]
+                        }
+                    },
+                    "position": [-965.9405427146046, 751.8800092269106],
+                    "name": "Circle texture"
+                },
+                "12": {
+                    "id": 12,
+                    "data": {
+                        "x": 0,
+                        "y": 0,
+                        "repeat": 4
+                    },
+                    "inputs": {
+                        "image": {
+                            "connections": [{
+                                "node": 11,
+                                "output": "image",
+                                "data": {}
+                            }]
+                        },
+                        "x": {
+                            "connections": []
+                        },
+                        "y": {
+                            "connections": []
+                        },
+                        "repeat": {
+                            "connections": []
+                        }
+                    },
+                    "outputs": {
+                        "image": {
+                            "connections": [{
+                                "node": 10,
+                                "input": "image",
+                                "data": {}
+                            }, {
+                                "node": 13,
+                                "input": "image",
+                                "data": {}
+                            }, {
+                                "node": 14,
+                                "input": "image",
+                                "data": {}
+                            }]
+                        }
+                    },
+                    "position": [-675.3777710770754, 636.1861829824337],
+                    "name": "Texture transform"
+                },
+                "13": {
+                    "id": 13,
+                    "data": {
+                        "scalar": -0.7
+                    },
+                    "inputs": {
+                        "image": {
+                            "connections": [{
+                                "node": 12,
+                                "output": "image",
+                                "data": {}
+                            }]
+                        },
+                        "scalar": {
+                            "connections": []
+                        }
+                    },
+                    "outputs": {
+                        "image": {
+                            "connections": [{
+                                "node": 16,
+                                "input": "rough",
+                                "data": {}
+                            }]
+                        }
+                    },
+                    "position": [-65.66116427428861, 470.1316511092617],
+                    "name": "Lightness"
+                },
+                "14": {
+                    "id": 14,
+                    "data": {},
+                    "inputs": {
+                        "image": {
+                            "connections": [{
+                                "node": 12,
+                                "output": "image",
+                                "data": {}
+                            }]
+                        }
+                    },
+                    "outputs": {
+                        "image": {
+                            "connections": [{
+                                "node": 15,
+                                "input": "image",
+                                "data": {}
+                            }]
+                        }
+                    },
+                    "position": [-347.5491162698429, 815.8482939173683],
+                    "name": "Invert"
+                },
+                "15": {
+                    "id": 15,
+                    "data": {
+                        "scalar": -0.9
+                    },
+                    "inputs": {
+                        "image": {
+                            "connections": [{
+                                "node": 14,
+                                "output": "image",
+                                "data": {}
+                            }]
+                        },
+                        "scalar": {
+                            "connections": []
+                        }
+                    },
+                    "outputs": {
+                        "image": {
+                            "connections": [{
+                                "node": 16,
+                                "input": "metal",
+                                "data": {}
+                            }]
+                        }
+                    },
+                    "position": [196.13623155481122, 748.9741355711304],
+                    "name": "Lightness"
+                },
+                "16": {
+                    "id": 16,
+                    "data": {},
+                    "inputs": {
+                        "diffuse": {
+                            "connections": [{
+                                "node": 8,
+                                "output": "texture",
+                                "data": {}
+                            }]
+                        },
+                        "normal": {
+                            "connections": [{
+                                "node": 9,
+                                "output": "image",
+                                "data": {}
+                            }]
+                        },
+                        "rough": {
+                            "connections": [{
+                                "node": 13,
+                                "output": "image",
+                                "data": {}
+                            }]
+                        },
+                        "metal": {
+                            "connections": [{
+                                "node": 15,
+                                "output": "image",
+                                "data": {}
+                            }]
+                        },
+                        "emis": {
+                            "connections": []
+                        },
+                        "disp": {
+                            "connections": []
+                        },
+                        "alpha": {
+                            "connections": []
+                        }
+                    },
+                    "outputs": {},
+                    "position": [603.4346342026009, 151.97704860963364],
+                    "name": "Output material"
+                }
+            }
+        }
+    },
+    "color texture": {
+        "data": {
+            "id": "allmatter@0.2.1",
+            "nodes": {
+                "1": {
+                    "id": 1,
+                    "data": {
+                        "name": "color",
+                        "color": [0, 5, 255]
+                    },
+                    "inputs": {},
+                    "outputs": {
+                        "output": {
+                            "connections": [{
+                                "node": 4,
+                                "input": "value1",
+                                "data": {}
+                            }]
+                        }
+                    },
+                    "position": [-333.88110072650585, -404.12589912030523],
+                    "name": "Input color"
+                },
+                "4": {
+                    "id": 4,
+                    "data": {},
+                    "inputs": {
+                        "value1": {
+                            "connections": [{
+                                "node": 1,
+                                "output": "output",
+                                "data": {}
+                            }]
+                        },
+                        "value2": {
+                            "connections": [{
+                                "node": 5,
+                                "output": "image",
+                                "data": {}
+                            }]
+                        }
+                    },
+                    "outputs": {
+                        "value": {
+                            "connections": [{
+                                "node": 6,
+                                "input": "input",
+                                "data": {}
+                            }]
+                        }
+                    },
+                    "position": [-4.3600141870408695, -204.75726791351045],
+                    "name": "Multiply"
+                },
+                "5": {
+                    "id": 5,
+                    "data": {
+                        "scalar": 1
+                    },
+                    "inputs": {
+                        "image": {
+                            "connections": []
+                        },
+                        "scalar": {
+                            "connections": []
+                        }
+                    },
+                    "outputs": {
+                        "image": {
+                            "connections": [{
+                                "node": 4,
+                                "input": "value2",
+                                "data": {}
+                            }]
+                        }
+                    },
+                    "position": [-332.9969175420521, -62.870508118812744],
+                    "name": "Lightness"
+                },
+                "6": {
+                    "id": 6,
+                    "data": {
+                        "name": "texture"
+                    },
+                    "inputs": {
+                        "input": {
+                            "connections": [{
+                                "node": 4,
+                                "output": "value",
+                                "data": {}
+                            }]
+                        }
+                    },
+                    "outputs": {},
+                    "position": [281.6639928765347, -186.19028137885527],
+                    "name": "Output texture"
+                }
+            }
+        }
+    }
+}

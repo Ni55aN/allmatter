@@ -45,13 +45,9 @@ export default {
         async process() {
             Texturity.disposeTextures();
             
-            const startId = Object.keys(
-                this.$refs.modules.getCurrent().data.nodes
-            ).find(
-                key =>
-                    this.$refs.modules.getCurrent().data.nodes[key].title ==
-          'Output material'
-            );
+            const mods = this.$refs.modules;
+            const startId = Object.keys(mods.getCurrent().data.nodes)
+                .find(key => mods.getCurrent().data.nodes[key].title == 'Output material');
 
             await this.engine.abort();
             await this.engine.process(
@@ -90,26 +86,32 @@ export default {
             //     }
             // });
 
-            this.editor.on(
-                'process nodecreated connectioncreated noderemoved connectionremoved',
-                async () => {
-                    if (this.editor.silent) return;
-                    
-                    this.$refs.modules.sync();
-                    await this.process();
-                }
-            );
+            this.editor.on('process nodecreated connectioncreated noderemoved connectionremoved', async () => {
+                if (this.editor.silent) return;
+                
+                this.$refs.modules.sync();
+                await this.process();
+            });
 
             components.list.map(c => {
                 this.editor.register(c);
                 this.engine.register(c);
             });
+        },
+        async import(modules) {
+            this.$refs.modules.clear();
+
+            Object.entries(modules).map(([name, { data }]) => {
+                this.$refs.modules.addModule(name, data)
+            });
+            this.$refs.modules.openModule(Object.keys(modules)[0]);
         }
     },
-    mounted() {
+    async mounted() {
         Texturity.initGL('webgl2');
     
         this.initEditor();
+        await this.import(await (await fetch('./projects/guide.mtr')).json());
 
         store.watch(
             () => store.getters.textureSize,
@@ -122,15 +124,7 @@ export default {
             this.$refs.modules.clear();
         });
 
-        eventbus.$on('openproject', modules => {
-            this.$refs.modules.clear();
-            console.log('clear')
-            Object.entries(modules).map(([name, { data }]) => {
-                this.$refs.modules.addModule(name, data)
-            });
-            console.log('openModule')
-            this.$refs.modules.openModule(Object.keys(modules)[0]);
-        });
+        eventbus.$on('openproject', modules => this.import(modules));
 
         eventbus.$on('saveproject', () => {
             const blob = new Blob([JSON.stringify(this.$refs.modules.list)], {
