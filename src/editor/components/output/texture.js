@@ -6,6 +6,10 @@ export default class extends Component {
     constructor() {
         super('Output texture')
         this.allocation = ['Output'];
+        this.module = {
+            nodeType: 'output',
+            socket: sockets.image
+        }
     }
 
     builder(node) {
