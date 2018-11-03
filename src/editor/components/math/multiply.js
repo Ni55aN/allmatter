@@ -1,4 +1,4 @@
-import BinaryMathComponent from '../../common/workers/binary-operation';
+import BinaryMathComponent from '../../common/components/binary-operation';
 
 export default class ColorComponent extends BinaryMathComponent {
     constructor() {
