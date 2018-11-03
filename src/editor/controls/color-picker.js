@@ -5,15 +5,14 @@ import eventbus from '../../eventbus';
 export default class ColorPicker extends Control {
     
     constructor(key, color) {
-        super();
-        color = this.getData(key) ? new Color(this.getData(key)) : new Color(color.array());
-        this.putData(key, color.array());
-
-        this.components = {
+        super(key);
+        this.props = { color }
+        this.component = {
+            props: ['color', 'putData', 'getData'],
             template: '<input type="color" v-model="value" @change="change()"/>',
             data() {
                 return {
-                    value: color.hex()
+                    value: '#000'
                 }
             },
             methods: {
@@ -23,6 +22,12 @@ export default class ColorPicker extends Control {
                     this.putData(key, c.array());
                     eventbus.$emit('process');
                 }
+            },
+            mounted() {
+                const c = this.getData(key) ? new Color(this.getData(key)) : new Color(this.color);
+
+                this.value = c.hex();
+                this.putData(key, c.array());
             }
         }
     }

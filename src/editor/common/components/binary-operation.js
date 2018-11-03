@@ -50,7 +50,7 @@ export default class BinaryMathComponent extends Component {
 
         if (a instanceof WebGLTexture) {
             const result = Utils.createMockCanvas();
-            const value = b instanceof Color ? b.array() : b;
+            const value = b instanceof Color ? b.array().map(v => v/255) : b;
     
             result.blend(a, value, expression);
     

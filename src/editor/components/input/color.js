@@ -1,7 +1,7 @@
 import { Component, Output } from 'rete';
 import Color from 'color';
+import ColorPicker from '../../controls/color-picker';
 import FieldControl from '../../controls/field';
-import colorPicker from '../../controls/color-picker';
 import sockets from '../../sockets';
 
 export default class ColorComponent extends Component {
@@ -17,7 +17,7 @@ export default class ColorComponent extends Component {
     builder(node) {
         const out = new Output('output', 'Color', sockets.color);
         const ctrl = new FieldControl(this.editor, 'name', {type: 'text', value: ''});
-        const ctrl2 = colorPicker('color', new Color());
+        const ctrl2 = new ColorPicker('color', new Color());
 
         return node
             .addOutput(out)
