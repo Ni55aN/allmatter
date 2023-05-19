@@ -140,6 +140,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (immutable) */ __webpack_exports__["disposeTexture"] = disposeTexture;
 /* harmony export (immutable) */ __webpack_exports__["disposeTextures"] = disposeTextures;
 /* harmony export (immutable) */ __webpack_exports__["getGL"] = getGL;
+/* harmony export (immutable) */ __webpack_exports__["createShader"] = createShader;
 /* harmony export (immutable) */ __webpack_exports__["initGL"] = initGL;
 /* harmony export (immutable) */ __webpack_exports__["createBuffer"] = createBuffer;
 /* harmony export (immutable) */ __webpack_exports__["resize"] = resize;
@@ -258,10 +259,15 @@ class Canvas {
     }
 
     drawTexture(texture, x, y, w, h, params = [], uvs = null) {
+        /*  1__2
+           6|\ |
+            | \|3
+            5  4
+        */
+        uvs = uvs || [0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1];
+
         useProgram(programs.image);
         var uvBuffer = gl.createBuffer();
-
-        uvs = uvs || [0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1];
 
         gl.bindBuffer(gl.ARRAY_BUFFER, uvBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvs), gl.STATIC_DRAW);
@@ -288,6 +294,12 @@ class Canvas {
         gl.deleteBuffer(uvBuffer);
   
         return this;
+    }
+
+    cropTexture(texture, [origw, origh], x, y, w, h) {
+        resize(w, h);
+    
+        this.drawTexture(texture, -x, -y, origw, origh);
     }
 
     fillStyle(color) {
@@ -523,6 +535,10 @@ function disposeTextures() {
 
 function getGL() {
     return gl;
+}
+
+function createShader(vertex, fragment) {
+    return shaderManager.createShaderProgram({ vertex, fragment });
 }
 
 function initGL(contextName = 'webgl', params = {}) {
@@ -883,7 +899,7 @@ function useProgram(program) {
         varying mediump vec2 texcoord;
         uniform sampler2D texture;
         void main(void) {
-            gl_FragColor = vec4(texture2D(texture, texcoord).rgb,1.0);
+            gl_FragColor = vec4(texture2D(texture, texcoord).rgba);
         }`
 });
 
@@ -998,7 +1014,7 @@ function useProgram(program) {
         uniform sampler2D texture;
         uniform mediump float scale;
 
-        lowp float grey(vec3 color){
+        lowp float grey(lowp vec3 color){
             return dot(color.rgb, vec3(0.299, 0.587, 0.114));
         }
 
@@ -1023,7 +1039,7 @@ function useProgram(program) {
 
 
             gl_FragColor = vec4(r,1.0);
-            
+
         }`
 });
 
