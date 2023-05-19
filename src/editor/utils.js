@@ -1,5 +1,6 @@
 import * as Texturity from 'texturity.js';
-import store from '../store';
+// import store from '../store';
+import { legacyStore } from '../store'
 
 function getColor(type) {
     switch (type) {
@@ -15,7 +16,7 @@ function getColor(type) {
 }
 
 export default {
-    createEmptyTexture(w, h, type) {
+    createEmptyTexture(type) {
         const gl = Texturity.getGL();
         const data = new Uint8Array(getColor(type));
         const emptyTexture = gl.createTexture();
@@ -29,19 +30,14 @@ export default {
         return emptyTexture;
     },
     createMockCanvas() {
-        const state = store.state;
-
-        return new Texturity.Canvas(state.textureSize, state.textureSize);
+        return new Texturity.Canvas(legacyStore.textureSize, legacyStore.textureSize);
     },
     createMockTexture(type) {
-        const state = store.state;
-
-        return this.createEmptyTexture(state.textureSize, state.textureSize, type);
+        return this.createEmptyTexture(type);
     },
     textureToSrc(texture) {
-        const state = store.state;
-        const w = state.textureSize;
-        const h = state.textureSize;
+        const w = legacyStore.textureSize;
+        const h = legacyStore.textureSize;
         const canvas = new Texturity.Canvas(w, h);
 
         return canvas

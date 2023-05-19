@@ -1,23 +1,13 @@
-<html>
-
-    <head>
-        <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
-        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Gentium+Basic" />
-        <script src="common.js"></script>
-        <script src="splash.js"></script>
-    </head>
-
-    <body>
-        <div class="loading-screen">
-            <img class="logo" src="<%= require('./logo.svg') %>" />
-            <div class="cssload-container">
-                <div class="cssload-whirlpool"></div>
-            </div>
-        </div>
-        <script>
-        window.stopIfNotCompatible();
-        </script>
-        <div id="app"></div>
-    </body>
-
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React + TS</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

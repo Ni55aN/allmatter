@@ -20,4 +20,6 @@ export default class extends Component {
             .addControl(ctrl)
             .addInput(inp);
     }
+
+    worker() { 1 }
 }

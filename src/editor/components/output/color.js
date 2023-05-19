@@ -11,7 +11,7 @@ export default class ColorComponent extends Component {
             socket: sockets.color
         }
     }
-    
+
     builder(node) {
         const inp = new Input('input', 'Color', sockets.color);
         const ctrl = new FieldControl(this.editor, 'name', {value: ''});
@@ -20,4 +20,6 @@ export default class ColorComponent extends Component {
             .addInput(inp)
             .addControl(ctrl);
     }
+
+    worker() { 1 }
 }
