@@ -1,12 +1,13 @@
 import { Control } from 'rete';
 import Color from 'color';
-import eventbus from '../../eventbus';
 
 export default class ColorPicker extends Control {
-    
-    constructor(key, color) {
+
+    constructor(key, color, change) {
         super(key);
         this.props = { color }
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        const self = this
         this.component = {
             props: ['color', 'putData', 'getData'],
             template: '<input type="color" v-model="value" @change="change()"/>',
@@ -18,9 +19,9 @@ export default class ColorPicker extends Control {
             methods: {
                 change() {
                     const c = new Color(this.value);
-        
+
                     this.putData(key, c.array());
-                    eventbus.$emit('process');
+                    change()
                 }
             },
             mounted() {

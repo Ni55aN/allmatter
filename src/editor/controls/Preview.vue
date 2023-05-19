@@ -4,10 +4,9 @@ img(:width="width+'px'" :height="height+'px'", :src="src", @mousedown.stop="mous
 
 <script>
 import * as Texturity from 'texturity.js';
-import store from '../../store';
 
 export default {
-    props: ['emitter', 'store'],
+    props: ['pushTexture'],
     data() {
         return {
             width: 140,
@@ -31,13 +30,11 @@ export default {
 
             c.drawTexture(texture, 0, 0, w, h);
             const src = c.toSrc();
-      
+
             return src;
         },
         mousedown() {
-            const size = store.state.textureSize;
-        
-            this.store.commit('updateTexture', { src: this.texture2src(this.texture, size, size) });
+            this.pushTexture(size => ({ src: this.texture2src(this.texture, size, size) }))
         }
     }
 }

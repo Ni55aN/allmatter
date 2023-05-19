@@ -30,8 +30,10 @@ import Outputcurve from './output/curve';
 import Outputnumber from './output/number';
 import Outputtexture from './output/texture';
 
-export default {
-    list : [
+import WithTexturePreview from '../common/components/texture'
+
+export default function (texturePreview, updateMaterial) {
+    const list = [
         new Number,
         new Texture,
         new Curve,
@@ -58,14 +60,30 @@ export default {
         new Outputtexture,
         new Outputcurve,
         new Outputcolor
-    ],
-    get(name) {
-        const comp = this
-            .list
-            .find(item => item.name.toUpperCase() === name.toUpperCase());
+    ]
 
-        if (!comp) 
-            throw new Error(`Component '${name}' not found`);
-        return comp;
+
+    for (const item of list) {
+        if (item instanceof WithTexturePreview) {
+            item.texturePreview = texturePreview
+        }
     }
-};
+
+    for (const item of list) {
+        if (item instanceof Output) {
+            item.updateMaterial = updateMaterial
+        }
+    }
+
+    return {
+        list,
+        get(name) {
+            const comp = list
+                .find(item => item.name.toUpperCase() === name.toUpperCase());
+
+            if (!comp)
+                throw new Error(`Component '${name}' not found`);
+            return comp;
+        }
+    }
+}

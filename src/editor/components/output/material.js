@@ -1,9 +1,12 @@
 import { Component, Input } from 'rete';
 import Utils from '../../utils';
 import sockets from '../../sockets';
-import store from '../../../store';
+// import store from '../../../store';
 
 export default class extends Component {
+
+    updateMaterial = null
+
     constructor() {
         super('Output material')
         this.allocation = ['Output'];
@@ -29,7 +32,7 @@ export default class extends Component {
     }
 
     async worker(node, inputs) {
-        
+
         const diffuse = inputs['diffuse'][0]instanceof WebGLTexture
             ? inputs['diffuse'][0]
             : Utils.createMockTexture();
@@ -52,14 +55,16 @@ export default class extends Component {
             ? inputs['alpha'][0]
             : Utils.createMockTexture('white');
 
-        store.commit('updateMaterial', {
-            diffuse: Utils.textureToSrc(diffuse),
-            normal: Utils.textureToSrc(normal),
-            roughness: Utils.textureToSrc(roughness),
-            metalness: Utils.textureToSrc(metalness),
-            emissive: Utils.textureToSrc(emissive),
-            displacement: Utils.textureToSrc(displacement),
-            alpha: Utils.textureToSrc(alpha)
-        });
+        if (this.updateMaterial) {
+            this.updateMaterial({
+                diffuse: Utils.textureToSrc(diffuse),
+                normal: Utils.textureToSrc(normal),
+                roughness: Utils.textureToSrc(roughness),
+                metalness: Utils.textureToSrc(metalness),
+                emissive: Utils.textureToSrc(emissive),
+                displacement: Utils.textureToSrc(displacement),
+                alpha: Utils.textureToSrc(alpha)
+            });
+        }
     }
 }
