@@ -4,7 +4,6 @@ import styled from 'styled-components';
 // @ts-ignore
 import * as Texturity from 'texturity.js';
 import { useRete } from 'rete-react-render-plugin';
-import _ from 'lodash';
 import guideEditor from '../assets/projects/guide.json'
 import { useModules } from './Modules';
 import { createEditor } from '../editor';

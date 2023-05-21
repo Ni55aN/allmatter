@@ -10,7 +10,7 @@ import { AutoArrangePlugin, Presets as ArrangePresets } from 'rete-auto-arrange-
 import { ConnectionPlugin, Presets as ConnectionPresets } from 'rete-connection-plugin';
 import { ContextMenuExtra, ContextMenuPlugin, Presets as ContextMenuPresets } from 'rete-context-menu-plugin';
 import { ReactArea2D, ReactRenderPlugin, Presets } from 'rete-react-render-plugin';
-import _ from 'lodash';
+import { debounce } from 'lodash';
 // @ts-ignore
 import blobUtil from 'blob-util/dist/blob-util';
 import { createRoot } from "react-dom/client";
@@ -67,7 +67,7 @@ export async function createEditor(
         engine.fetch(n.id)
       })
   }
-  const process = _.debounce(_process, 500)
+  const process = debounce(_process, 500)
   const modules = new Modules(
     (path) => getModuleData()[path],
     async (path, editor) => {

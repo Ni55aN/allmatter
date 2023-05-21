@@ -42,8 +42,8 @@
     "styled-components": "^5.3.10",
     "texturity.js": "^0.3.1",
     "three": "^0.152.2",
-    "use-debounce": "^9.0.4",
-    "use-file-picker": "^1.6.1"
+    "use-file-picker": "^1.6.1",
+    "vite-plugin-radar": "^0.9.0"
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.5",
@@ -54,11 +54,9 @@
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
     "@vitejs/plugin-react": "^4.0.0",
-    "@vitejs/plugin-vue2": "^2.2.0",
     "eslint": "^8.38.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
-    "pug": "^3.0.2",
     "typescript": "^5.0.2",
     "vite": "^4.3.2"
   }
