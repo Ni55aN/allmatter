@@ -1,17 +1,16 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components'
-import { Editor } from './NodeEditor'
-import { TextureViewer } from './TextureViewer'
-import { useState } from 'react'
-import { MaterialPreview } from './MaterialPreview'
 
-const Styles = styled.div`
+const Styles = styled.div<{ active: 'material' | 'texture' | null }>`
   display: grid;
   grid-template-columns: 1fr 2fr;
   grid-template-rows: 1fr 1fr;
   grid-gap: 1em;
-  grid-template-areas:
-    "A C"
-    "B C";
+  grid-template-areas: ${props => {
+    if (props.active === 'material') return `"A A" "A A"`
+    if (props.active === 'texture') return `"B B" "B B"`
+    return `"A C" "B C"`;
+  }};
   height: 100%;
   .material-preview {
     grid-area: A;
@@ -24,26 +23,36 @@ const Styles = styled.div`
   }
 `
 
-const Card = styled.div`
+const Card = styled.div<{ visible: boolean }>`
   box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px;
   border-radius: 5px;
   overflow: hidden;
+  display: ${props => props.visible ? '' : 'none'};
 `
 
-export function Workspace({ textureSize, modelName }: { textureSize: number, modelName: string }) {
-  const [maps, setMaps] = useState({})
-  const [preview, setPreview] = useState('')
+type Area = 'material' | 'texture' | null
+
+export function Workspace({ materialPreview, texturePreview, editor }: { editor: any, texturePreview: any, materialPreview: any }) {
+  const [active, setActive] = useState<Area>(null)
+
+  useEffect(() => {
+    setTimeout(() => window.dispatchEvent(new Event('resize')));
+  }, [active])
+
+  function switchArea(area: Area) {
+    setActive(active === area ? null : area)
+  }
 
   return (
-    <Styles>
-      <Card className="material-preview">
-        <MaterialPreview geometry={modelName} maps={maps} />
+    <Styles active={active}>
+      <Card className="material-preview" visible={active === null || active === 'material'} onDoubleClick={() => switchArea('material')}>
+        {materialPreview}
       </Card>
-      <Card className="texture-preview">
-        <TextureViewer src={preview} />
+      <Card className="texture-preview" visible={active === null || active === 'texture'} onDoubleClick={() => switchArea('texture')}>
+        {texturePreview}
       </Card>
-      <Card className="editor">
-        <Editor textureSize={textureSize} changePreview={setPreview} changeMaterial={setMaps} />
+      <Card visible={active === null} className="editor">
+        {editor}
       </Card>
     </Styles>
   )

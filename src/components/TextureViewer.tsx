@@ -11,7 +11,7 @@ export class TexturePreview {
     this.el = el;
 
     this.el.addEventListener('wheel', e => {
-      const d = 0.2 * Math.sign((e as any).wheelDelta);
+      const d = 0.2 * Math.sign(-e.deltaY);
 
       this.scale *= 1 + d;
 
@@ -101,6 +101,6 @@ export function TextureViewer({ src }: { src: string }) {
   }, [])
 
   return (
-    <Styles ref={ref}></Styles>
+    <Styles ref={ref} data-tour="texture-preview"></Styles>
   )
 }

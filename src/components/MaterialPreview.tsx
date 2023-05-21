@@ -60,11 +60,6 @@ class MaterialPreviewFacade {
     this.el.appendChild(r.domElement);
     r.setClearColor(0x000000, 0);
 
-    // (r as any).context.canvas.addEventListener(
-    //   'webglcontextrestored',
-    //   this.render.bind(this)
-    // );
-
     r.outputColorSpace = THREE.LinearSRGBColorSpace
 
     return r;
@@ -167,20 +162,20 @@ class MaterialPreviewFacade {
     return src;
   }
 
-  updateMap(src: any, mapName: any) {
+  updateMap(src: any, mapName: Exclude<keyof typeof this.mesh.material, 'isMaterial'>) {
     return new Promise<void>((res) => {
       new THREE.TextureLoader().load(src, texture => {
-        const m = this.mesh.material as any
+        const material = this.mesh.material
 
-        if (m[mapName] instanceof THREE.Texture) {
-          m[mapName].dispose();
-          m[mapName] = null;
+        if (material[mapName] instanceof THREE.Texture) {
+          material[mapName].dispose();
+          material[mapName] = null as never;
         }
         texture.colorSpace = THREE.LinearSRGBColorSpace
         texture.anisotropy = 8;
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
-        m[mapName] = texture;
+        material[mapName] = texture as never;
         this.mesh.material.needsUpdate = true;
         res();
       });
@@ -230,6 +225,6 @@ export function MaterialPreview({ geometry, maps }: { geometry: string, maps: Re
   }, [maps])
 
   return (
-    <Styles ref={ref}></Styles>
+    <Styles ref={ref} data-tour="material-preview"></Styles>
   )
 }

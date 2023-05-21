@@ -1,39 +1,37 @@
 import { useRef, useState } from 'react';
-import { NodeEditor } from 'rete';
 import styled from 'styled-components';
-import { ID } from '../consts';
 import { ModuleItem } from './ModuleItem';
+import { exportEditor, importEditor } from '../editor/import-export';
+import { DiContainer } from '../editor';
+import { Button } from 'antd';
 
 const Styles = styled.div`
   position: absolute;
   left: 12px;
   top: 12px;
   font-family: Gill Sans, sans-serif;
-  button {
-    background: white;
-    padding: 4px;
-    border: none;
-    width: 100%;
-    color: #555;
-    &:hover {
-      background: #eee;
-      color: #222;
-    }
-  }
+  display: grid;
+  gap: 1em;
 `
 
-const initialData = () => ({ id: ID, nodes: {} });
+const initialData = () => ({ nodes: [], connections: [] });
 
-export function useModules({ getEditor, opened }: { getEditor: () => NodeEditor, opened: () => void }) {
+export function useModules({ opened }: { opened: () => void }) {
     const [list, setList] = useState<Record<string, any>>({})
     const listRef = useRef<Record<string, any>>({})
-    const current = useRef<null | string>(null)//'main')
+    const diRef = useRef<DiContainer>()
+    const current = useRef<null | string>(null)
     const sorted = Object.keys(list).sort((a, b) => a < b ? -1 : 1)
 
+    function getEditor() {
+        if (!diRef.current?.editor) throw new Error('editor')
+
+        return diRef.current?.editor
+    }
     function sync() {
         if (!current.current) return
 
-        listRef.current[current.current].data = getEditor().toJSON();
+        listRef.current[current.current] = exportEditor(getEditor());
     }
 
     function rename(from: string, to: string) {
@@ -47,9 +45,13 @@ export function useModules({ getEditor, opened }: { getEditor: () => NodeEditor,
     }
 
     async function openModule(name: string) {
+        sync()
         current.current = name
 
-        await getEditor().fromJSON(listRef.current[name].data);
+        if (!diRef.current) throw new Error('diRef.current')
+
+        await diRef.current.editor.clear()
+        await importEditor(diRef.current, listRef.current[name]);
         opened()
     }
 
@@ -57,7 +59,7 @@ export function useModules({ getEditor, opened }: { getEditor: () => NodeEditor,
         name = name || 'module' + Object.keys(listRef.current).length;
         data = data || initialData();
 
-        listRef.current[name] = { name, data }
+        listRef.current[name] = data
         setList({ ...listRef.current })
     }
 
@@ -71,11 +73,7 @@ export function useModules({ getEditor, opened }: { getEditor: () => NodeEditor,
 
         current.current = null
 
-        await getEditor().fromJSON({
-            id: ID,
-            nodes: {},
-            groups: {}
-        } as any);
+        await getEditor().clear()
         setList(listRef.current)
     }
 
@@ -83,12 +81,24 @@ export function useModules({ getEditor, opened }: { getEditor: () => NodeEditor,
         get list() {
             return listRef.current
         },
+        setDI(di: DiContainer) {
+            diRef.current = di
+        },
         addModule,
         rename,
         openModule,
         sync,
         getCurrent,
         clear,
+        async importModules(target: Record<string, any>) {
+            await clear();
+
+            Object.entries(target).map(([name, data]) => {
+                addModule(name, data)
+            });
+
+            await openModule(Object.keys(target)[0]);
+        },
         view: (
             <Styles>
                 {sorted.map(name => (
@@ -101,7 +111,7 @@ export function useModules({ getEditor, opened }: { getEditor: () => NodeEditor,
                         {name}
                     </ModuleItem>
                 ))}
-                <button onClick={() => addModule()}>+</button>
+                <Button onClick={() => addModule()} size='small'>+</Button>
             </Styles>
         )
     }

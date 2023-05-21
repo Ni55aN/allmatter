@@ -1,3 +1,12 @@
 body {
   margin: 0;
 }
+
+.shepherd-content {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+.shepherd-text,
+.shepherd-content footer {
+  font-size: 14px !important;
+}

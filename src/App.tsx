@@ -1,21 +1,22 @@
 import './App.css'
-import { Layout, Menu as AntMenu, MenuProps, Slider, Select } from 'antd';
+import { Layout, MenuProps } from 'antd';
 import styled from 'styled-components'
-import logo from './assets/logo.svg'
-import { InteractiveMenuItem } from './components/InteractiveMenuItem';
 import { Workspace } from './components/Workspace';
 import { useEffect, useState } from 'react';
 import { About } from './components/About';
 import { legacyStore } from './store';
-
-const Header = styled(Layout.Header)`
-  background: white;
-  line-height: initial;
-  padding: 0 2em;
-  display: flex;
-  align-items: center;
-  height: 4em;
-`
+import { useEditor } from './components/NodeEditor';
+import { MaterialPreview } from './components/MaterialPreview';
+import { TextureViewer } from './components/TextureViewer';
+import { Tour } from './tour';
+import { InteractiveMenuItem } from './components/shared/InteractiveMenuItem';
+import { Header } from './components/Header';
+import { useProjectPicker } from './project-picker';
+import { useProjectSaver } from './project-saver';
+import { useMapsSaver } from './maps-saver';
+import { Model } from './components/settings/Model';
+import { TextureSize } from './components/settings/TextureSize';
+import { Menu } from './components/Menu';
 
 const Content = styled(Layout.Content)`
   flex: 1%;
@@ -24,38 +25,28 @@ const Content = styled(Layout.Content)`
   padding: 0.5em;
 `
 
-const Logo = styled.img`
-  height: 2.8em;
-  margin-top: 0.5em;
-`
-
-const Menu = styled(AntMenu)`
-  flex: 1;
-  border: 0;
-  margin-left: 1em;
-  height: 100%;
-  & > .ant-menu-overflow-item {
-    padding-inline: 0;
-    &::after {
-      width: 100%;
-      left: 0;
-      bottom: unset !important;
-      top: 0;
-      inset-inline: 0 !important;
-    }
-  }
-  [role="menuitem"] {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    padding: 0 1em;
-  }
-`
-
 function App() {
   const [openAbout, setOpenAbout] = useState(false)
   const [textureSize, setTextureSize] = useState(legacyStore.textureSize)
   const [modelName, setModelName] = useState('cube')
+  const [tour] = useState(new Tour())
+  const [open, file] = useProjectPicker()
+  const [save] = useProjectSaver('project.json')
+  const [saveTextures] = useMapsSaver('allmatter_[name].png')
+
+  useEffect(() => {
+    legacyStore.textureSize = textureSize
+    editor.process()
+  }, [textureSize])
+
+  const [maps, setMaps] = useState<Record<string, any>>({})
+  const [preview, setPreview] = useState('')
+  const editor = useEditor({ changePreview: setPreview, changeMaterial: setMaps })
+
+  useEffect(() => {
+    if (file) editor.modules.importModules(file)
+  }, [file])
+
   const items: MenuProps['items'] = [
     {
       label: 'Project',
@@ -63,19 +54,31 @@ function App() {
       children: [
         {
           label: 'New',
-          key: 'new'
+          key: 'new',
+          onClick() {
+            editor.modules.clear()
+          }
         },
         {
           label: 'Open',
-          key: 'open'
+          key: 'open',
+          onClick() {
+            open()
+          }
         },
         {
           label: 'Save',
-          key: 'save'
+          key: 'save',
+          onClick() {
+            save(editor.modules.list)
+          }
         },
         {
           label: 'Export maps',
-          key: 'export maps'
+          key: 'export maps',
+          onClick() {
+            saveTextures(maps)
+          }
         },
       ]
     },
@@ -86,13 +89,7 @@ function App() {
         {
           label: (
             <InteractiveMenuItem label="Texture size">
-              <Slider
-                min={8}
-                max={12}
-                tooltip={{ formatter: v => 2 ** (v || 0) }}
-                defaultValue={9}
-                onChange={value => setTextureSize(2 ** value)}
-              />
+              <TextureSize min={8} max={12} onChange={setTextureSize} />
             </InteractiveMenuItem>
           ),
           style: {
@@ -103,21 +100,7 @@ function App() {
         {
           label: (
             <InteractiveMenuItem label="3D model">
-              <Select
-                style={{ width: '100%' }}
-                options={[
-                  {
-                    label: 'Cube',
-                    value: 'cube'
-                  },
-                  {
-                    label: 'Sphere',
-                    value: 'sphere'
-                  }
-                ]}
-                onChange={setModelName}
-                defaultValue="cube"
-              />
+              <Model onChange={setModelName} />
             </InteractiveMenuItem>
           ),
           style: {
@@ -133,7 +116,10 @@ function App() {
       children: [
         {
           label: 'Guide',
-          key: 'guide'
+          key: 'guide',
+          onClick() {
+            tour.start()
+          }
         },
         {
           label: 'About',
@@ -146,18 +132,17 @@ function App() {
     }
   ]
 
-  useEffect(() => {
-    legacyStore.textureSize = textureSize
-  }, [textureSize])
-
   return (
     <Layout style={{ display: 'flex', height: '100vh' }}>
-      <Header>
-        <Logo src={logo} />
-        <Menu mode="horizontal" items={items} />
-      </Header>
+      <Header
+        menu={<Menu mode="horizontal" items={items} data-tour="menu" />}
+      />
       <Content>
-        <Workspace textureSize={textureSize} modelName={modelName} />
+        <Workspace
+          materialPreview={<MaterialPreview geometry={modelName} maps={maps} />}
+          texturePreview={<TextureViewer src={preview} />}
+          editor={editor.view}
+        />
       </Content>
       <About open={openAbout} hide={() => setOpenAbout(false)} />
     </Layout>

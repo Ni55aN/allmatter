@@ -1,33 +1,52 @@
 {
   "name": "allmatter",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "version": "2.0.0",
+  "description": "3D material authoring tool",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ni55aN/allmatter.git"
+  },
+  "keywords": [
+    "3D",
+    "material"
+  ],
+  "author": "Ni55aN",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Ni55aN/allmatter/issues"
+  },
+  "homepage": "https://github.com/Ni55aN/allmatter#readme",
   "dependencies": {
+    "@ant-design/icons": "^5.1.0",
     "@types/three": "^0.152.0",
     "antd": "^5.5.0",
+    "blob-util": "^2.0.2",
     "color": "^4.2.3",
+    "file-saver": "^2.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "rete": "^1.0.0-beta.4",
-    "rete-area-plugin": "0.2.0",
-    "rete-connection-plugin": "0.2.1",
-    "rete-context-menu-plugin": "0.2.4",
-    "rete-module-plugin": "0.2.0",
-    "rete-profiler-plugin": "0.1.5",
-    "rete-vue-render-plugin": "0.2.4",
+    "rete": "^2.0.0-beta.9",
+    "rete-area-plugin": "^2.0.0-beta.12",
+    "rete-auto-arrange-plugin": "^2.0.0-beta.7",
+    "rete-connection-plugin": "^2.0.0-beta.15",
+    "rete-context-menu-plugin": "^2.0.0-beta.9",
+    "rete-engine": "^2.0.0-beta.7",
+    "rete-react-render-plugin": "^2.0.0-beta.20",
+    "shepherd.js": "^11.1.1",
     "styled-components": "^5.3.10",
     "texturity.js": "^0.3.1",
     "three": "^0.152.2",
-    "use-debounce": "^9.0.4"
+    "use-debounce": "^9.0.4",
+    "use-file-picker": "^1.6.1"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.5",
     "@types/lodash": "^4.14.194",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
