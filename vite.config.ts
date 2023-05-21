@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue2'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/allmatter',
   plugins: [react(), vue()],
   resolve: {
     alias: {
