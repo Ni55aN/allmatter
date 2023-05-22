@@ -23,25 +23,25 @@ export class InputNumber extends ClassicPreset.Node implements DataflowNode {
         this.allocation = ['Input'];
 
         const out = new ClassicPreset.Output(sockets.num, 'Number');
-        const ctrl = new ClassicPreset.InputControl('text', { initial: data.name, change: di.process })
-        const ctrl2 = new ClassicPreset.InputControl('number', { initial: data.number, change: di.process })
+        const outputControl = new ClassicPreset.InputControl('number', { initial: data.number, change: di.process })
+        const nameControl = new ClassicPreset.InputControl('text', { initial: data.name, change: di.process })
 
 
-        this.addControl('output', ctrl)
-        this.addControl('name', ctrl2)
+        this.addControl('output', outputControl)
+        this.addControl('name', nameControl)
         this.addOutput('number', out)
     }
 
     data() {
         return {
-            output: this.inputValue || (this.controls['number'] as ClassicPreset.InputControl<'number'>).value
+            number: this.inputValue || (this.controls['output'] as ClassicPreset.InputControl<'number'>).value
         }
     }
 
     serialize(): Data {
         return {
             name: (this.controls['name'] as ClassicPreset.InputControl<'text'>).value as string,
-            number: (this.controls['number'] as ClassicPreset.InputControl<'number'>).value as number,
+            number: (this.controls['output'] as ClassicPreset.InputControl<'number'>).value as number,
         }
     }
 }
