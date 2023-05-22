@@ -54,6 +54,7 @@ export async function createEditor(
   const arrange = new AutoArrangePlugin<Schemes>();
   const engine = new DataflowEngine<Schemes>();
 
+  Texturity.clearCache();
   Texturity.initGL('webgl2');
 
   function _process() {
