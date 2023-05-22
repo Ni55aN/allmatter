@@ -80,13 +80,13 @@ const Styles = styled.div`
   height: 100%;
 `
 
-export function TextureViewer({ src }: { src: string }) {
+export function TextureViewer({ canvas }: { canvas: HTMLCanvasElement }) {
   const ref = useRef<HTMLDivElement>(null)
   const preview = useRef<TexturePreview>()
 
   useEffect(() => {
-    preview.current?.update(src)
-  }, [src])
+    preview.current?.update(canvas.toDataURL())
+  }, [canvas])
 
   useEffect(() => {
     if (!ref.current) return

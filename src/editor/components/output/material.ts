@@ -66,13 +66,13 @@ export class OutputMaterial extends ClassicPreset.Node implements DataflowNode {
             : Utils.createMockTexture('white');
 
         this.di.updateMaterial({
-            diffuse: Utils.textureToSrc(diffuse),
-            normal: Utils.textureToSrc(normal),
-            roughness: Utils.textureToSrc(roughness),
-            metalness: Utils.textureToSrc(metalness),
-            emissive: Utils.textureToSrc(emissive),
-            displacement: Utils.textureToSrc(displacement),
-            alpha: Utils.textureToSrc(alpha)
+            diffuse: Utils.textureToCanvas(diffuse),
+            normal: Utils.textureToCanvas(normal),
+            roughness: Utils.textureToCanvas(roughness),
+            metalness: Utils.textureToCanvas(metalness),
+            emissive: Utils.textureToCanvas(emissive),
+            displacement: Utils.textureToCanvas(displacement),
+            alpha: Utils.textureToCanvas(alpha)
         });
 
         return {}

@@ -40,7 +40,7 @@ function App() {
   }, [textureSize])
 
   const [maps, setMaps] = useState<Record<string, any>>({})
-  const [preview, setPreview] = useState('')
+  const [preview, setPreview] = useState(document.createElement('canvas'))
   const editor = useEditor({ changePreview: setPreview, changeMaterial: setMaps })
 
   useEffect(() => {
@@ -140,7 +140,7 @@ function App() {
       <Content>
         <Workspace
           materialPreview={<MaterialPreview geometry={modelName} maps={maps} />}
-          texturePreview={<TextureViewer src={preview} />}
+          texturePreview={<TextureViewer canvas={preview} />}
           editor={editor.view}
         />
       </Content>

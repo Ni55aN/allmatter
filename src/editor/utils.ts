@@ -24,7 +24,7 @@ export default {
     createEmptyTexture(type: string) {
         const gl = Texturity.getGL();
         const data = new Uint8Array(getColor(type));
-        const emptyTexture = gl.createTexture();
+        const emptyTexture: WebGLTexture = gl.createTexture();
 
         gl.bindTexture(gl.TEXTURE_2D, emptyTexture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, data);
@@ -40,14 +40,14 @@ export default {
     createMockTexture(type: string) {
         return this.createEmptyTexture(type);
     },
-    textureToSrc(texture: any) {
+    textureToCanvas(texture: WebGLTexture): HTMLCanvasElement {
         const w = legacyStore.textureSize;
         const h = legacyStore.textureSize;
         const canvas = new Texturity.Canvas(w, h);
 
         return canvas
             .drawTexture(texture, 0, 0, w, h)
-            .toSrc();
+            .toCanvas(w, h)
     }
 }
 

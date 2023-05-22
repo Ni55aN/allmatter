@@ -28,14 +28,14 @@ const EditorContainer = styled.div`
   }
 `
 
-export function useEditor({ changePreview, changeMaterial }: { changePreview: (src: string) => void, changeMaterial: (maps: Record<string, any>) => void }) {
+export function useEditor({ changePreview, changeMaterial }: { changePreview: (canvas: HTMLCanvasElement) => void, changeMaterial: (maps: Record<string, any>) => void }) {
   const [messageApi, contextHolder] = message.useMessage();
   const create = useCallback((container: HTMLElement) => createEditor(
     container,
     () => modules.list,
     changeMaterial,
     texture => {
-      if (changePreviewRef.current) changePreviewRef.current(texture.src)
+      if (changePreviewRef.current) changePreviewRef.current(texture.canvas)
     },
     (text, type) => messageApi[type](text)
   ), [changeMaterial, messageApi])
@@ -50,7 +50,7 @@ export function useEditor({ changePreview, changeMaterial }: { changePreview: (s
       editor.process()
     }
   })
-  const changePreviewRef = useRef<(src: string) => void>()
+  const changePreviewRef = useRef<(canvas: HTMLCanvasElement) => void>()
 
   useEffect(() => {
     changePreviewRef.current = changePreview

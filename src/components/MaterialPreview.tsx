@@ -162,39 +162,35 @@ class MaterialPreviewFacade {
     return src;
   }
 
-  updateMap(src: any, mapName: Exclude<keyof typeof this.mesh.material, 'isMaterial'>) {
-    return new Promise<void>((res) => {
-      new THREE.TextureLoader().load(src, texture => {
-        const material = this.mesh.material
+  updateMap(src: HTMLCanvasElement, mapName: Exclude<keyof typeof this.mesh.material, 'isMaterial'>) {
+    const texture = new THREE.CanvasTexture(src)
+    const material = this.mesh.material
 
-        if (material[mapName] instanceof THREE.Texture) {
-          material[mapName].dispose();
-          material[mapName] = null as never;
-        }
-        texture.colorSpace = THREE.LinearSRGBColorSpace
-        texture.anisotropy = 8;
-        texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.RepeatWrapping;
-        material[mapName] = texture as never;
-        this.mesh.material.needsUpdate = true;
-        res();
-      });
-    });
+    if (material[mapName] instanceof THREE.Texture) {
+      material[mapName].dispose();
+      material[mapName] = null as never;
+    }
+    texture.colorSpace = THREE.LinearSRGBColorSpace
+    texture.anisotropy = 8;
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    material[mapName] = texture as never;
+    this.mesh.material.needsUpdate = true;
   }
 
-  async update(maps: Record<string, THREE.Texture>) {
-    await this.updateMap(maps.diffuse, 'map');
-    await this.updateMap(maps.normal, 'normalMap');
-    await this.updateMap(maps.roughness, 'roughnessMap');
-    await this.updateMap(maps.metalness, 'metalnessMap');
-    await this.updateMap(maps.emissive, 'emissiveMap');
-    await this.updateMap(maps.displacement, 'displacementMap');
-    await this.updateMap(maps.alpha, 'alphaMap');
+  update(maps: Record<string, HTMLCanvasElement>) {
+    this.updateMap(maps.diffuse, 'map');
+    this.updateMap(maps.normal, 'normalMap');
+    this.updateMap(maps.roughness, 'roughnessMap');
+    this.updateMap(maps.metalness, 'metalnessMap');
+    this.updateMap(maps.emissive, 'emissiveMap');
+    this.updateMap(maps.displacement, 'displacementMap');
+    this.updateMap(maps.alpha, 'alphaMap');
     this.render();
   }
 }
 
-export function MaterialPreview({ geometry, maps }: { geometry: string, maps: Record<string, THREE.Texture> }) {
+export function MaterialPreview({ geometry, maps }: { geometry: string, maps: Record<string, HTMLCanvasElement> }) {
   const ref = useRef<HTMLDivElement>(null)
   const preview = useRef<MaterialPreviewFacade>()
 

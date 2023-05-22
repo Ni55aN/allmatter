@@ -33,9 +33,9 @@ type AreaExtra = ReactArea2D<Schemes> | ContextMenuExtra;
 export type DiContainer = {
   updateControl: (id: string) => void
   updateNode: (id: string) => void
-  updatePreview: (texture: { src: string }) => void
+  updatePreview: (texture: { canvas: HTMLCanvasElement }) => void
   process: () => void
-  updateMaterial: (maps: Record<string, any>) => void
+  updateMaterial: (maps: Record<string, HTMLCanvasElement>) => void
   editor: NodeEditor<Schemes>
   modules: Modules
 }
@@ -44,7 +44,7 @@ export async function createEditor(
   container: HTMLElement,
   getModuleData: () => any,
   updateMaterial: (maps: Record<string, any>) => void,
-  updatePreview: (texture: { src: string }) => void,
+  updatePreview: (texture: { canvas: HTMLCanvasElement }) => void,
   log: (message: string, type: "info" | "error") => void
 ) {
   const editor = new NodeEditor<Schemes>();
