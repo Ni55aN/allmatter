@@ -11,8 +11,6 @@ import { ConnectionPlugin, Presets as ConnectionPresets } from 'rete-connection-
 import { ContextMenuExtra, ContextMenuPlugin, Presets as ContextMenuPresets } from 'rete-context-menu-plugin';
 import { ReactArea2D, ReactRenderPlugin, Presets } from 'rete-react-render-plugin';
 import { debounce } from 'lodash';
-// @ts-ignore
-import blobUtil from 'blob-util/dist/blob-util';
 import { createRoot } from "react-dom/client";
 import * as Nodes from './components';
 import { Preview } from './controls/preview';
