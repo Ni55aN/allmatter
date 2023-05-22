@@ -14,6 +14,9 @@ const Styles = styled(Layout.Header)`
   display: flex;
   align-items: center;
   height: 4em;
+  @media (max-width: 600px) {
+    padding: 0 1em;
+  }
 `
 
 export function Header(props: { menu: React.ReactNode }) {

@@ -21,6 +21,15 @@ const Styles = styled.div<{ active: 'material' | 'texture' | null }>`
   .editor {
     grid-area: C;
   }
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: calc(50vw - 2em) auto;
+    grid-template-areas: ${props => {
+    if (props.active === 'material') return `"A A" "A A"`
+    if (props.active === 'texture') return `"B B" "B B"`
+    return `"A B" "C C"`;
+  }};
+  }
 `
 
 const Card = styled.div<{ visible: boolean }>`
